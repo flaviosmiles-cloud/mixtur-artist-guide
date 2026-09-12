@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
 
   <title>Mixtur · Artist Guide</title>
 
-  <!-- Mixtur visual styles -->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -17,48 +17,82 @@
 
     <!-- HEADER -->
     <header class="topbar">
-      <div class="logo">MIXTUR</div>
+
+      <img
+        src="logo-mixtur.png"
+        alt="Mixtur"
+        class="mixtur-logo"
+      >
 
       <button class="menu-button" aria-label="Open menu">
-        ☰
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
+
     </header>
 
 
-    <!-- HERO / ARTIST -->
+    <!-- HERO -->
     <section class="hero">
 
-      <!-- Graphic lines inspired by Mixtur 2026 -->
+      <!-- Mixtur graphic system -->
       <div class="hero-lines" aria-hidden="true">
         <span></span>
         <span></span>
         <span></span>
         <span></span>
         <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
+
 
       <div class="hero-content">
 
-        <div class="eyebrow">
+        <p class="eyebrow">
           Artist Guide · Barcelona
-        </div>
+        </p>
 
         <h1 class="welcome">
-          WELCOME,<br>
-          ALEX
+          Welcome,<br>
+          Alex
         </h1>
 
-        <div class="stay-dates">
+        <p class="stay-dates">
           16 → 20 OCT 2026<br>
           Barcelona
-        </div>
+        </p>
 
       </div>
 
     </section>
 
 
-    <!-- NEXT EVENT -->
+    <!-- NEXT -->
     <section class="next-section">
 
       <div class="section-label">
@@ -68,8 +102,11 @@
 
       <article class="next-card">
 
-        <div>
-          <div class="next-time">10:00</div>
+        <div class="next-card-content">
+
+          <div class="next-time">
+            10:00
+          </div>
 
           <div class="next-title">
             Rehearsal
@@ -78,9 +115,13 @@
           <div class="next-place">
             Fabra i Coats · Sala 2
           </div>
+
         </div>
 
-        <button class="arrow-button" aria-label="Open rehearsal">
+        <button
+          class="arrow-button"
+          aria-label="Open rehearsal details"
+        >
           →
         </button>
 
@@ -92,115 +133,209 @@
     <!-- TODAY -->
     <section class="today-list">
 
-      <div class="section-label">
+      <div class="section-label schedule-heading">
         <span>Friday · 18 October</span>
         <span>Today</span>
       </div>
 
 
       <article class="today-item">
-        <div class="today-time">09:00</div>
 
-        <div>
-          <div class="today-title">Breakfast</div>
-          <div class="today-place">Hotel</div>
+        <div class="today-time">
+          09:00
         </div>
+
+        <div class="today-info">
+          <div class="today-title">
+            Breakfast
+          </div>
+
+          <div class="today-place">
+            Hotel
+          </div>
+        </div>
+
+      </article>
+
+
+      <article class="today-item highlight">
+
+        <div class="today-time">
+          10:00
+        </div>
+
+        <div class="today-info">
+          <div class="today-title">
+            Rehearsal
+          </div>
+
+          <div class="today-place">
+            Fabra i Coats · Sala 2
+          </div>
+        </div>
+
+        <div class="today-arrow">
+          →
+        </div>
+
       </article>
 
 
       <article class="today-item">
-        <div class="today-time">10:00</div>
 
-        <div>
-          <div class="today-title">Rehearsal</div>
-          <div class="today-place">Fabra i Coats · Sala 2</div>
+        <div class="today-time">
+          13:30
         </div>
+
+        <div class="today-info">
+          <div class="today-title">
+            Lunch
+          </div>
+
+          <div class="today-place">
+            Fabra i Coats
+          </div>
+        </div>
+
       </article>
 
 
       <article class="today-item">
-        <div class="today-time">13:30</div>
 
-        <div>
-          <div class="today-title">Lunch</div>
-          <div class="today-place">Fabra i Coats</div>
+        <div class="today-time">
+          17:30
         </div>
+
+        <div class="today-info">
+          <div class="today-title">
+            Call time
+          </div>
+
+          <div class="today-place">
+            Main Hall
+          </div>
+        </div>
+
       </article>
 
 
       <article class="today-item">
-        <div class="today-time">17:30</div>
 
-        <div>
-          <div class="today-title">Call time</div>
-          <div class="today-place">Main Hall</div>
+        <div class="today-time">
+          19:00
         </div>
-      </article>
 
+        <div class="today-info">
+          <div class="today-title">
+            Concert
+          </div>
 
-      <article class="today-item">
-        <div class="today-time">19:00</div>
-
-        <div>
-          <div class="today-title">Concert</div>
-          <div class="today-place">Fabra i Coats · Main Hall</div>
+          <div class="today-place">
+            Fabra i Coats · Main Hall
+          </div>
         </div>
+
       </article>
 
     </section>
 
 
     <!-- CONTACT -->
-    <section class="contact-card">
+    <section class="contact-wrap">
 
-      <div class="contact-label">
-        Your Mixtur contact
+      <div class="section-label">
+        <span>Your Mixtur contact</span>
       </div>
 
-      <div class="contact-name">
-        Laura Martínez
-      </div>
+      <article class="contact-card">
 
-      <div class="contact-role">
-        Artist Coordination
-      </div>
+        <div>
+          <div class="contact-name">
+            Laura Martínez
+          </div>
 
-      <div class="contact-actions">
+          <div class="contact-role">
+            Artist Coordination
+          </div>
+        </div>
 
-        <a class="contact-button" href="#">
-          WhatsApp
-        </a>
+        <div class="contact-actions">
 
-        <a class="contact-button" href="#">
-          Call
-        </a>
+          <a
+            href="#"
+            class="contact-action"
+            aria-label="WhatsApp Laura"
+          >
+            W
+          </a>
 
-      </div>
+          <a
+            href="#"
+            class="contact-action"
+            aria-label="Call Laura"
+          >
+            ☎
+          </a>
+
+        </div>
+
+      </article>
 
     </section>
 
 
-    <!-- BOTTOM NAVIGATION -->
+    <!-- NAVIGATION -->
     <nav class="bottom-nav" aria-label="Main navigation">
 
       <a class="nav-item active" href="#">
-        <span class="nav-icon">⌂</span>
-        Today
+
+        <span class="nav-symbol">
+          ◇
+        </span>
+
+        <span>
+          Today
+        </span>
+
       </a>
 
-      <a class="nav-item" href="#">
-        <span class="nav-icon">□</span>
-        Schedule
-      </a>
 
       <a class="nav-item" href="#">
-        <span class="nav-icon">⌖</span>
-        Places
+
+        <span class="nav-symbol">
+          □
+        </span>
+
+        <span>
+          Schedule
+        </span>
+
       </a>
 
+
       <a class="nav-item" href="#">
-        <span class="nav-icon">ⓘ</span>
-        Info
+
+        <span class="nav-symbol">
+          ⊕
+        </span>
+
+        <span>
+          Places
+        </span>
+
+      </a>
+
+
+      <a class="nav-item" href="#">
+
+        <span class="nav-symbol">
+          ⓘ
+        </span>
+
+        <span>
+          Info
+        </span>
+
       </a>
 
     </nav>
