@@ -1071,3 +1071,346 @@ a {
 .today-day .day-header {
   color: var(--white);
 }
+
+
+/* =========================================
+   PLACES PAGE
+   ========================================= */
+
+.places-hero {
+  position: relative;
+
+  min-height: 270px;
+
+  padding: 34px 20px 30px;
+
+  overflow: hidden;
+
+  background: var(--mixtur-blue);
+}
+
+.places-hero-lines {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+.places-hero-lines span {
+  position: absolute;
+
+  height: 2px;
+
+  background: var(--mixtur-gold);
+}
+
+.places-hero-lines span:nth-child(1) {
+  top: 38px;
+  left: -12%;
+  width: 70%;
+}
+
+.places-hero-lines span:nth-child(2) {
+  top: 66px;
+  left: 30%;
+  width: 78%;
+}
+
+.places-hero-lines span:nth-child(3) {
+  top: 95px;
+  left: 5%;
+  width: 84%;
+}
+
+.places-hero-lines span:nth-child(4) {
+  top: 132px;
+  left: -5%;
+  width: 48%;
+}
+
+.places-hero-lines span:nth-child(5) {
+  top: 166px;
+  left: 42%;
+  width: 68%;
+}
+
+.places-hero-lines span:nth-child(6) {
+  top: 205px;
+  left: 10%;
+  width: 82%;
+}
+
+.places-hero-lines span:nth-child(7) {
+  top: 238px;
+  left: -15%;
+  width: 60%;
+}
+
+.places-hero-content {
+  position: relative;
+
+  z-index: 3;
+}
+
+.places-page-title {
+  margin-top: 58px;
+
+  font-size: clamp(3.8rem, 17vw, 5.2rem);
+
+  font-weight: 400;
+
+  line-height: 0.9;
+
+  letter-spacing: -0.08em;
+
+  text-transform: uppercase;
+}
+
+.places-subtitle {
+  margin-top: 18px;
+
+  font-size: 0.68rem;
+
+  line-height: 1.4;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+}
+
+
+/* SECTIONS */
+
+.places-section {
+  padding: 22px 20px 4px;
+}
+
+
+/* PLACE CARD */
+
+.place-card {
+  background: #111111;
+
+  border-top: 2px solid var(--mixtur-gold);
+
+  padding: 20px;
+
+  margin-bottom: 18px;
+}
+
+.featured-place {
+  background: var(--mixtur-blue);
+
+  border-top-color: var(--white);
+}
+
+.place-card-top {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.place-type {
+  margin-bottom: 8px;
+
+  color: var(--mixtur-gold);
+
+  font-size: 0.58rem;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.09em;
+
+  text-transform: uppercase;
+}
+
+.featured-place .place-type {
+  color: var(--white);
+}
+
+.place-name {
+  font-size: 1.65rem;
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  letter-spacing: -0.045em;
+}
+
+.place-address {
+  margin-top: 10px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.7rem;
+
+  line-height: 1.45;
+}
+
+.featured-place .place-address {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.place-number {
+  color: var(--mixtur-gold);
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.06em;
+}
+
+.featured-place .place-number {
+  color: var(--white);
+}
+
+
+/* META */
+
+.place-meta {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+
+  margin-top: 28px;
+
+  padding-top: 16px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.place-meta-label,
+.place-meta-value {
+  display: block;
+}
+
+.place-meta-label {
+  margin-bottom: 5px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.56rem;
+
+  letter-spacing: 0.07em;
+
+  text-transform: uppercase;
+}
+
+.place-meta-value {
+  font-size: 0.68rem;
+
+  line-height: 1.35;
+}
+
+
+/* BUTTON */
+
+.place-action {
+  margin-top: 18px;
+
+  min-height: 48px;
+
+  padding: 0 14px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+
+  color: var(--white);
+
+  text-decoration: none;
+
+  font-size: 0.68rem;
+
+  letter-spacing: 0.03em;
+}
+
+
+/* PLACE LIST */
+
+.place-list-item {
+  display: grid;
+
+  grid-template-columns:
+    38px
+    minmax(0, 1fr)
+    24px;
+
+  gap: 12px;
+
+  padding: 18px 0;
+
+  border-top: 1px solid var(--line);
+}
+
+.place-list-number {
+  color: var(--mixtur-gold);
+
+  font-size: 0.65rem;
+}
+
+.place-list-info h2 {
+  font-size: 0.9rem;
+
+  font-weight: 400;
+
+  line-height: 1.25;
+}
+
+.place-list-info p {
+  margin-top: 5px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.65rem;
+
+  line-height: 1.4;
+}
+
+.place-list-arrow {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+}
+
+
+/* NOTE */
+
+.places-note {
+  margin: 26px 20px 34px;
+
+  padding: 20px;
+
+  background: var(--mixtur-gold);
+
+  color: var(--black);
+}
+
+.places-note-label {
+  margin-bottom: 12px;
+
+  font-size: 0.58rem;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+.places-note p {
+  max-width: 320px;
+
+  font-size: 0.75rem;
+
+  line-height: 1.5;
+}
