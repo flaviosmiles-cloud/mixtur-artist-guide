@@ -1,10 +1,12 @@
 /* =========================================
    MIXTUR ARTIST GUIDE
-   Mobile-first visual system
+   Editorial mobile system
    ========================================= */
 
 
-/* ---------- VARIABLES ---------- */
+/* =========================================
+   VARIABLES
+   ========================================= */
 
 :root {
   --black: #000000;
@@ -15,13 +17,17 @@
   --mixtur-gold: #b89b59;
 
   --text-secondary: rgba(255, 255, 255, 0.68);
+  --text-soft: rgba(255, 255, 255, 0.48);
+
   --line: rgba(255, 255, 255, 0.18);
 
   --page-width: 430px;
 }
 
 
-/* ---------- RESET ---------- */
+/* =========================================
+   RESET
+   ========================================= */
 
 * {
   box-sizing: border-box;
@@ -34,6 +40,8 @@ html {
 }
 
 body {
+  min-height: 100vh;
+
   background: #0a0a0a;
   color: var(--white);
 
@@ -41,8 +49,6 @@ body {
     Verdana,
     Geneva,
     sans-serif;
-
-  min-height: 100vh;
 
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -53,8 +59,14 @@ a {
   font: inherit;
 }
 
+a {
+  color: inherit;
+}
 
-/* ---------- APP ---------- */
+
+/* =========================================
+   APP
+   ========================================= */
 
 .app {
   position: relative;
@@ -62,21 +74,24 @@ a {
   width: 100%;
   max-width: var(--page-width);
 
-  margin: 0 auto;
-
   min-height: 100vh;
 
-  background: var(--black);
+  margin: 0 auto;
 
   padding-bottom: 88px;
+
+  background: var(--black);
 }
 
 
 /* =========================================
-   HEADER
+   TOP BAR
    ========================================= */
 
 .topbar {
+  position: relative;
+  z-index: 20;
+
   height: 68px;
 
   padding: 18px 20px;
@@ -86,13 +101,10 @@ a {
   align-items: center;
 
   background: var(--black);
-
-  position: relative;
-  z-index: 20;
 }
 
 
-/* Official Mixtur logo */
+/* LOGO */
 
 .mixtur-logo {
   display: block;
@@ -105,7 +117,7 @@ a {
 }
 
 
-/* Menu */
+/* MENU */
 
 .menu-button {
   width: 32px;
@@ -120,6 +132,7 @@ a {
   gap: 4px;
 
   border: 0;
+
   background: transparent;
 
   cursor: pointer;
@@ -138,317 +151,124 @@ a {
 
 
 /* =========================================
-   HERO
+   TODAY HERO
    ========================================= */
 
 .hero {
   position: relative;
 
-  min-height: 540px;
+  min-height: 390px;
 
-  padding: 36px 20px 38px;
+  padding:
+    30px
+    20px
+    30px;
 
   overflow: hidden;
 
-  background: var(--mixtur-blue);
+  background-color: var(--mixtur-blue);
+
+  background-image:
+    url("mixtur-background.png");
+
+  background-size: cover;
+
+  background-position: center center;
+
+  background-repeat: no-repeat;
 }
 
 
-/* =========================================
-   MIXTUR LINE SYSTEM
-   ========================================= */
+/* Very subtle layer for readability */
 
-.hero-lines {
+.hero-overlay {
   position: absolute;
 
   inset: 0;
 
   z-index: 1;
 
-  overflow: hidden;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(32, 34, 90, 0.03),
+      rgba(32, 34, 90, 0.08)
+    );
 
   pointer-events: none;
 }
 
-.hero-lines span {
-  position: absolute;
 
-  display: block;
-
-  height: 1.5px;
-
-  background: var(--mixtur-gold);
-
-  opacity: 0.95;
-}
-
-
-/* TOP */
-
-.hero-lines span:nth-child(1) {
-  top: 34px;
-  left: -8%;
-  width: 74%;
-}
-
-.hero-lines span:nth-child(2) {
-  top: 49px;
-  left: 12%;
-  width: 82%;
-}
-
-.hero-lines span:nth-child(3) {
-  top: 65px;
-  left: -3%;
-  width: 48%;
-}
-
-.hero-lines span:nth-child(4) {
-  top: 80px;
-  left: 27%;
-  width: 79%;
-  height: 2px;
-}
-
-.hero-lines span:nth-child(5) {
-  top: 96px;
-  left: 6%;
-  width: 87%;
-}
-
-.hero-lines span:nth-child(6) {
-  top: 112px;
-  left: -13%;
-  width: 64%;
-}
-
-.hero-lines span:nth-child(7) {
-  top: 128px;
-  left: 40%;
-  width: 68%;
-}
-
-.hero-lines span:nth-child(8) {
-  top: 144px;
-  left: 17%;
-  width: 56%;
-}
-
-
-/* UPPER MIDDLE */
-
-.hero-lines span:nth-child(9) {
-  top: 177px;
-  left: -9%;
-  width: 70%;
-}
-
-.hero-lines span:nth-child(10) {
-  top: 193px;
-  left: 24%;
-  width: 87%;
-  height: 2px;
-}
-
-.hero-lines span:nth-child(11) {
-  top: 209px;
-  left: -15%;
-  width: 56%;
-}
-
-.hero-lines span:nth-child(12) {
-  top: 226px;
-  left: 35%;
-  width: 74%;
-}
-
-.hero-lines span:nth-child(13) {
-  top: 242px;
-  left: 4%;
-  width: 80%;
-  height: 2px;
-}
-
-
-/* CENTRE */
-
-.hero-lines span:nth-child(14) {
-  top: 275px;
-  left: -8%;
-  width: 60%;
-}
-
-.hero-lines span:nth-child(15) {
-  top: 291px;
-  left: 22%;
-  width: 90%;
-}
-
-.hero-lines span:nth-child(16) {
-  top: 307px;
-  left: -4%;
-  width: 43%;
-}
-
-.hero-lines span:nth-child(17) {
-  top: 323px;
-  left: 42%;
-  width: 67%;
-  height: 2px;
-}
-
-.hero-lines span:nth-child(18) {
-  top: 339px;
-  left: 9%;
-  width: 79%;
-}
-
-
-/* LOWER */
-
-.hero-lines span:nth-child(19) {
-  top: 356px;
-  left: -13%;
-  width: 53%;
-}
-
-.hero-lines span:nth-child(20) {
-  top: 372px;
-  left: 27%;
-  width: 83%;
-  height: 3px;
-}
-
-.hero-lines span:nth-child(21) {
-  top: 389px;
-  left: -3%;
-  width: 71%;
-}
-
-.hero-lines span:nth-child(22) {
-  top: 405px;
-  left: 47%;
-  width: 62%;
-  height: 3px;
-}
-
-.hero-lines span:nth-child(23) {
-  top: 421px;
-  left: 6%;
-  width: 51%;
-}
-
-.hero-lines span:nth-child(24) {
-  top: 437px;
-  left: 34%;
-  width: 77%;
-  height: 2px;
-}
-
-
-/* EXTRA LINES */
-
-.hero-lines span:nth-child(25) {
-  top: 255px;
-  left: 66%;
-  width: 42%;
-}
-
-.hero-lines span:nth-child(26) {
-  top: 160px;
-  left: -17%;
-  width: 36%;
-  height: 2px;
-}
-
-.hero-lines span:nth-child(27) {
-  top: 348px;
-  left: 62%;
-  width: 46%;
-}
-
-.hero-lines span:nth-child(28) {
-  top: 118px;
-  left: 70%;
-  width: 35%;
-  height: 2px;
-}
-
-
-/* =========================================
-   HERO CONTENT
-   ========================================= */
+/* HERO CONTENT */
 
 .hero-content {
   position: relative;
 
-  z-index: 4;
+  z-index: 3;
 }
 
 
-/* Small heading */
+/* Small editorial heading */
 
 .eyebrow {
-  margin-bottom: 72px;
+  margin-bottom: 60px;
 
-  font-size: 0.62rem;
+  font-size: 0.61rem;
+
   font-weight: 400;
 
   line-height: 1.3;
 
-  letter-spacing: 0.11em;
+  letter-spacing: 0.14em;
 
   text-transform: uppercase;
 }
 
 
-/* =========================================
-   WELCOME
-   Main visual element
-   ========================================= */
+/* Main welcome */
 
 .welcome {
   width: 100%;
-  max-width: none;
 
-  font-size: clamp(4.6rem, 19vw, 6.2rem);
+  max-width: 385px;
+
+  font-size:
+    clamp(
+      3.45rem,
+      14.8vw,
+      4.55rem
+    );
 
   font-weight: 400;
 
-  line-height: 0.82;
+  line-height: 0.88;
 
-  letter-spacing: -0.095em;
+  letter-spacing: -0.075em;
 
   text-transform: uppercase;
-
-  white-space: nowrap;
 }
 
 
-/* Stay dates */
+/* Dates */
 
 .stay-dates {
-  margin-top: 34px;
+  margin-top: 29px;
 
-  font-size: 0.68rem;
+  font-size: 0.65rem;
 
-  line-height: 1.5;
+  font-weight: 400;
 
-  letter-spacing: 0.06em;
+  line-height: 1.55;
+
+  letter-spacing: 0.09em;
 
   text-transform: uppercase;
 }
 
 
 /* =========================================
-   NEXT EVENT
+   SECTION LABELS
    ========================================= */
-
-.next-section {
-  padding: 20px 20px 16px;
-
-  background: var(--black);
-}
 
 .section-label {
   display: flex;
@@ -462,19 +282,37 @@ a {
 
   color: var(--text-secondary);
 
-  font-size: 0.65rem;
+  font-size: 0.62rem;
 
   line-height: 1.2;
 
-  letter-spacing: 0.07em;
+  letter-spacing: 0.09em;
 
   text-transform: uppercase;
 }
 
+
+/* =========================================
+   NEXT EVENT
+   ========================================= */
+
+.next-section {
+  padding:
+    21px
+    20px
+    17px;
+
+  background: var(--black);
+}
+
+
 .next-card {
   min-height: 124px;
 
-  padding: 20px 18px 18px;
+  padding:
+    20px
+    18px
+    18px;
 
   display: flex;
 
@@ -487,15 +325,17 @@ a {
 
   background: var(--white);
 
-  border-radius: 18px;
+  border-radius: 17px;
 }
+
 
 .next-card-content {
   min-width: 0;
 }
 
+
 .next-time {
-  font-size: 1.75rem;
+  font-size: 1.72rem;
 
   font-weight: 700;
 
@@ -504,27 +344,30 @@ a {
   letter-spacing: -0.04em;
 }
 
-.next-title {
-  margin-top: 3px;
 
-  font-size: 1.4rem;
+.next-title {
+  margin-top: 4px;
+
+  font-size: 1.35rem;
 
   font-weight: 400;
 
   line-height: 1;
 
-  letter-spacing: -0.035em;
+  letter-spacing: -0.045em;
 
   text-transform: uppercase;
 }
 
+
 .next-place {
-  margin-top: 10px;
+  margin-top: 11px;
 
-  font-size: 0.73rem;
+  font-size: 0.7rem;
 
-  line-height: 1.3;
+  line-height: 1.35;
 }
+
 
 .arrow-button {
   width: 45px;
@@ -535,31 +378,33 @@ a {
   border: 0;
   border-radius: 50%;
 
+  background: var(--mixtur-blue);
   color: var(--white);
 
-  background: var(--mixtur-blue);
-
-  font-size: 1.35rem;
-
-  font-weight: 400;
+  font-size: 1.3rem;
 
   cursor: pointer;
 }
 
 
 /* =========================================
-   TODAY SCHEDULE
+   TODAY LIST
    ========================================= */
 
 .today-list {
-  padding: 5px 20px 28px;
+  padding:
+    6px
+    20px
+    28px;
 }
+
 
 .schedule-heading {
   margin-bottom: 0;
 
-  padding-bottom: 11px;
+  padding-bottom: 12px;
 }
+
 
 .today-item {
   position: relative;
@@ -581,39 +426,47 @@ a {
     var(--line);
 }
 
+
 .today-time {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 
   line-height: 1.2;
 }
+
 
 .today-info {
   min-width: 0;
 }
 
+
 .today-title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 
   line-height: 1.2;
 }
+
 
 .today-place {
   margin-top: 5px;
 
   color: var(--text-secondary);
 
-  font-size: 0.67rem;
+  font-size: 0.66rem;
 
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 
-/* Active event */
+/* CURRENT EVENT */
 
 .today-item.highlight {
-  margin: 0 -8px;
+  margin:
+    0
+    -8px;
 
-  padding: 16px 8px;
+  padding:
+    16px
+    8px;
 
   grid-template-columns:
     72px
@@ -625,9 +478,11 @@ a {
   border-top-color: transparent;
 }
 
+
 .today-item.highlight + .today-item {
   border-top-color: transparent;
 }
+
 
 .today-arrow {
   display: flex;
@@ -644,8 +499,12 @@ a {
    ========================================= */
 
 .contact-wrap {
-  padding: 4px 20px 34px;
+  padding:
+    4px
+    20px
+    34px;
 }
+
 
 .contact-card {
   padding: 19px;
@@ -660,25 +519,39 @@ a {
   background: var(--mixtur-blue);
 }
 
+
 .contact-name {
-  font-size: 1.02rem;
+  font-size: 1rem;
+
+  font-weight: 400;
 
   line-height: 1.2;
+
+  letter-spacing: -0.025em;
 }
+
 
 .contact-role {
-  margin-top: 5px;
+  margin-top: 6px;
 
-  font-size: 0.68rem;
+  font-size: 0.66rem;
 
-  color: rgba(255, 255, 255, 0.74);
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.7
+    );
 }
+
 
 .contact-actions {
   display: flex;
 
   gap: 9px;
 }
+
 
 .contact-action {
   width: 38px;
@@ -691,7 +564,12 @@ a {
 
   border:
     1px solid
-    rgba(255, 255, 255, 0.6);
+    rgba(
+      255,
+      255,
+      255,
+      0.6
+    );
 
   border-radius: 50%;
 
@@ -699,12 +577,12 @@ a {
 
   text-decoration: none;
 
-  font-size: 0.76rem;
+  font-size: 0.74rem;
 }
 
 
 /* =========================================
-   BOTTOM NAV
+   BOTTOM NAVIGATION
    ========================================= */
 
 .bottom-nav {
@@ -715,7 +593,8 @@ a {
 
   z-index: 100;
 
-  transform: translateX(-50%);
+  transform:
+    translateX(-50%);
 
   width: 100%;
   max-width: var(--page-width);
@@ -730,17 +609,27 @@ a {
   padding:
     8px
     5px
-    max(11px, env(safe-area-inset-bottom));
+    max(
+      11px,
+      env(safe-area-inset-bottom)
+    );
 
   background:
-    rgba(0, 0, 0, 0.96);
+    rgba(
+      0,
+      0,
+      0,
+      0.96
+    );
 
   border-top:
     1px solid
     var(--line);
 
-  backdrop-filter: blur(12px);
+  backdrop-filter:
+    blur(12px);
 }
+
 
 .nav-item {
   display: flex;
@@ -752,16 +641,26 @@ a {
 
   gap: 4px;
 
-  color: rgba(255, 255, 255, 0.62);
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.58
+    );
 
   text-decoration: none;
 
-  font-size: 0.59rem;
+  font-size: 0.58rem;
+
+  letter-spacing: 0.01em;
 }
+
 
 .nav-item.active {
   color: var(--white);
 }
+
 
 .nav-symbol {
   min-height: 18px;
@@ -773,74 +672,42 @@ a {
 
 
 /* =========================================
-   DESKTOP
-   ========================================= */
-
-@media (min-width: 700px) {
-
-  body {
-    background:
-      radial-gradient(
-        circle at center,
-        #171717 0%,
-        #0c0c0c 48%,
-        #050505 100%
-      );
-  }
-
-  .app {
-    box-shadow:
-      0 0 80px
-      rgba(0, 0, 0, 0.65);
-  }
-}
-
-
-/* =========================================
-   SMALL PHONES
-   ========================================= */
-
-@media (max-width: 360px) {
-
-  .welcome {
-    font-size: 4.25rem;
-
-    letter-spacing: -0.1em;
-  }
-
-  .hero {
-    min-height: 520px;
-  }
-
-  .next-title {
-    font-size: 1.25rem;
-  }
-}
-
-/* =========================================
    SCHEDULE PAGE
    ========================================= */
+
+
+/* Header */
 
 .schedule-hero {
   position: relative;
 
-  min-height: 260px;
+  min-height: 220px;
 
-  padding: 34px 20px 30px;
+  padding:
+    30px
+    20px
+    27px;
 
   overflow: hidden;
 
   background: var(--mixtur-blue);
 }
 
+
+/* Decorative lines */
+
 .schedule-hero-lines {
   position: absolute;
+
   inset: 0;
 
   z-index: 1;
 
+  overflow: hidden;
+
   pointer-events: none;
 }
+
 
 .schedule-hero-lines span {
   position: absolute;
@@ -848,43 +715,54 @@ a {
   height: 2px;
 
   background: var(--mixtur-gold);
+
+  opacity: 0.9;
 }
 
+
 .schedule-hero-lines span:nth-child(1) {
-  top: 42px;
-  left: -10%;
+  top: 30px;
+  left: -8%;
+  width: 68%;
+}
+
+
+.schedule-hero-lines span:nth-child(2) {
+  top: 54px;
+  left: 36%;
   width: 70%;
 }
 
-.schedule-hero-lines span:nth-child(2) {
-  top: 69px;
-  left: 34%;
-  width: 72%;
-}
 
 .schedule-hero-lines span:nth-child(3) {
-  top: 102px;
-  left: 5%;
-  width: 87%;
+  top: 81px;
+  left: 4%;
+  width: 85%;
 }
+
 
 .schedule-hero-lines span:nth-child(4) {
-  top: 148px;
-  left: -8%;
-  width: 50%;
+  top: 128px;
+  left: -10%;
+  width: 52%;
 }
 
+
 .schedule-hero-lines span:nth-child(5) {
-  top: 180px;
+  top: 162px;
   left: 40%;
   width: 68%;
 }
 
+
 .schedule-hero-lines span:nth-child(6) {
-  top: 218px;
-  left: 10%;
-  width: 80%;
+  top: 198px;
+  left: 12%;
+  width: 78%;
 }
+
+
+/* Content */
 
 .schedule-hero-content {
   position: relative;
@@ -892,44 +770,56 @@ a {
   z-index: 3;
 }
 
-.schedule-page-title {
-  margin-top: 58px;
 
-  font-size: clamp(3.6rem, 16vw, 5rem);
+.schedule-page-title {
+  margin-top: 42px;
+
+  font-size:
+    clamp(
+      3rem,
+      13vw,
+      4.05rem
+    );
 
   font-weight: 400;
 
   line-height: 0.9;
 
-  letter-spacing: -0.08em;
+  letter-spacing: -0.065em;
 
   text-transform: uppercase;
 }
 
-.schedule-subtitle {
-  margin-top: 18px;
 
-  font-size: 0.68rem;
+.schedule-subtitle {
+  margin-top: 16px;
+
+  font-size: 0.61rem;
 
   line-height: 1.4;
 
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
 
   text-transform: uppercase;
 }
 
 
-/* DAY */
+/* =========================================
+   SCHEDULE DAYS
+   ========================================= */
 
 .schedule-day {
-  padding: 24px 20px 8px;
+  padding:
+    25px
+    20px
+    8px;
 }
+
 
 .day-header {
   display: flex;
 
   justify-content: space-between;
-
   align-items: center;
 
   gap: 10px;
@@ -938,17 +828,24 @@ a {
 
   color: var(--text-secondary);
 
-  font-size: 0.65rem;
+  font-size: 0.62rem;
 
   line-height: 1.2;
 
-  letter-spacing: 0.06em;
+  letter-spacing: 0.09em;
 
   text-transform: uppercase;
 }
 
 
-/* EVENT */
+.today-day .day-header {
+  color: var(--white);
+}
+
+
+/* =========================================
+   SCHEDULE EVENTS
+   ========================================= */
 
 .schedule-event {
   position: relative;
@@ -968,51 +865,62 @@ a {
     var(--line);
 }
 
+
 .schedule-time {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 
   line-height: 1.2;
 }
+
 
 .schedule-event-info {
   min-width: 0;
 }
 
+
 .schedule-event-type {
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 
   color: var(--mixtur-gold);
 
-  font-size: 0.58rem;
+  font-size: 0.56rem;
 
-  letter-spacing: 0.08em;
+  line-height: 1.2;
+
+  letter-spacing: 0.11em;
 
   text-transform: uppercase;
 }
 
+
 .schedule-event-info h2 {
-  font-size: 0.92rem;
+  font-size: 0.89rem;
 
   font-weight: 400;
 
-  line-height: 1.25;
+  line-height: 1.3;
+
+  letter-spacing: -0.025em;
 }
+
 
 .schedule-event-info p {
   margin-top: 5px;
 
   color: var(--text-secondary);
 
-  font-size: 0.67rem;
+  font-size: 0.65rem;
 
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 
 /* CURRENT EVENT */
 
 .current-event {
-  margin: 0 -8px;
+  margin:
+    0
+    -8px;
 
   padding:
     18px
@@ -1028,15 +936,18 @@ a {
   border-top-color: transparent;
 }
 
+
 .current-event .schedule-event-type {
   color: var(--white);
 }
 
 
-/* IMPORTANT */
+/* IMPORTANT EVENT */
 
 .important-event {
-  margin: 0 -8px;
+  margin:
+    0
+    -8px;
 
   padding:
     18px
@@ -1056,6 +967,7 @@ a {
     var(--mixtur-gold);
 }
 
+
 .schedule-event-arrow {
   display: flex;
 
@@ -1066,351 +978,67 @@ a {
 }
 
 
-/* TODAY DAY */
+/* =========================================
+   DESKTOP PRESENTATION
+   ========================================= */
 
-.today-day .day-header {
-  color: var(--white);
+@media (min-width: 700px) {
+
+  body {
+    background:
+      radial-gradient(
+        circle at center,
+        #171717 0%,
+        #0c0c0c 48%,
+        #050505 100%
+      );
+  }
+
+
+  .app {
+    box-shadow:
+      0
+      0
+      80px
+      rgba(
+        0,
+        0,
+        0,
+        0.65
+      );
+  }
+
 }
 
 
 /* =========================================
-   PLACES PAGE
+   SMALL PHONES
    ========================================= */
 
-.places-hero {
-  position: relative;
+@media (max-width: 360px) {
 
-  min-height: 270px;
+  .hero {
+    min-height: 365px;
+  }
 
-  padding: 34px 20px 30px;
 
-  overflow: hidden;
+  .welcome {
+    font-size: 3.15rem;
+  }
 
-  background: var(--mixtur-blue);
-}
 
-.places-hero-lines {
-  position: absolute;
-  inset: 0;
+  .eyebrow {
+    margin-bottom: 52px;
+  }
 
-  z-index: 1;
 
-  pointer-events: none;
-}
+  .next-title {
+    font-size: 1.22rem;
+  }
 
-.places-hero-lines span {
-  position: absolute;
 
-  height: 2px;
+  .schedule-page-title {
+    font-size: 2.85rem;
+  }
 
-  background: var(--mixtur-gold);
-}
-
-.places-hero-lines span:nth-child(1) {
-  top: 38px;
-  left: -12%;
-  width: 70%;
-}
-
-.places-hero-lines span:nth-child(2) {
-  top: 66px;
-  left: 30%;
-  width: 78%;
-}
-
-.places-hero-lines span:nth-child(3) {
-  top: 95px;
-  left: 5%;
-  width: 84%;
-}
-
-.places-hero-lines span:nth-child(4) {
-  top: 132px;
-  left: -5%;
-  width: 48%;
-}
-
-.places-hero-lines span:nth-child(5) {
-  top: 166px;
-  left: 42%;
-  width: 68%;
-}
-
-.places-hero-lines span:nth-child(6) {
-  top: 205px;
-  left: 10%;
-  width: 82%;
-}
-
-.places-hero-lines span:nth-child(7) {
-  top: 238px;
-  left: -15%;
-  width: 60%;
-}
-
-.places-hero-content {
-  position: relative;
-
-  z-index: 3;
-}
-
-.places-page-title {
-  margin-top: 58px;
-
-  font-size: clamp(3.8rem, 17vw, 5.2rem);
-
-  font-weight: 400;
-
-  line-height: 0.9;
-
-  letter-spacing: -0.08em;
-
-  text-transform: uppercase;
-}
-
-.places-subtitle {
-  margin-top: 18px;
-
-  font-size: 0.68rem;
-
-  line-height: 1.4;
-
-  letter-spacing: 0.06em;
-
-  text-transform: uppercase;
-}
-
-
-/* SECTIONS */
-
-.places-section {
-  padding: 22px 20px 4px;
-}
-
-
-/* PLACE CARD */
-
-.place-card {
-  background: #111111;
-
-  border-top: 2px solid var(--mixtur-gold);
-
-  padding: 20px;
-
-  margin-bottom: 18px;
-}
-
-.featured-place {
-  background: var(--mixtur-blue);
-
-  border-top-color: var(--white);
-}
-
-.place-card-top {
-  display: flex;
-
-  justify-content: space-between;
-
-  gap: 20px;
-}
-
-.place-type {
-  margin-bottom: 8px;
-
-  color: var(--mixtur-gold);
-
-  font-size: 0.58rem;
-
-  line-height: 1.2;
-
-  letter-spacing: 0.09em;
-
-  text-transform: uppercase;
-}
-
-.featured-place .place-type {
-  color: var(--white);
-}
-
-.place-name {
-  font-size: 1.65rem;
-
-  font-weight: 400;
-
-  line-height: 1;
-
-  letter-spacing: -0.045em;
-}
-
-.place-address {
-  margin-top: 10px;
-
-  color: var(--text-secondary);
-
-  font-size: 0.7rem;
-
-  line-height: 1.45;
-}
-
-.featured-place .place-address {
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.place-number {
-  color: var(--mixtur-gold);
-
-  font-size: 0.72rem;
-
-  letter-spacing: 0.06em;
-}
-
-.featured-place .place-number {
-  color: var(--white);
-}
-
-
-/* META */
-
-.place-meta {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 18px;
-
-  margin-top: 28px;
-
-  padding-top: 16px;
-
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.place-meta-label,
-.place-meta-value {
-  display: block;
-}
-
-.place-meta-label {
-  margin-bottom: 5px;
-
-  color: var(--text-secondary);
-
-  font-size: 0.56rem;
-
-  letter-spacing: 0.07em;
-
-  text-transform: uppercase;
-}
-
-.place-meta-value {
-  font-size: 0.68rem;
-
-  line-height: 1.35;
-}
-
-
-/* BUTTON */
-
-.place-action {
-  margin-top: 18px;
-
-  min-height: 48px;
-
-  padding: 0 14px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  border: 1px solid rgba(255, 255, 255, 0.35);
-
-  color: var(--white);
-
-  text-decoration: none;
-
-  font-size: 0.68rem;
-
-  letter-spacing: 0.03em;
-}
-
-
-/* PLACE LIST */
-
-.place-list-item {
-  display: grid;
-
-  grid-template-columns:
-    38px
-    minmax(0, 1fr)
-    24px;
-
-  gap: 12px;
-
-  padding: 18px 0;
-
-  border-top: 1px solid var(--line);
-}
-
-.place-list-number {
-  color: var(--mixtur-gold);
-
-  font-size: 0.65rem;
-}
-
-.place-list-info h2 {
-  font-size: 0.9rem;
-
-  font-weight: 400;
-
-  line-height: 1.25;
-}
-
-.place-list-info p {
-  margin-top: 5px;
-
-  color: var(--text-secondary);
-
-  font-size: 0.65rem;
-
-  line-height: 1.4;
-}
-
-.place-list-arrow {
-  display: flex;
-
-  justify-content: flex-end;
-
-  align-items: center;
-}
-
-
-/* NOTE */
-
-.places-note {
-  margin: 26px 20px 34px;
-
-  padding: 20px;
-
-  background: var(--mixtur-gold);
-
-  color: var(--black);
-}
-
-.places-note-label {
-  margin-bottom: 12px;
-
-  font-size: 0.58rem;
-
-  letter-spacing: 0.08em;
-
-  text-transform: uppercase;
-}
-
-.places-note p {
-  max-width: 320px;
-
-  font-size: 0.75rem;
-
-  line-height: 1.5;
 }
