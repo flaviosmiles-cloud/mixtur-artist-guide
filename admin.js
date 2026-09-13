@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getActivityType(activity) {
     const selects = activity.querySelectorAll("select");
+
     return selects[0]?.value || "Rehearsal";
   }
 
@@ -45,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         </label>
 
-
         <label class="admin-field">
 
           <span>
@@ -55,11 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <input
             class="activity-room"
             type="text"
-            placeholder="Sala 2"
+            placeholder="Sala / room"
           >
 
         </label>
-
 
         <label class="admin-field">
 
@@ -128,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         </label>
 
-
         <label class="admin-field">
 
           <span>
@@ -142,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
           >
 
         </label>
-
 
         <label class="admin-field">
 
@@ -213,6 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       removeButton.type = "button";
       removeButton.className = "admin-remove-activity";
+
       removeButton.setAttribute(
         "aria-label",
         "Remove activity"
@@ -224,10 +222,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     removeButton.addEventListener("click", () => {
-      const activities =
-        scheduleSection.querySelectorAll(
-          ".admin-activity"
-        );
+      const activities = scheduleSection.querySelectorAll(
+        ".admin-activity"
+      );
 
       if (activities.length <= 1) {
         return;
@@ -240,10 +237,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateActivityNumbers() {
-    const activities =
-      scheduleSection.querySelectorAll(
-        ".admin-activity"
-      );
+    const activities = scheduleSection.querySelectorAll(
+      ".admin-activity"
+    );
 
     activities.forEach((activity, index) => {
       const numberLabel = activity.querySelector(
@@ -267,68 +263,55 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function prepareActivity(activity) {
-    const fieldsContainer =
-      activity.querySelector(".admin-fields");
+    const fieldsContainer = activity.querySelector(
+      ".admin-fields"
+    );
 
     if (!fieldsContainer) {
       return;
     }
 
-    let dynamicFields =
-      activity.querySelector(
-        ".admin-dynamic-fields"
-      );
+    let dynamicFields = activity.querySelector(
+      ".admin-dynamic-fields"
+    );
 
     if (!dynamicFields) {
-      dynamicFields =
-        document.createElement("div");
+      dynamicFields = document.createElement("div");
 
       dynamicFields.className =
         "admin-fields admin-dynamic-fields";
 
-      const notesField =
-        Array.from(
-          activity.querySelectorAll(
-            ".admin-field"
-          )
-        ).find((field) =>
-          field.textContent
-            .trim()
-            .startsWith("Notes")
-        );
+      const notesField = Array.from(
+        activity.querySelectorAll(".admin-field")
+      ).find((field) =>
+        field.textContent
+          .trim()
+          .startsWith("Notes")
+      );
 
-      const venueField =
-        Array.from(
-          activity.querySelectorAll(
-            ".admin-field"
-          )
-        ).find((field) =>
-          field.textContent
-            .trim()
-            .startsWith("Venue")
-        );
+      const venueField = Array.from(
+        activity.querySelectorAll(".admin-field")
+      ).find((field) =>
+        field.textContent
+          .trim()
+          .startsWith("Venue")
+      );
 
-      const roomField =
-        Array.from(
-          activity.querySelectorAll(
-            ".admin-field"
-          )
-        ).find((field) =>
-          field.textContent
-            .trim()
-            .startsWith("Room")
-        );
+      const roomField = Array.from(
+        activity.querySelectorAll(".admin-field")
+      ).find((field) =>
+        field.textContent
+          .trim()
+          .startsWith("Room")
+      );
 
-      const callTimeField =
-        Array.from(
-          activity.querySelectorAll(
-            ".admin-field"
-          )
-        ).find((field) =>
-          field.textContent
-            .trim()
-            .startsWith("Call time")
-        );
+      const callTimeField = Array.from(
+        activity.querySelectorAll(".admin-field")
+      ).find((field) =>
+        field.textContent
+          .trim()
+          .startsWith("Call time")
+      );
 
       venueField?.remove();
       roomField?.remove();
@@ -349,10 +332,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function resetActivityFields(activity) {
-    const fields =
-      activity.querySelectorAll(
-        "input, textarea, select"
-      );
+    const fields = activity.querySelectorAll(
+      "input, textarea, select"
+    );
 
     fields.forEach((field) => {
       if (field.tagName === "SELECT") {
@@ -367,15 +349,13 @@ document.addEventListener("DOMContentLoaded", () => {
   updateActivityNumbers();
 
   addButton.addEventListener("click", () => {
-    const newActivity =
-      firstActivity.cloneNode(true);
+    const newActivity = firstActivity.cloneNode(true);
 
     resetActivityFields(newActivity);
 
-    const oldRemoveButton =
-      newActivity.querySelector(
-        ".admin-remove-activity"
-      );
+    const oldRemoveButton = newActivity.querySelector(
+      ".admin-remove-activity"
+    );
 
     oldRemoveButton?.remove();
 
@@ -397,18 +377,15 @@ document.addEventListener("DOMContentLoaded", () => {
   scheduleSection.addEventListener(
     "change",
     (event) => {
-      const activity =
-        event.target.closest(
-          ".admin-activity"
-        );
+      const activity = event.target.closest(
+        ".admin-activity"
+      );
 
       if (!activity) {
         return;
       }
 
-      const selects =
-        activity.querySelectorAll("select");
-
+      const selects = activity.querySelectorAll("select");
       const typeSelect = selects[0];
 
       if (event.target === typeSelect) {
