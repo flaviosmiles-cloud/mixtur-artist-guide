@@ -404,6 +404,68 @@ document.addEventListener("DOMContentLoaded", () => {
     return data;
   }
 
+    function removeEmptyValues(value) {
+    if (Array.isArray(value)) {
+      return value
+        .map(removeEmptyValues)
+        .filter((item) => {
+          if (item === null || item === undefined || item === "") {
+            return false;
+          }
+  
+          if (
+            typeof item === "object" &&
+            !Array.isArray(item) &&
+            Object.keys(item).length === 0
+          ) {
+            return false;
+          }
+  
+          return true;
+        });
+    }
+  
+    if (value && typeof value === "object") {
+      const cleanedObject = {};
+  
+      Object.entries(value).forEach(([key, item]) => {
+        const cleanedValue = removeEmptyValues(item);
+  
+        if (
+          cleanedValue === "" ||
+          cleanedValue === null ||
+          cleanedValue === undefined
+        ) {
+          return;
+        }
+  
+        if (
+          typeof cleanedValue === "object" &&
+          !Array.isArray(cleanedValue) &&
+          Object.keys(cleanedValue).length === 0
+        ) {
+          return;
+        }
+  
+        cleanedObject[key] = cleanedValue;
+      });
+  
+      return cleanedObject;
+    }
+  
+    return value;
+  }
+  
+  
+  function sortActivities(activities) {
+    return activities.sort((a, b) => {
+      const dateA = `${a.date || "9999-12-31"}T${a.time || "23:59"}`;
+      const dateB = `${b.date || "9999-12-31"}T${b.time || "23:59"}`;
+  
+      return dateA.localeCompare(dateB);
+    });
+  }
+  
   function generateArtistData() {
     const artistSection = getSectionByTitle("Artist");
     const staySection = getSectionByTitle("Stay");
@@ -415,9 +477,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const slug = slugify(artistName || "artist");
 
-    const activities = Array.from(
+    const activities = sortActivities(
+    Array.from(
       scheduleSection.querySelectorAll(".admin-activity")
-    ).map(getActivityData);
+    ).map(getActivityData)
+  );
 
     const artistData = {
       id: slug,
@@ -519,7 +583,7 @@ document.addEventListener("DOMContentLoaded", () => {
       schedule: activities
     };
 
-    return artistData;
+    return removeEmptyValues(artistData);
   }
 
   prepareActivity(firstActivity);
