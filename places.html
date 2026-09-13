@@ -14,9 +14,7 @@
     content="#000000"
   >
 
-  <title>
-    Mixtur · Places
-  </title>
+  <title>Mixtur · Places</title>
 
   <link
     rel="stylesheet"
@@ -53,12 +51,11 @@
       <button
         class="menu-button"
         aria-label="Open menu"
+        type="button"
       >
-
         <span></span>
         <span></span>
         <span></span>
-
       </button>
 
     </header>
@@ -71,17 +68,12 @@
 
     <section class="places-intro">
 
-
-      <!-- Later replaced with a real B&W photo -->
-
       <div
         class="places-cover placeholder-image"
       >
-
         <span>
           Barcelona
         </span>
-
       </div>
 
 
@@ -105,11 +97,52 @@
          FILTERS
          ====================================== -->
 
-    <section class="places-filters"
+    <section
+      class="places-filters"
+      aria-label="Place categories"
+    >
+
+      <button
+        class="place-filter active"
+        data-filter="all"
+        type="button"
+      >
+        All
+      </button>
+
+
+      <button
+        class="place-filter"
+        data-filter="venues"
+        type="button"
+      >
+        Venues
+      </button>
+
+
+      <button
+        class="place-filter"
+        data-filter="food"
+        type="button"
+      >
+        Food
+      </button>
+
+
+      <button
+        class="place-filter"
+        data-filter="other"
+        type="button"
+      >
+        Other
+      </button>
+
+    </section>
+
 
 
     <!-- ======================================
-         PLACES
+         PLACES LIST
          ====================================== -->
 
     <section class="places-list">
@@ -119,22 +152,22 @@
            HOTEL
            ==================================== -->
 
-      <article class="featured-place">
-
+      <article
+        class="featured-place"
+        data-category="other"
+        data-food="true"
+      >
 
         <div
           class="featured-place-image placeholder-image"
         >
-
           <span>
             Hotel photo
           </span>
-
         </div>
 
 
         <div class="featured-place-content">
-
 
           <div class="place-category">
             Hotel
@@ -154,7 +187,6 @@
               </p>
 
             </div>
-
 
             <span class="place-arrow">
               →
@@ -191,7 +223,6 @@
 
           <div class="place-nearby">
 
-
             <a
               href="#"
               class="nearby-trigger"
@@ -211,7 +242,6 @@
               <span>→</span>
             </a>
 
-
           </div>
 
         </div>
@@ -224,22 +254,22 @@
            REHEARSAL
            ==================================== -->
 
-      <article class="featured-place">
-
+      <article
+        class="featured-place"
+        data-category="venues"
+        data-food="true"
+      >
 
         <div
           class="featured-place-image placeholder-image"
         >
-
           <span>
             Rehearsal venue
           </span>
-
         </div>
 
 
         <div class="featured-place-content">
-
 
           <div class="place-category">
             Rehearsal
@@ -259,7 +289,6 @@
               </p>
 
             </div>
-
 
             <span class="place-arrow">
               →
@@ -296,7 +325,6 @@
 
           <div class="place-nearby">
 
-
             <a
               href="#"
               class="nearby-trigger"
@@ -316,7 +344,6 @@
               <span>→</span>
             </a>
 
-
           </div>
 
         </div>
@@ -329,22 +356,22 @@
            PERFORMANCE
            ==================================== -->
 
-      <article class="featured-place">
-
+      <article
+        class="featured-place"
+        data-category="venues"
+        data-food="true"
+      >
 
         <div
           class="featured-place-image placeholder-image"
         >
-
           <span>
             Performance venue
           </span>
-
         </div>
 
 
         <div class="featured-place-content">
-
 
           <div class="place-category">
             Performance
@@ -364,7 +391,6 @@
               </p>
 
             </div>
-
 
             <span class="place-arrow">
               →
@@ -403,7 +429,6 @@
 
           <div class="place-nearby">
 
-
             <a
               href="#"
               class="nearby-trigger"
@@ -423,7 +448,6 @@
               <span>→</span>
             </a>
 
-
           </div>
 
         </div>
@@ -436,22 +460,22 @@
            READING SESSION
            ==================================== -->
 
-      <article class="featured-place">
-
+      <article
+        class="featured-place"
+        data-category="venues"
+        data-food="true"
+      >
 
         <div
           class="featured-place-image placeholder-image"
         >
-
           <span>
             Reading Session venue
           </span>
-
         </div>
 
 
         <div class="featured-place-content">
-
 
           <div class="place-category">
             Reading Session
@@ -471,7 +495,6 @@
               </p>
 
             </div>
-
 
             <span class="place-arrow">
               →
@@ -507,7 +530,6 @@
 
           <div class="place-nearby">
 
-
             <a
               href="#"
               class="nearby-trigger"
@@ -527,7 +549,6 @@
               <span>→</span>
             </a>
 
-
           </div>
 
         </div>
@@ -540,22 +561,22 @@
            FINAL PARTY
            ==================================== -->
 
-      <article class="featured-place">
-
+      <article
+        class="featured-place"
+        data-category="other"
+        data-food="false"
+      >
 
         <div
           class="featured-place-image placeholder-image"
         >
-
           <span>
             Final Party
           </span>
-
         </div>
 
 
         <div class="featured-place-content">
-
 
           <div class="place-category">
             Final Party
@@ -575,7 +596,6 @@
               </p>
 
             </div>
-
 
             <span class="place-arrow">
               →
@@ -608,7 +628,6 @@
 
           </a>
 
-
         </div>
 
       </article>
@@ -630,9 +649,7 @@
 
       <div class="panel-backdrop"></div>
 
-
       <section class="panel-sheet">
-
 
         <div class="panel-handle"></div>
 
@@ -668,7 +685,6 @@
 
 
         <div class="panel-list">
-
 
           <article class="panel-place">
 
@@ -717,15 +733,15 @@
           <article class="panel-place">
 
             <div class="panel-place-meta">
-              Dinner · 7 min walk
+              Bar · 7 min walk
             </div>
 
             <h3>
-              Dinner example
+              Bar example
             </h3>
 
             <p>
-              Local cuisine · €€
+              Drinks · Snacks · Evening
             </p>
 
             <a href="#">
@@ -734,7 +750,6 @@
             </a>
 
           </article>
-
 
         </div>
 
@@ -756,9 +771,7 @@
 
       <div class="panel-backdrop"></div>
 
-
       <section class="panel-sheet">
-
 
         <div class="panel-handle"></div>
 
@@ -794,7 +807,6 @@
 
 
         <div class="panel-list">
-
 
           <article class="panel-place">
 
@@ -861,7 +873,6 @@
 
           </article>
 
-
         </div>
 
       </section>
@@ -881,7 +892,6 @@
     >
 
       <div class="panel-backdrop"></div>
-
 
       <section class="panel-sheet">
 
@@ -919,7 +929,6 @@
 
 
         <div class="panel-list">
-
 
           <article class="panel-place">
 
@@ -965,6 +974,27 @@
           </article>
 
 
+          <article class="panel-place">
+
+            <div class="panel-place-meta">
+              Bar · 6 min walk
+            </div>
+
+            <h3>
+              Bar example
+            </h3>
+
+            <p>
+              Drinks · Snacks
+            </p>
+
+            <a href="#">
+              Open in Maps
+              <span>→</span>
+            </a>
+
+          </article>
+
         </div>
 
       </section>
@@ -984,7 +1014,6 @@
     >
 
       <div class="panel-backdrop"></div>
-
 
       <section class="panel-sheet">
 
@@ -1086,7 +1115,6 @@
 
       <div class="panel-backdrop"></div>
 
-
       <section class="panel-sheet">
 
         <div class="panel-handle"></div>
@@ -1123,7 +1151,6 @@
 
 
         <div class="panel-list">
-
 
           <article class="panel-place">
 
@@ -1172,15 +1199,15 @@
           <article class="panel-place">
 
             <div class="panel-place-meta">
-              Dinner · 7 min walk
+              Bar · 7 min walk
             </div>
 
             <h3>
-              Dinner example
+              Bar example
             </h3>
 
             <p>
-              Dinner · Vegetarian options
+              Drinks · Snacks · Evening
             </p>
 
             <a href="#">
@@ -1189,7 +1216,6 @@
             </a>
 
           </article>
-
 
         </div>
 
@@ -1210,7 +1236,6 @@
     >
 
       <div class="panel-backdrop"></div>
-
 
       <section class="panel-sheet">
 
@@ -1248,7 +1273,6 @@
 
 
         <div class="panel-list">
-
 
           <article class="panel-place">
 
@@ -1293,7 +1317,6 @@
 
           </article>
 
-
         </div>
 
       </section>
@@ -1313,7 +1336,6 @@
     >
 
       <div class="panel-backdrop"></div>
-
 
       <section class="panel-sheet">
 
@@ -1352,7 +1374,6 @@
 
         <div class="panel-list">
 
-
           <article class="panel-place">
 
             <div class="panel-place-meta">
@@ -1378,7 +1399,7 @@
           <article class="panel-place">
 
             <div class="panel-place-meta">
-              Lunch · 6 min walk
+              Quick lunch · 6 min walk
             </div>
 
             <h3>
@@ -1396,6 +1417,27 @@
 
           </article>
 
+
+          <article class="panel-place">
+
+            <div class="panel-place-meta">
+              Bar · 7 min walk
+            </div>
+
+            <h3>
+              Bar example
+            </h3>
+
+            <p>
+              Drinks · Evening
+            </p>
+
+            <a href="#">
+              Open in Maps
+              <span>→</span>
+            </a>
+
+          </article>
 
         </div>
 
@@ -1416,7 +1458,6 @@
     >
 
       <div class="panel-backdrop"></div>
-
 
       <section class="panel-sheet">
 
@@ -1454,7 +1495,6 @@
 
 
         <div class="panel-list">
-
 
           <article class="panel-place">
 
@@ -1499,7 +1539,6 @@
 
           </article>
 
-
         </div>
 
       </section>
@@ -1521,15 +1560,8 @@
         class="nav-item"
         href="index.html"
       >
-
-        <span class="nav-symbol">
-          ◇
-        </span>
-
-        <span>
-          Today
-        </span>
-
+        <span class="nav-symbol">◇</span>
+        <span>Today</span>
       </a>
 
 
@@ -1537,15 +1569,8 @@
         class="nav-item"
         href="schedule.html"
       >
-
-        <span class="nav-symbol">
-          □
-        </span>
-
-        <span>
-          Schedule
-        </span>
-
+        <span class="nav-symbol">□</span>
+        <span>Schedule</span>
       </a>
 
 
@@ -1553,15 +1578,8 @@
         class="nav-item active"
         href="places.html"
       >
-
-        <span class="nav-symbol">
-          ⊕
-        </span>
-
-        <span>
-          Places
-        </span>
-
+        <span class="nav-symbol">⊕</span>
+        <span>Places</span>
       </a>
 
 
@@ -1569,15 +1587,8 @@
         class="nav-item"
         href="info.html"
       >
-
-        <span class="nav-symbol">
-          ⓘ
-        </span>
-
-        <span>
-          Info
-        </span>
-
+        <span class="nav-symbol">ⓘ</span>
+        <span>Info</span>
       </a>
 
     </nav>
