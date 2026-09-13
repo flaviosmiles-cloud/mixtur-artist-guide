@@ -112,3 +112,117 @@ document.addEventListener(
 
   }
 );
+
+
+/* =========================================
+   PLACES FILTERS
+   ========================================= */
+
+const filterButtons =
+  document.querySelectorAll(".place-filter");
+
+const placeCards =
+  document.querySelectorAll(
+    ".featured-place"
+  );
+
+
+filterButtons.forEach((button) => {
+
+  button.addEventListener(
+    "click",
+    () => {
+
+      const selectedFilter =
+        button.dataset.filter;
+
+
+      /* Active button */
+
+      filterButtons.forEach(
+        (filterButton) => {
+
+          filterButton.classList.remove(
+            "active"
+          );
+
+        }
+      );
+
+      button.classList.add(
+        "active"
+      );
+
+
+      /* Filter cards */
+
+      placeCards.forEach((card) => {
+
+        const category =
+          card.dataset.category;
+
+        const hasFood =
+          card.dataset.food === "true";
+
+
+        let shouldShow = false;
+
+
+        if (
+          selectedFilter === "all"
+        ) {
+
+          shouldShow = true;
+
+        }
+
+
+        if (
+          selectedFilter === "venues"
+          &&
+          category === "venues"
+        ) {
+
+          shouldShow = true;
+
+        }
+
+
+        if (
+          selectedFilter === "food"
+          &&
+          hasFood
+        ) {
+
+          shouldShow = true;
+
+        }
+
+
+        if (
+          selectedFilter === "other"
+          &&
+          category === "other"
+        ) {
+
+          shouldShow = true;
+
+        }
+
+
+        if (shouldShow) {
+
+          card.style.display = "";
+
+        } else {
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+    }
+  );
+
+});
