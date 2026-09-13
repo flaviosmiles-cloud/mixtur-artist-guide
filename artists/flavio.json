@@ -1,0 +1,37 @@
+{
+  "id": "flavio",
+  "artist": {
+    "name": "Flavio",
+    "category": "Banda",
+    "email": "bcn"
+  },
+  "stay": {
+    "arrivalDate": "2026-09-13",
+    "arrivalTime": "20:41",
+    "arrivalPlace": "Bcn",
+    "departureDate": "2026-09-20",
+    "departureTime": "20:41",
+    "departurePlace": "Bcn"
+  },
+  "hotel": {
+    "name": "Villa nlanca",
+    "address": "Carrer Romans 35, Bajo",
+    "checkIn": "20:41",
+    "checkOut": "20:41"
+  },
+  "mainContact": {
+    "name": "Flavio De Sá",
+    "role": "Production Assistant"
+  },
+  "schedule": [
+    {
+      "date": "2026-09-14",
+      "time": "20:41",
+      "type": "Rehearsal",
+      "title": "BCN",
+      "venue": "Fabra i Coats",
+      "room": "Bcn",
+      "callTime": "20:36"
+    }
+  ]
+}
