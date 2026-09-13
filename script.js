@@ -226,3 +226,55 @@ filterButtons.forEach((button) => {
   );
 
 });
+
+/* =========================================
+   INFO ACCORDION
+   ========================================= */
+
+const infoSections =
+  document.querySelectorAll(".info-section");
+
+infoSections.forEach((section) => {
+
+  const toggle =
+    section.querySelector(".info-toggle");
+
+  toggle.addEventListener("click", () => {
+
+    const isOpen =
+      section.classList.contains("open");
+
+
+    /* Close all sections */
+
+    infoSections.forEach((otherSection) => {
+
+      otherSection.classList.remove("open");
+
+      const otherToggle =
+        otherSection.querySelector(".info-toggle");
+
+      otherToggle.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+    });
+
+
+    /* Open selected section */
+
+    if (!isOpen) {
+
+      section.classList.add("open");
+
+      toggle.setAttribute(
+        "aria-expanded",
+        "true"
+      );
+
+    }
+
+  });
+
+});
