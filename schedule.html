@@ -176,7 +176,11 @@
       </article>
 
 
-      <article class="schedule-event current-event">
+      <!-- INTERACTIVE REHEARSAL -->
+      <article
+        class="schedule-event current-event info-panel-trigger"
+        data-panel="rehearsal-panel"
+      >
 
         <div class="schedule-time">
           10:00
@@ -459,9 +463,105 @@
     </nav>
 
   </main>
-  
-<script src="script.js?v=4"></script>
-  
+
+
+  <!-- =====================================
+       REHEARSAL PANEL
+       ===================================== -->
+
+  <div
+    class="place-panel"
+    id="rehearsal-panel"
+    aria-hidden="true"
+  >
+
+    <div class="panel-backdrop"></div>
+
+    <div class="panel-sheet">
+
+      <div class="panel-handle"></div>
+
+      <button
+        class="panel-close"
+        type="button"
+        aria-label="Close rehearsal details"
+      >
+        ×
+      </button>
+
+
+      <div class="panel-category">
+        Rehearsal
+      </div>
+
+      <h2 class="panel-title">
+        Stage rehearsal
+      </h2>
+
+      <p class="panel-description">
+        Friday · 18 October · 10:00
+      </p>
+
+
+      <div class="panel-info">
+
+        <div class="panel-info-row">
+
+          <span class="panel-info-label">
+            Venue
+          </span>
+
+          <span class="panel-info-value">
+            Fabra i Coats · Sala 2
+          </span>
+
+        </div>
+
+
+        <div class="panel-info-row">
+
+          <span class="panel-info-label">
+            Call time
+          </span>
+
+          <span class="panel-info-value">
+            09:45
+          </span>
+
+        </div>
+
+
+        <div class="panel-info-row">
+
+          <span class="panel-info-label">
+            Contact
+          </span>
+
+          <span class="panel-info-value">
+            Flavio De Sá · Production Assistant
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <a
+        href="https://www.google.com/maps/search/?api=1&query=Fabra+i+Coats+Barcelona"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="panel-map-link"
+      >
+        Open in Maps →
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <script src="script.js?v=4"></script>
+
 </body>
 
 </html>
