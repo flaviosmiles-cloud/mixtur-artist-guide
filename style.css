@@ -2758,17 +2758,14 @@ body.panel-open {
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-
 /* =========================================
-   MAIN MENU OVERLAY
+   MAIN MENU
    ========================================= */
 
 .main-menu {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  display: flex;
-  justify-content: center;
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -2788,18 +2785,16 @@ body.panel-open {
   width: 100%;
   max-width: var(--page-width);
   min-height: 100%;
-  display: flex;
-  flex-direction: column;
+  margin: 0 auto;
   padding:
     22px
     20px
     max(30px, env(safe-area-inset-bottom));
+  overflow-y: auto;
 }
 
 
-/* =========================================
-   MENU HEADER
-   ========================================= */
+/* MENU HEADER */
 
 .main-menu-header {
   display: flex;
@@ -2827,45 +2822,40 @@ body.panel-open {
   color: var(--white);
   font-family: Verdana, Geneva, sans-serif;
   font-size: 1.2rem;
-  line-height: 1;
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
 }
 
 .main-menu-meta {
-  margin-top: 44px;
+  margin-top: 40px;
 }
 
 .main-menu-eyebrow {
   color: var(--mixtur-gold);
-  font-size: 0.56rem;
-  line-height: 1.2;
+  font-size: 0.55rem;
   letter-spacing: 0.11em;
   text-transform: uppercase;
 }
 
 .main-menu-city {
-  margin-top: 7px;
+  margin-top: 6px;
   color: var(--text-secondary);
-  font-size: 0.6rem;
-  line-height: 1.2;
+  font-size: 0.58rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 
-/* =========================================
-   PRIMARY NAVIGATION
-   ========================================= */
+/* PRIMARY NAVIGATION */
 
 .main-menu-nav {
-  margin-top: 44px;
+  margin-top: 34px;
   border-top: 1px solid var(--line);
 }
 
 .main-menu-nav a {
-  min-height: 72px;
+  min-height: 66px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2876,7 +2866,7 @@ body.panel-open {
 }
 
 .main-menu-nav-title {
-  font-size: clamp(1.55rem, 7vw, 2.15rem);
+  font-size: clamp(1.45rem, 6.5vw, 2rem);
   font-weight: 400;
   line-height: 1;
   letter-spacing: -0.025em;
@@ -2885,8 +2875,8 @@ body.panel-open {
 
 .main-menu-nav-number {
   color: var(--text-secondary);
-  font-size: 0.54rem;
-  letter-spacing: 0.07em;
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
 }
 
 .main-menu-nav a.active {
@@ -2899,66 +2889,71 @@ body.panel-open {
 }
 
 
-/* =========================================
-   QUICK ACCESS
-   ========================================= */
+/* DISCOVER + QUICK ACCESS */
 
-.main-menu-quick {
-  margin-top: 34px;
+.main-menu-section {
+  margin-top: 30px;
 }
 
 .main-menu-section-label {
   margin-bottom: 10px;
   color: var(--mixtur-gold);
-  font-size: 0.54rem;
+  font-size: 0.52rem;
   line-height: 1.2;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.main-menu-quick a {
-  min-height: 46px;
+.main-menu-small-link {
+  width: 100%;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  padding: 0;
+  border: 0;
   border-top: 1px solid var(--line);
+  background: transparent;
   color: var(--white);
+  font-family: Verdana, Geneva, sans-serif;
+  text-align: left;
   text-decoration: none;
-  font-size: 0.64rem;
-  line-height: 1.2;
+  font-size: 0.62rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
 }
 
-.main-menu-quick a:last-child {
+.main-menu-section
+.main-menu-small-link:last-child {
   border-bottom: 1px solid var(--line);
 }
 
-.main-menu-quick-arrow {
+.main-menu-arrow {
   color: var(--mixtur-gold);
   font-size: 0.8rem;
 }
 
 
-/* =========================================
-   MENU FOOTER
-   ========================================= */
+/* MENU FOOTER */
 
 .main-menu-footer {
-  margin-top: auto;
-  padding-top: 34px;
+  padding:
+    34px
+    0
+    12px;
 }
 
 .main-menu-external {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.56rem;
-  line-height: 1.2;
+  font-size: 0.54rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -2969,4 +2964,192 @@ body.panel-open {
 
 body.menu-open {
   overflow: hidden;
+}
+
+
+/* =========================================
+   EDITORIAL PANELS
+   ========================================= */
+
+.editorial-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  background: #000;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.editorial-panel.open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.editorial-panel-inner {
+  width: 100%;
+  max-width: var(--page-width);
+  min-height: 100%;
+  margin: 0 auto;
+  padding:
+    22px
+    20px
+    max(38px, env(safe-area-inset-bottom));
+  overflow-y: auto;
+}
+
+.editorial-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editorial-back {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 0.56rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.editorial-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--white);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.editorial-content {
+  padding-top: 58px;
+}
+
+.editorial-kicker {
+  color: var(--mixtur-gold);
+  font-size: 0.54rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.editorial-title {
+  max-width: 340px;
+  margin-top: 13px;
+  font-size: clamp(2.7rem, 12vw, 4.7rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.editorial-lead {
+  max-width: 330px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--mixtur-gold);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.editorial-copy {
+  max-width: 330px;
+  margin-top: 22px;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  line-height: 1.6;
+}
+
+.editorial-signature {
+  margin-top: 34px;
+  color: var(--mixtur-gold);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* ABOUT MIXTUR */
+
+.mixtur-statement {
+  margin-top: 38px;
+  padding:
+    22px
+    0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.mixtur-statement span {
+  display: block;
+  font-size: clamp(1.45rem, 7vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+.mixtur-statement
+span:nth-child(2) {
+  color: var(--mixtur-gold);
+}
+
+.mixtur-keywords {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  margin-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.mixtur-keywords span {
+  padding:
+    15px
+    0;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mixtur-keywords
+span:nth-child(even) {
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+}
+
+.editorial-web-link {
+  margin-top: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:
+    16px
+    0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.editorial-web-link span:last-child {
+  color: var(--mixtur-gold);
 }
