@@ -1,1276 +1,924 @@
 /* =========================================
-  MIXTUR ARTIST GUIDE
-  Editorial mobile system
-  ========================================= */
+   MIXTUR ARTIST GUIDE
+   Editorial mobile system
+   ========================================= */
 
 
 /* =========================================
-  VARIABLES
-  ========================================= */
+   VARIABLES
+   ========================================= */
 
 :root {
---black: #000000;
---white: #ffffff;
+  --black: #000000;
+  --white: #ffffff;
 
---mixtur-blue: #414891;
---mixtur-blue-dark: #30376f;
---mixtur-gold: #b89b59;
+  --mixtur-blue: #414891;
+  --mixtur-blue-dark: #30376f;
+  --mixtur-gold: #b89b59;
 
---text-secondary: rgba(255, 255, 255, 0.68);
---text-soft: rgba(255, 255, 255, 0.48);
+  --text-secondary: rgba(255, 255, 255, 0.68);
+  --text-soft: rgba(255, 255, 255, 0.48);
 
---line: rgba(255, 255, 255, 0.18);
+  --line: rgba(255, 255, 255, 0.18);
 
---page-width: 430px;
+  --page-width: 430px;
 }
 
 
 /* =========================================
-  RESET
-  ========================================= */
+   RESET
+   ========================================= */
 
 * {
-box-sizing: border-box;
-margin: 0;
-padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-min-height: 100vh;
+  min-height: 100vh;
 
-background: #0a0a0a;
-color: var(--white);
+  background: #0a0a0a;
+  color: var(--white);
 
-font-family:
-Verdana,
-Geneva,
-sans-serif;
+  font-family:
+    Verdana,
+    Geneva,
+    sans-serif;
 
--webkit-font-smoothing: antialiased;
-text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 button,
 a {
-font: inherit;
+  font: inherit;
 }
 
 a {
-color: inherit;
+  color: inherit;
 }
 
 
 /* =========================================
-  APP
-  ========================================= */
+   APP
+   ========================================= */
 
 .app {
-position: relative;
+  position: relative;
 
-width: 100%;
-max-width: var(--page-width);
+  width: 100%;
+  max-width: var(--page-width);
 
-min-height: 100vh;
+  min-height: 100vh;
 
-margin: 0 auto;
+  margin: 0 auto;
 
-padding-bottom: 88px;
+  padding-bottom: 88px;
 
-background: var(--black);
+  background: var(--black);
 }
 
 
 /* =========================================
-  TOP BAR
-  ========================================= */
+   TOP BAR
+   ========================================= */
 
 .topbar {
-position: relative;
-z-index: 20;
+  position: relative;
+  z-index: 20;
 
-height: 68px;
+  height: 68px;
 
-padding: 18px 20px;
+  padding: 18px 20px;
 
-display: flex;
-justify-content: space-between;
-align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-background: var(--black);
+  background: var(--black);
 }
 
-
-/* LOGO */
 
 .mixtur-logo {
-display: block;
+  display: block;
 
-width: 124px;
-max-height: 34px;
+  width: 124px;
+  max-height: 34px;
 
-object-fit: contain;
-object-position: left center;
+  object-fit: contain;
+  object-position: left center;
 }
 
-
-/* MENU */
 
 .menu-button {
-width: 32px;
-height: 32px;
+  width: 32px;
+  height: 32px;
 
-padding: 5px;
+  padding: 5px;
 
-display: flex;
-flex-direction: column;
-justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-gap: 4px;
+  gap: 4px;
 
-border: 0;
+  border: 0;
 
-background: transparent;
+  background: transparent;
 
-cursor: pointer;
+  cursor: pointer;
 }
+
 
 .menu-button span {
-display: block;
+  display: block;
 
-width: 18px;
-height: 1.5px;
+  width: 18px;
+  height: 1.5px;
 
-margin-left: auto;
+  margin-left: auto;
 
-background: var(--white);
+  background: var(--white);
 }
 
 
 /* =========================================
-  TODAY HERO
-  ========================================= */
+   TODAY HERO
+   ========================================= */
 
 .hero {
-position: relative;
+  position: relative;
 
-min-height: 340px;
+  min-height: 340px;
 
-padding:
-30px
-20px
-22px;
+  padding:
+    30px
+    20px
+    22px;
 
-overflow: hidden;
+  overflow: hidden;
 
-background-color: var(--mixtur-blue);
+  background-color: var(--mixtur-blue);
 
-background-image:
-url("mixtur-background.png");
+  background-image:
+    url("mixtur-background.png");
 
-background-size: cover;
-
-background-position: center center;
-
-background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
-
-/* Very subtle layer for readability */
 
 .hero-overlay {
-position: absolute;
+  position: absolute;
 
-inset: 0;
+  inset: 0;
 
-z-index: 1;
+  z-index: 1;
 
-background:
-linear-gradient(
-to bottom,
-rgba(32, 34, 90, 0.03),
-rgba(32, 34, 90, 0.08)
-);
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(32, 34, 90, 0.03),
+      rgba(32, 34, 90, 0.08)
+    );
 
-pointer-events: none;
+  pointer-events: none;
 }
 
-
-/* HERO CONTENT */
 
 .hero-content {
-position: relative;
+  position: relative;
 
-z-index: 3;
+  z-index: 3;
 }
 
-
-/* Small editorial heading */
 
 .eyebrow {
-margin-bottom: 60px;
+  margin-bottom: 60px;
 
-font-size: 0.61rem;
+  font-size: 0.61rem;
 
-font-weight: 400;
+  font-weight: 400;
 
-line-height: 1.3;
+  line-height: 1.3;
 
-letter-spacing: 0.14em;
+  letter-spacing: 0.14em;
 
-text-transform: uppercase;
+  text-transform: uppercase;
 }
 
-
-/* Main welcome */
 
 .welcome {
-width: 100%;
+  width: 100%;
 
-max-width: 385px;
+  max-width: 385px;
 
-font-size:
-clamp(
-3.45rem,
-14.8vw,
-4.55rem
-);
+  font-size:
+    clamp(
+      3.45rem,
+      14.8vw,
+      4.55rem
+    );
 
-font-weight: 400;
+  font-weight: 400;
 
-line-height: 0.88;
+  line-height: 0.88;
 
-letter-spacing: 0.015em;
+  letter-spacing: 0.015em;
 
-text-transform: uppercase;
+  text-transform: uppercase;
 }
 
-
-/* Dates */
 
 .stay-dates {
-margin-top: 24px;
+  margin-top: 24px;
 
-font-size: 0.65rem;
+  font-size: 0.65rem;
 
-font-weight: 400;
+  font-weight: 400;
 
-line-height: 1.55;
+  line-height: 1.55;
 
-letter-spacing: 0.09em;
+  letter-spacing: 0.09em;
 
-text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 
 /* =========================================
-  SECTION LABELS
-  ========================================= */
+   SECTION LABELS
+   ========================================= */
 
 .section-label {
-display: flex;
+  display: flex;
 
-justify-content: space-between;
-align-items: center;
+  justify-content: space-between;
+  align-items: center;
 
-gap: 16px;
+  gap: 16px;
 
-margin-bottom: 11px;
+  margin-bottom: 11px;
 
-color: var(--text-secondary);
+  color: var(--text-secondary);
 
-font-size: 0.62rem;
+  font-size: 0.62rem;
 
-line-height: 1.2;
+  line-height: 1.2;
 
-letter-spacing: 0.09em;
+  letter-spacing: 0.09em;
 
-text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 
 /* =========================================
-  NEXT EVENT
-  ========================================= */
+   NEXT EVENT
+   ========================================= */
 
 .next-section {
-padding:
-21px
-20px
-17px;
+  padding:
+    21px
+    20px
+    17px;
 
-background: var(--black);
+  background: var(--black);
 }
 
 
 .next-card {
-min-height: 124px;
+  min-height: 124px;
 
-padding:
-20px
-18px
-18px;
+  padding:
+    20px
+    18px
+    18px;
 
-display: flex;
+  display: flex;
 
-justify-content: space-between;
-align-items: flex-end;
+  justify-content: space-between;
+  align-items: flex-end;
 
-gap: 18px;
+  gap: 18px;
 
-color: var(--mixtur-blue-dark);
+  color: var(--mixtur-blue-dark);
 
-background: var(--white);
+  background: var(--white);
 
-border-radius: 17px;
+  border-radius: 17px;
 }
 
 
 .next-card-content {
-min-width: 0;
+  min-width: 0;
 }
 
 
 .next-time {
-font-size: 1.72rem;
+  font-size: 1.72rem;
 
-font-weight: 700;
+  font-weight: 700;
 
-line-height: 1;
+  line-height: 1;
 
-letter-spacing: -0.04em;
+  letter-spacing: -0.04em;
 }
 
 
 .next-title {
-margin-top: 4px;
+  margin-top: 4px;
 
-font-size: 1.35rem;
+  font-size: 1.35rem;
 
-font-weight: 400;
+  font-weight: 400;
 
-line-height: 1;
+  line-height: 1;
 
-letter-spacing: -0.045em;
+  letter-spacing: -0.045em;
 
-text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 
 .next-place {
-margin-top: 11px;
+  margin-top: 11px;
 
-font-size: 0.7rem;
+  font-size: 0.7rem;
 
-line-height: 1.35;
+  line-height: 1.35;
 }
 
 
 .arrow-button {
-width: 45px;
-height: 45px;
+  width: 45px;
+  height: 45px;
 
-flex-shrink: 0;
+  flex-shrink: 0;
 
-border: 0;
-border-radius: 50%;
+  border: 0;
+  border-radius: 50%;
 
-background: var(--mixtur-blue);
-color: var(--white);
+  background: var(--mixtur-blue);
+  color: var(--white);
 
-font-size: 1.3rem;
+  font-size: 1.3rem;
 
-cursor: pointer;
+  cursor: pointer;
 }
 
 
 /* =========================================
-  TODAY LIST
-  ========================================= */
+   TODAY LIST
+   ========================================= */
 
 .today-list {
-padding:
-6px
-20px
-28px;
+  padding:
+    6px
+    20px
+    28px;
 }
 
 
 .schedule-heading {
-margin-bottom: 0;
+  margin-bottom: 0;
 
-padding-bottom: 12px;
+  padding-bottom: 12px;
 }
 
 
 .today-item {
-position: relative;
+  position: relative;
 
-display: grid;
+  display: grid;
 
-grid-template-columns:
-72px
-minmax(0, 1fr);
+  grid-template-columns:
+    72px
+    minmax(0, 1fr);
 
-gap: 12px;
+  gap: 12px;
 
-min-height: 69px;
+  min-height: 69px;
 
-padding: 16px 0;
+  padding: 16px 0;
 
-border-top:
-1px solid
-var(--line);
+  border-top:
+    1px solid
+    var(--line);
 }
 
 
 .today-time {
-font-size: 0.8rem;
+  font-size: 0.8rem;
 
-line-height: 1.2;
+  line-height: 1.2;
 }
 
 
 .today-info {
-min-width: 0;
+  min-width: 0;
 }
 
 
 .today-title {
-font-size: 0.8rem;
+  font-size: 0.8rem;
 
-line-height: 1.2;
+  line-height: 1.2;
 }
 
 
 .today-place {
-margin-top: 5px;
+  margin-top: 5px;
 
-color: var(--text-secondary);
+  color: var(--text-secondary);
 
-font-size: 0.66rem;
+  font-size: 0.66rem;
 
-line-height: 1.4;
+  line-height: 1.4;
 }
 
 
-/* CURRENT EVENT */
-
 .today-item.highlight {
-margin:
-0
--8px;
+  margin:
+    0
+    -8px;
 
-padding:
-16px
-8px;
+  padding:
+    16px
+    8px;
 
-grid-template-columns:
-72px
-minmax(0, 1fr)
-28px;
+  grid-template-columns:
+    72px
+    minmax(0, 1fr)
+    28px;
 
-background: var(--mixtur-blue);
+  background: var(--mixtur-blue);
 
-border-top-color: transparent;
+  border-top-color: transparent;
 }
 
 
 .today-item.highlight + .today-item {
-border-top-color: transparent;
+  border-top-color: transparent;
 }
 
 
 .today-arrow {
-display: flex;
+  display: flex;
 
-align-items: center;
-justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-font-size: 1rem;
+  font-size: 1rem;
 }
 
 
 /* =========================================
-  CONTACT
-  ========================================= */
+   CONTACT
+   ========================================= */
 
 .contact-wrap {
-padding:
-4px
-20px
-34px;
+  padding:
+    4px
+    20px
+    34px;
 }
 
 
 .contact-card {
-padding: 19px;
+  padding: 19px;
 
-display: flex;
+  display: flex;
 
-align-items: center;
-justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 
-gap: 18px;
+  gap: 18px;
 
-background: var(--mixtur-blue);
+  background: var(--mixtur-blue);
 }
 
 
 .contact-name {
-font-size: 1rem;
+  font-size: 1rem;
 
-font-weight: 400;
+  font-weight: 400;
 
-line-height: 1.2;
+  line-height: 1.2;
 
-letter-spacing: -0.025em;
+  letter-spacing: -0.025em;
 }
 
 
 .contact-role {
-margin-top: 6px;
+  margin-top: 6px;
 
-font-size: 0.66rem;
+  font-size: 0.66rem;
 
-color:
-rgba(
-255,
-255,
-255,
-0.7
-);
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.7
+    );
 }
 
 
 .contact-actions {
-display: flex;
+  display: flex;
 
-gap: 9px;
+  gap: 9px;
 }
 
 
 .contact-action {
-width: 38px;
-height: 38px;
+  width: 38px;
+  height: 38px;
 
-display: flex;
+  display: flex;
 
-align-items: center;
-justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-border:
-1px solid
-rgba(
-255,
-255,
-255,
-0.6
-);
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.6
+    );
 
-border-radius: 50%;
+  border-radius: 50%;
 
-color: var(--white);
+  color: var(--white);
 
-text-decoration: none;
+  text-decoration: none;
 
-font-size: 0.74rem;
+  font-size: 0.74rem;
 }
 
 
 /* =========================================
-  BOTTOM NAVIGATION
-  ========================================= */
+   BOTTOM NAVIGATION
+   ========================================= */
 
 .bottom-nav {
-position: fixed;
+  position: fixed;
 
-left: 50%;
-bottom: 0;
+  left: 50%;
+  bottom: 0;
 
-z-index: 100;
+  z-index: 100;
 
-transform:
-translateX(-50%);
+  transform:
+    translateX(-50%);
 
-width: 100%;
-max-width: var(--page-width);
+  width: 100%;
+  max-width: var(--page-width);
 
-min-height: 72px;
+  min-height: 72px;
 
-display: grid;
+  display: grid;
 
-grid-template-columns:
-repeat(4, 1fr);
+  grid-template-columns:
+    repeat(4, 1fr);
 
-padding:
-8px
-5px
-max(
-11px,
-env(safe-area-inset-bottom)
-);
+  padding:
+    8px
+    5px
+    max(
+      11px,
+      env(safe-area-inset-bottom)
+    );
 
-background:
-rgba(
-0,
-0,
-0,
-0.96
-);
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.96
+    );
 
-border-top:
-1px solid
-var(--line);
+  border-top:
+    1px solid
+    var(--line);
 
-backdrop-filter:
-blur(12px);
+  backdrop-filter:
+    blur(12px);
 }
 
 
 .nav-item {
-display: flex;
+  display: flex;
 
-flex-direction: column;
+  flex-direction: column;
 
-justify-content: center;
-align-items: center;
+  justify-content: center;
+  align-items: center;
 
-gap: 4px;
+  gap: 4px;
 
-color:
-rgba(
-255,
-255,
-255,
-0.58
-);
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.58
+    );
 
-text-decoration: none;
+  text-decoration: none;
 
-font-size: 0.58rem;
+  font-size: 0.58rem;
 
-letter-spacing: 0.01em;
+  letter-spacing: 0.01em;
 }
 
 
 .nav-item.active {
-color: var(--white);
+  color: var(--white);
 }
 
 
 .nav-symbol {
-min-height: 18px;
+  min-height: 18px;
 
-font-size: 1.02rem;
+  font-size: 1.02rem;
 
-line-height: 1;
+  line-height: 1;
 }
 
 
 /* =========================================
-  SCHEDULE PAGE
-  ========================================= */
-
-
-/* Header */
+   SCHEDULE PAGE
+   ========================================= */
 
 .schedule-hero {
-position: relative;
+  position: relative;
 
-min-height: 205px;
+  min-height: 205px;
 
-padding:
-28px
-20px
-25px;
+  padding:
+    28px
+    20px
+    25px;
 
-overflow: hidden;
+  overflow: hidden;
 
-background-color: var(--mixtur-blue);
+  background-color: var(--mixtur-blue);
 
-background-image:
-url("mixtur-background.png");
+  background-image:
+    url("mixtur-background.png");
 
-background-size: 100% auto;
-
-background-position: center top;
-
-background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 
 
-/* Content */
-
 .schedule-hero-content {
-position: relative;
+  position: relative;
 
-z-index: 3;
+  z-index: 3;
 }
 
 
 .schedule-page-title {
-margin-top: 30px;
+  margin-top: 30px;
 
-font-size:
-clamp(
-2.7rem,
-11.5vw,
-3.6rem
-);
+  font-size:
+    clamp(
+      2.7rem,
+      11.5vw,
+      3.6rem
+    );
 
-font-weight: 400;
+  font-weight: 400;
 
-line-height: 0.92;
+  line-height: 0.92;
 
-letter-spacing: 0.045em;
+  letter-spacing: 0.045em;
 
-text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 
 .schedule-subtitle {
-margin-top: 14px;
+  margin-top: 14px;
 
-font-size: 0.6rem;
+  font-size: 0.6rem;
 
-line-height: 1.45;
+  line-height: 1.45;
 
-letter-spacing: 0.16em;
+  letter-spacing: 0.16em;
 
-text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 
 /* =========================================
-  SCHEDULE DAYS
-  ========================================= */
+   SCHEDULE DAYS
+   ========================================= */
 
 .schedule-day {
-padding:
-25px
-20px
-8px;
+  padding:
+    25px
+    20px
+    8px;
 }
 
 
 .day-header {
-display: grid;
+  display: grid;
 
-grid-template-columns:
-auto
-1fr;
+  grid-template-columns:
+    auto
+    1fr;
 
-align-items: end;
+  align-items: end;
 
-gap: 14px;
+  gap: 14px;
 
-padding-bottom: 14px;
+  padding-bottom: 14px;
 
-color: var(--white);
+  color: var(--white);
 
-text-transform: uppercase;
+  text-transform: uppercase;
 }
+
 
 .day-header span:first-child {
-font-size: 1.15rem;
+  font-size: 1.15rem;
 
-line-height: 1;
+  line-height: 1;
 
-letter-spacing: 0.08em;
+  letter-spacing: 0.08em;
 }
+
 
 .day-header span:last-child {
-justify-self: end;
+  justify-self: end;
 
-color: var(--text-secondary);
+  color: var(--text-secondary);
 
-font-size: 0.58rem;
+  font-size: 0.58rem;
 
-line-height: 1.2;
+  line-height: 1.2;
 
-letter-spacing: 0.13em;
+  letter-spacing: 0.13em;
 }
+
 
 .today-day .day-header {
-color: var(--white);
+  color: var(--white);
 }
+
 
 .today-day .day-header span:first-child {
-color: var(--mixtur-gold);
+  color: var(--mixtur-gold);
 }
 
+
 .today-day .day-header span:last-child {
-color: var(--white);
+  color: var(--white);
 }
 
 
 /* =========================================
-  SCHEDULE EVENTS
-  ========================================= */
+   SCHEDULE EVENTS
+   ========================================= */
 
 .schedule-event {
-position: relative;
+  position: relative;
 
-display: grid;
+  display: grid;
 
-grid-template-columns:
-66px
-minmax(0, 1fr);
+  grid-template-columns:
+    66px
+    minmax(0, 1fr);
 
-gap: 14px;
+  gap: 14px;
 
-padding: 18px 0;
+  padding: 18px 0;
 
-border-top:
-1px solid
-var(--line);
+  border-top:
+    1px solid
+    var(--line);
 }
 
 
 .schedule-time {
-font-size: 0.8rem;
+  font-size: 0.8rem;
 
-line-height: 1.2;
+  line-height: 1.2;
 }
 
 
 .schedule-event-info {
-min-width: 0;
+  min-width: 0;
 }
 
 
 .schedule-event-type {
-margin-bottom: 6px;
+  margin-bottom: 6px;
 
-color: var(--mixtur-gold);
+  color: var(--mixtur-gold);
 
-font-size: 0.56rem;
+  font-size: 0.56rem;
 
-line-height: 1.2;
+  line-height: 1.2;
 
-letter-spacing: 0.11em;
+  letter-spacing: 0.11em;
 
-text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 
 .schedule-event-info h2 {
-font-size: 0.89rem;
+  font-size: 0.89rem;
 
-font-weight: 400;
+  font-weight: 400;
 
-line-height: 1.3;
+  line-height: 1.3;
 
-letter-spacing: -0.025em;
+  letter-spacing: -0.025em;
 }
 
 
 .schedule-event-info p {
-margin-top: 5px;
+  margin-top: 5px;
 
-color: var(--text-secondary);
+  color: var(--text-secondary);
 
-font-size: 0.65rem;
+  font-size: 0.65rem;
 
-line-height: 1.4;
+  line-height: 1.4;
 }
 
 
-/* CURRENT EVENT */
-
 .current-event {
-margin:
-0
--8px;
+  margin:
+    0
+    -8px;
 
-padding:
-18px
-8px;
+  padding:
+    18px
+    8px;
 
-grid-template-columns:
-66px
-minmax(0, 1fr)
-30px;
+  grid-template-columns:
+    66px
+    minmax(0, 1fr)
+    30px;
 
-background: var(--mixtur-blue);
+  background: var(--mixtur-blue);
 
-border-top-color: transparent;
+  border-top-color: transparent;
 }
 
 
 .current-event .schedule-event-type {
-color: var(--white);
+  color: var(--white);
 }
 
 
-/* IMPORTANT EVENT */
-
 .important-event {
-margin:
-0
--8px;
+  margin:
+    0
+    -8px;
 
-padding:
-18px
-8px;
+  padding:
+    18px
+    8px;
 
-grid-template-columns:
-66px
-minmax(0, 1fr)
-30px;
+  grid-template-columns:
+    66px
+    minmax(0, 1fr)
+    30px;
 
-border-top:
-2px solid
-var(--mixtur-gold);
+  border-top:
+    2px solid
+    var(--mixtur-gold);
 
-border-bottom:
-2px solid
-var(--mixtur-gold);
+  border-bottom:
+    2px solid
+    var(--mixtur-gold);
 }
 
 
 .schedule-event-arrow {
-display: flex;
+  display: flex;
 
-align-items: center;
-justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-font-size: 1rem;
+  font-size: 1rem;
 }
 
-
-/* =========================================
-  DESKTOP PRESENTATION
-  ========================================= */
-
-@media (min-width: 700px) {
-
-body {
-background:
-radial-gradient(
-circle at center,
-#171717 0%,
-#0c0c0c 48%,
-#050505 100%
-);
-}
-
-
-.app {
-box-shadow:
-0
-0
-80px
-rgba(
-0,
-0,
-0,
-0.65
-);
-}
-
-}
-
-
-/* =========================================
-  SMALL PHONES
-  ========================================= */
-
-@media (max-width: 360px) {
-
-.hero {
-min-height: 365px;
-}
-
-
-.welcome {
-font-size: 3.15rem;
-}
-
-
-.eyebrow {
-margin-bottom: 52px;
-}
-
-
-.next-title {
-font-size: 1.22rem;
-}
-
-
-.schedule-page-title {
-font-size: 2.85rem;
-}
-
-}
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#000000">
-
-<title>Mixtur · Places</title>
-
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<main class="app">
-
-<!-- HEADER -->
-<header class="topbar">
-
-<a href="index.html" aria-label="Back to Today">
-<img
-src="logo-mixtur.png"
-alt="Mixtur"
-class="mixtur-logo"
->
-</a>
-
-<button class="menu-button" aria-label="Open menu">
-<span></span>
-<span></span>
-<span></span>
-</button>
-
-</header>
-
-
-<!-- PLACES INTRO -->
-<section class="places-intro">
-
-<div class="places-cover placeholder-image">
-<span>Fabra i Coats</span>
-</div>
-
-<div class="places-heading">
-
-<p class="eyebrow">
-Artist Guide · Barcelona
-</p>
-
-<h1 class="places-title">
-Places
-</h1>
-
-</div>
-
-</section>
-
-
-<!-- FILTERS -->
-<section class="places-filters" aria-label="Place categories">
-
-<button class="place-filter active">
-All
-</button>
-
-<button class="place-filter">
-Venues
-</button>
-
-<button class="place-filter">
-Food
-</button>
-
-<button class="place-filter">
-Other
-</button>
-
-</section>
-
-
-<!-- MAIN VENUE -->
-<section class="places-list">
-
-<article class="featured-place">
-
-<div class="featured-place-image placeholder-image">
-<span>Venue photo</span>
-</div>
-
-<div class="featured-place-content">
-
-<div class="place-category">
-Main venue
-</div>
-
-<div class="place-title-row">
-
-<div>
-
-<h2>
-Fabra i Coats
-</h2>
-
-<p class="place-description">
-Fàbrica de Creació
-</p>
-
-</div>
-
-<span class="place-arrow">
-→
-</span>
-
-</div>
-
-
-<address class="place-address">
-C/ Sant Adrià, 20<br>
-08030 Barcelona
-</address>
-
-
-<a
-class="maps-link"
-href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
-           target="_blank"
-           rel="noopener noreferrer"
-         >
-           <span class="maps-symbol">⌖</span>
-
-           <span>Open in Maps</span>
-
-           <span class="maps-arrow">→</span>
-         </a>
-
-       </div>
-
-     </article>
-
-
-     <!-- HOTEL -->
-     <article class="compact-place">
-
-       <div class="compact-place-image placeholder-image">
-         <span>Hotel</span>
-       </div>
-
-       <div class="compact-place-info">
-
-         <div class="place-category">
-           Stay
-         </div>
-
-         <h2>
-           Your hotel
-         </h2>
-
-         <p>
-           Address & directions
-         </p>
-
-       </div>
-
-       <div class="compact-place-arrow">
-         →
-       </div>
-
-     </article>
-
-
-     <!-- RESTAURANTS -->
-     <article class="compact-place">
-
-       <div class="compact-place-image placeholder-image">
-         <span>Food</span>
-       </div>
-
-       <div class="compact-place-info">
-
-         <div class="place-category">
-           Nearby
-         </div>
-
-         <h2>
-           Restaurants
-         </h2>
-
-         <p>
-           Around Fabra i Coats
-         </p>
-
-       </div>
-
-       <div class="compact-place-arrow">
-         →
-       </div>
-
-     </article>
-
-
-     <!-- ESSENTIALS -->
-     <article class="compact-place">
-
-       <div class="compact-place-image placeholder-image">
-         <span>City</span>
-       </div>
-
-       <div class="compact-place-info">
-
-         <div class="place-category">
-           Practical
-         </div>
-
-         <h2>
-           Nearby essentials
-         </h2>
-
-         <p>
-           Pharmacy · ATM · Supermarket
-         </p>
-
-       </div>
-
-       <div class="compact-place-arrow">
-         →
-       </div>
-
-     </article>
-
-   </section>
-
-
-   <!-- BOTTOM NAV -->
-   <nav class="bottom-nav" aria-label="Main navigation">
-
-     <a class="nav-item" href="index.html">
-       <span class="nav-symbol">◇</span>
-       <span>Today</span>
-     </a>
-
-     <a class="nav-item" href="schedule.html">
-       <span class="nav-symbol">□</span>
-       <span>Schedule</span>
-     </a>
-
-     <a class="nav-item active" href="places.html">
-       <span class="nav-symbol">⊕</span>
-       <span>Places</span>
-     </a>
-
-     <a class="nav-item" href="info.html">
-       <span class="nav-symbol">ⓘ</span>
-       <span>Info</span>
-     </a>
-
-   </nav>
-
- </main>
-
-</body>
-
-</html>
 
 /* =========================================
    PLACES PAGE
@@ -1285,8 +933,6 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
   background: var(--black);
 }
 
-
-/* HERO IMAGE */
 
 .places-cover {
   width: 100%;
@@ -1304,6 +950,7 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
     );
 
   display: flex;
+
   align-items: flex-end;
 
   padding: 14px;
@@ -1311,7 +958,13 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
 
 
 .places-cover span {
-  color: rgba(255, 255, 255, 0.58);
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.58
+    );
 
   font-size: 0.58rem;
 
@@ -1320,8 +973,6 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
   text-transform: uppercase;
 }
 
-
-/* HEADING */
 
 .places-heading {
   padding-top: 26px;
@@ -1352,7 +1003,7 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
 
 
 /* =========================================
-   FILTERS
+   PLACES FILTERS
    ========================================= */
 
 .places-filters {
@@ -1378,11 +1029,13 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
   padding: 10px 6px;
 
   border: 0;
+
   border-right:
     1px solid
     var(--line);
 
   background: transparent;
+
   color: var(--text-secondary);
 
   font-size: 0.63rem;
@@ -1400,6 +1053,7 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
 
 .place-filter.active {
   background: var(--mixtur-blue);
+
   color: var(--white);
 }
 
@@ -1415,8 +1069,6 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
     34px;
 }
 
-
-/* MAIN PLACE */
 
 .featured-place {
   border-top:
@@ -1443,6 +1095,7 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
     );
 
   display: flex;
+
   align-items: flex-end;
 
   padding: 12px;
@@ -1543,7 +1196,9 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
 }
 
 
-/* MAP LINK */
+/* =========================================
+   MAP LINK
+   ========================================= */
 
 .maps-link {
   margin-top: 16px;
@@ -1591,6 +1246,128 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
   justify-self: end;
 
   font-size: 0.9rem;
+}
+
+
+/* =========================================
+   NEARBY LINKS
+   Small editorial links
+   ========================================= */
+
+.place-nearby {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap:
+    8px
+    18px;
+
+  margin-top: 14px;
+
+  padding-top: 12px;
+
+  border-top:
+    1px solid
+    var(--line);
+}
+
+
+.place-nearby a {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  min-height: 32px;
+
+  color: var(--text-secondary);
+
+  text-decoration: none !important;
+
+  font-size: 0.62rem;
+
+  font-weight: 400;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.05em;
+
+  text-transform: uppercase;
+}
+
+
+.place-nearby a:link,
+.place-nearby a:visited,
+.place-nearby a:hover,
+.place-nearby a:active {
+  color: var(--text-secondary);
+
+  text-decoration: none !important;
+}
+
+
+.place-nearby a span {
+  color: var(--white);
+
+  font-size: 0.8rem;
+
+  line-height: 1;
+}
+
+
+/* If a nearby trigger is temporarily a button,
+   make it visually identical */
+
+.place-nearby button {
+  padding: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  min-height: 32px;
+
+  border: 0;
+  border-radius: 0;
+
+  background: transparent;
+
+  color: var(--text-secondary);
+
+  font-family:
+    Verdana,
+    Geneva,
+    sans-serif;
+
+  font-size: 0.62rem;
+
+  font-weight: 400;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.05em;
+
+  text-transform: uppercase;
+
+  text-decoration: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  cursor: pointer;
+}
+
+
+.place-nearby button span {
+  color: var(--white);
+
+  font-size: 0.8rem;
+
+  line-height: 1;
 }
 
 
@@ -1697,8 +1474,7 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
 
 
 /* =========================================
-   PLACEHOLDER IMAGE TREATMENT
-   Later replaced with real photos
+   PLACEHOLDER IMAGES
    ========================================= */
 
 .placeholder-image {
@@ -1729,10 +1505,362 @@ href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
 
 
 /* =========================================
+   SLIDE-UP PANELS
+   Nearby food / Essentials
+   ========================================= */
+
+.place-panel {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 500;
+
+  visibility: hidden;
+
+  pointer-events: none;
+}
+
+
+.place-panel.open {
+  visibility: visible;
+
+  pointer-events: auto;
+}
+
+
+.panel-backdrop {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.72
+    );
+
+  opacity: 0;
+
+  transition:
+    opacity
+    0.25s
+    ease;
+}
+
+
+.place-panel.open .panel-backdrop {
+  opacity: 1;
+}
+
+
+.panel-sheet {
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 100%;
+  max-width: var(--page-width);
+
+  max-height: 82vh;
+
+  padding:
+    12px
+    20px
+    max(
+      28px,
+      env(safe-area-inset-bottom)
+    );
+
+  overflow-y: auto;
+
+  background: #101010;
+
+  border-radius:
+    22px
+    22px
+    0
+    0;
+
+  transform:
+    translate(
+      -50%,
+      100%
+    );
+
+  transition:
+    transform
+    0.32s
+    ease;
+}
+
+
+.place-panel.open .panel-sheet {
+  transform:
+    translate(
+      -50%,
+      0
+    );
+}
+
+
+/* PANEL HANDLE */
+
+.panel-handle {
+  width: 38px;
+  height: 3px;
+
+  margin:
+    0
+    auto
+    24px;
+
+  border-radius: 10px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.35
+    );
+}
+
+
+/* PANEL HEADER */
+
+.panel-header {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    38px;
+
+  gap: 20px;
+
+  padding-bottom: 22px;
+}
+
+
+.panel-location {
+  margin-bottom: 10px;
+
+  color: var(--mixtur-gold);
+
+  font-size: 0.56rem;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.13em;
+
+  text-transform: uppercase;
+}
+
+
+.panel-header h2 {
+  font-size: 1.75rem;
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  letter-spacing: 0.02em;
+
+  text-transform: uppercase;
+}
+
+
+.panel-intro {
+  max-width: 270px;
+
+  margin-top: 10px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.63rem;
+
+  line-height: 1.45;
+}
+
+
+.panel-close {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: var(--white);
+
+  font-size: 1.3rem;
+
+  font-weight: 300;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   PANEL RESULTS
+   ========================================= */
+
+.panel-list {
+  border-top:
+    1px solid
+    var(--line);
+}
+
+
+.panel-place {
+  padding:
+    18px
+    0
+    17px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+}
+
+
+.panel-place-meta {
+  margin-bottom: 7px;
+
+  color: var(--mixtur-gold);
+
+  font-size: 0.54rem;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+
+.panel-place h3 {
+  font-size: 0.9rem;
+
+  font-weight: 400;
+
+  line-height: 1.3;
+}
+
+
+.panel-place p {
+  margin-top: 5px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.62rem;
+
+  line-height: 1.4;
+}
+
+
+.panel-place a {
+  margin-top: 13px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 32px;
+
+  color: var(--white);
+
+  text-decoration: none;
+
+  font-size: 0.61rem;
+
+  letter-spacing: 0.04em;
+
+  text-transform: uppercase;
+}
+
+
+body.panel-open {
+  overflow: hidden;
+}
+
+
+/* =========================================
+   DESKTOP PRESENTATION
+   ========================================= */
+
+@media (min-width: 700px) {
+
+  body {
+    background:
+      radial-gradient(
+        circle at center,
+        #171717 0%,
+        #0c0c0c 48%,
+        #050505 100%
+      );
+  }
+
+
+  .app {
+    box-shadow:
+      0
+      0
+      80px
+      rgba(
+        0,
+        0,
+        0,
+        0.65
+      );
+  }
+
+}
+
+
+/* =========================================
    SMALL PHONES
    ========================================= */
 
 @media (max-width: 360px) {
+
+  .hero {
+    min-height: 365px;
+  }
+
+
+  .welcome {
+    font-size: 3.15rem;
+  }
+
+
+  .eyebrow {
+    margin-bottom: 52px;
+  }
+
+
+  .next-title {
+    font-size: 1.22rem;
+  }
+
+
+  .schedule-page-title {
+    font-size: 2.85rem;
+  }
+
 
   .places-cover {
     height: 160px;
