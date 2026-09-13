@@ -1007,3 +1007,267 @@ a {
   }
 
 }
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+
+  <title>Mixtur · Places</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main class="app">
+
+    <!-- HEADER -->
+    <header class="topbar">
+
+      <a href="index.html" aria-label="Back to Today">
+        <img
+          src="logo-mixtur.png"
+          alt="Mixtur"
+          class="mixtur-logo"
+        >
+      </a>
+
+      <button class="menu-button" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </header>
+
+
+    <!-- PLACES INTRO -->
+    <section class="places-intro">
+
+      <div class="places-cover placeholder-image">
+        <span>Fabra i Coats</span>
+      </div>
+
+      <div class="places-heading">
+
+        <p class="eyebrow">
+          Artist Guide · Barcelona
+        </p>
+
+        <h1 class="places-title">
+          Places
+        </h1>
+
+      </div>
+
+    </section>
+
+
+    <!-- FILTERS -->
+    <section class="places-filters" aria-label="Place categories">
+
+      <button class="place-filter active">
+        All
+      </button>
+
+      <button class="place-filter">
+        Venues
+      </button>
+
+      <button class="place-filter">
+        Food
+      </button>
+
+      <button class="place-filter">
+        Other
+      </button>
+
+    </section>
+
+
+    <!-- MAIN VENUE -->
+    <section class="places-list">
+
+      <article class="featured-place">
+
+        <div class="featured-place-image placeholder-image">
+          <span>Venue photo</span>
+        </div>
+
+        <div class="featured-place-content">
+
+          <div class="place-category">
+            Main venue
+          </div>
+
+          <div class="place-title-row">
+
+            <div>
+
+              <h2>
+                Fabra i Coats
+              </h2>
+
+              <p class="place-description">
+                Fàbrica de Creació
+              </p>
+
+            </div>
+
+            <span class="place-arrow">
+              →
+            </span>
+
+          </div>
+
+
+          <address class="place-address">
+            C/ Sant Adrià, 20<br>
+            08030 Barcelona
+          </address>
+
+
+          <a
+            class="maps-link"
+            href="https://maps.google.com/?q=Fabra+i+Coats+Barcelona"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="maps-symbol">⌖</span>
+
+            <span>Open in Maps</span>
+
+            <span class="maps-arrow">→</span>
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- HOTEL -->
+      <article class="compact-place">
+
+        <div class="compact-place-image placeholder-image">
+          <span>Hotel</span>
+        </div>
+
+        <div class="compact-place-info">
+
+          <div class="place-category">
+            Stay
+          </div>
+
+          <h2>
+            Your hotel
+          </h2>
+
+          <p>
+            Address & directions
+          </p>
+
+        </div>
+
+        <div class="compact-place-arrow">
+          →
+        </div>
+
+      </article>
+
+
+      <!-- RESTAURANTS -->
+      <article class="compact-place">
+
+        <div class="compact-place-image placeholder-image">
+          <span>Food</span>
+        </div>
+
+        <div class="compact-place-info">
+
+          <div class="place-category">
+            Nearby
+          </div>
+
+          <h2>
+            Restaurants
+          </h2>
+
+          <p>
+            Around Fabra i Coats
+          </p>
+
+        </div>
+
+        <div class="compact-place-arrow">
+          →
+        </div>
+
+      </article>
+
+
+      <!-- ESSENTIALS -->
+      <article class="compact-place">
+
+        <div class="compact-place-image placeholder-image">
+          <span>City</span>
+        </div>
+
+        <div class="compact-place-info">
+
+          <div class="place-category">
+            Practical
+          </div>
+
+          <h2>
+            Nearby essentials
+          </h2>
+
+          <p>
+            Pharmacy · ATM · Supermarket
+          </p>
+
+        </div>
+
+        <div class="compact-place-arrow">
+          →
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav" aria-label="Main navigation">
+
+      <a class="nav-item" href="index.html">
+        <span class="nav-symbol">◇</span>
+        <span>Today</span>
+      </a>
+
+      <a class="nav-item" href="schedule.html">
+        <span class="nav-symbol">□</span>
+        <span>Schedule</span>
+      </a>
+
+      <a class="nav-item active" href="places.html">
+        <span class="nav-symbol">⊕</span>
+        <span>Places</span>
+      </a>
+
+      <a class="nav-item" href="info.html">
+        <span class="nav-symbol">ⓘ</span>
+        <span>Info</span>
+      </a>
+
+    </nav>
+
+  </main>
+
+</body>
+
+</html>
