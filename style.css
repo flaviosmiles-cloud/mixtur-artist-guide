@@ -3759,3 +3759,48 @@ span:nth-child(even) {
   }
 
 }
+
+/* =========================================
+   ADMIN · ACTIVITY CONTROLS
+   ========================================= */
+
+.admin-activity + .admin-activity {
+  margin-top: 16px;
+}
+
+.admin-activity-top {
+  position: relative;
+}
+
+.admin-remove-activity {
+  margin-left: auto;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: rgba(255,255,255,0.5);
+
+  font-family:
+    Verdana,
+    Geneva,
+    sans-serif;
+
+  font-size: 0.5rem;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.admin-remove-activity:hover {
+  color: var(--mixtur-gold);
+}
+
+.admin-remove-activity[hidden] {
+  display: none;
+}
