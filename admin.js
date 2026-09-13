@@ -1,17 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
   const addButton = document.querySelector(".admin-add-button");
   const scheduleSection = addButton?.closest(".admin-section");
-  const firstActivity = scheduleSection?.querySelector(".admin-activity");
-  const generateButton = document.querySelector(".admin-generate-button");
+  const firstActivity =
+    scheduleSection?.querySelector(".admin-activity");
 
-  const previewSection = document.getElementById("artist-preview");
-  const previewArtistName = document.getElementById("preview-artist-name");
-  const previewArtistSlug = document.getElementById("preview-artist-slug");
-  const previewJSON = document.getElementById("preview-json");
+  const generateButton =
+    document.querySelector(".admin-generate-button");
 
-  if (!addButton || !scheduleSection || !firstActivity) {
+  const previewSection =
+    document.getElementById("artist-preview");
+
+  const previewArtistName =
+    document.getElementById("preview-artist-name");
+
+  const previewArtistSlug =
+    document.getElementById("preview-artist-slug");
+
+  const previewJSON =
+    document.getElementById("preview-json");
+
+  const downloadArtistButton =
+    document.getElementById("download-artist-file");
+
+  const artistLinkInput =
+    document.getElementById("artist-link");
+
+  const copyArtistLinkButton =
+    document.getElementById("copy-artist-link");
+
+  let currentArtistData = null;
+
+
+  if (
+    !addButton ||
+    !scheduleSection ||
+    !firstActivity
+  ) {
     return;
   }
+
 
   const venueOptions = `
     <option>Fabra i Coats</option>
@@ -27,6 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
     <option>Other</option>
   `;
 
+
+  /* =========================================
+     HELPERS
+     ========================================= */
+
   function slugify(text) {
     return text
       .toString()
@@ -38,27 +70,41 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/^-+|-+$/g, "");
   }
 
-  function getFieldByLabel(section, labelText) {
-    if (!section) return null;
+
+  function getFieldByLabel(
+    section,
+    labelText
+  ) {
+    if (!section) {
+      return null;
+    }
 
     const fields = Array.from(
       section.querySelectorAll(".admin-field")
     );
 
     const field = fields.find((item) => {
-      const label = item.querySelector(":scope > span");
+      const label =
+        item.querySelector(":scope > span");
 
       return (
         label &&
-        label.textContent.trim().toLowerCase() ===
+        label.textContent
+          .trim()
+          .toLowerCase() ===
           labelText.toLowerCase()
       );
     });
 
-    if (!field) return null;
+    if (!field) {
+      return null;
+    }
 
-    return field.querySelector("input, textarea, select");
+    return field.querySelector(
+      "input, textarea, select"
+    );
   }
+
 
   function getSectionByTitle(title) {
     const sections = Array.from(
@@ -66,23 +112,115 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     return sections.find((section) => {
-      const heading = section.querySelector(
-        ".admin-section-heading h2"
-      );
+      const heading =
+        section.querySelector(
+          ".admin-section-heading h2"
+        );
 
       return (
         heading &&
-        heading.textContent.trim().toLowerCase() ===
+        heading.textContent
+          .trim()
+          .toLowerCase() ===
           title.toLowerCase()
       );
     });
   }
 
+
+  function removeEmptyValues(value) {
+    if (Array.isArray(value)) {
+      return value
+        .map(removeEmptyValues)
+        .filter((item) => {
+          if (
+            item === null ||
+            item === undefined ||
+            item === ""
+          ) {
+            return false;
+          }
+
+          if (
+            typeof item === "object" &&
+            !Array.isArray(item) &&
+            Object.keys(item).length === 0
+          ) {
+            return false;
+          }
+
+          return true;
+        });
+    }
+
+
+    if (
+      value &&
+      typeof value === "object"
+    ) {
+      const cleanedObject = {};
+
+      Object.entries(value).forEach(
+        ([key, item]) => {
+          const cleanedValue =
+            removeEmptyValues(item);
+
+          if (
+            cleanedValue === "" ||
+            cleanedValue === null ||
+            cleanedValue === undefined
+          ) {
+            return;
+          }
+
+          if (
+            typeof cleanedValue === "object" &&
+            !Array.isArray(cleanedValue) &&
+            Object.keys(cleanedValue).length === 0
+          ) {
+            return;
+          }
+
+          cleanedObject[key] =
+            cleanedValue;
+        }
+      );
+
+      return cleanedObject;
+    }
+
+
+    return value;
+  }
+
+
+  function sortActivities(activities) {
+    return activities.sort((a, b) => {
+      const dateA =
+        `${a.date || "9999-12-31"}T${a.time || "23:59"}`;
+
+      const dateB =
+        `${b.date || "9999-12-31"}T${b.time || "23:59"}`;
+
+      return dateA.localeCompare(dateB);
+    });
+  }
+
+
+  /* =========================================
+     ACTIVITY TYPES
+     ========================================= */
+
   function getActivityType(activity) {
-    const typeField = getFieldByLabel(activity, "Type");
+    const typeField =
+      getFieldByLabel(
+        activity,
+        "Type"
+      );
 
     return typeField?.value || "Rehearsal";
   }
+
 
   function buildExtraFields(type) {
     if (
@@ -92,234 +230,345 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       return `
         <label class="admin-field">
-          <span>Venue</span>
+
+          <span>
+            Venue
+          </span>
 
           <select class="activity-venue">
             ${venueOptions}
           </select>
+
         </label>
 
+
         <label class="admin-field">
-          <span>Room / Space</span>
+
+          <span>
+            Room / Space
+          </span>
 
           <input
             class="activity-room"
             type="text"
             placeholder="Sala / room"
           >
+
         </label>
 
+
         <label class="admin-field">
-          <span>Call time</span>
+
+          <span>
+            Call time
+          </span>
 
           <input
             class="activity-call-time"
             type="time"
           >
+
         </label>
       `;
     }
 
+
     if (type === "Hotel") {
       return `
         <label class="admin-field">
-          <span>Hotel</span>
+
+          <span>
+            Hotel
+          </span>
 
           <input
             class="activity-hotel"
             type="text"
             placeholder="Hotel name"
           >
+
         </label>
       `;
     }
 
+
     if (type === "Meal") {
       return `
         <label class="admin-field">
-          <span>Place / Restaurant</span>
+
+          <span>
+            Place / Restaurant
+          </span>
 
           <input
             class="activity-place"
             type="text"
             placeholder="Restaurant or meeting point"
           >
+
         </label>
       `;
     }
 
+
     if (type === "Travel") {
       return `
         <label class="admin-field">
-          <span>From</span>
+
+          <span>
+            From
+          </span>
 
           <input
             class="activity-from"
             type="text"
             placeholder="Barcelona Airport"
           >
+
         </label>
 
+
         <label class="admin-field">
-          <span>To</span>
+
+          <span>
+            To
+          </span>
 
           <input
             class="activity-to"
             type="text"
             placeholder="Hotel"
           >
+
         </label>
 
+
         <label class="admin-field">
-          <span>Transport</span>
+
+          <span>
+            Transport
+          </span>
 
           <input
             class="activity-transport"
             type="text"
             placeholder="Taxi, transfer, train..."
           >
+
         </label>
       `;
     }
 
+
     return `
       <label class="admin-field">
-        <span>Place</span>
+
+        <span>
+          Place
+        </span>
 
         <input
           class="activity-place"
           type="text"
           placeholder="Venue, meeting point or location"
         >
+
       </label>
     `;
   }
 
+
   function updateActivityFields(activity) {
-    const type = getActivityType(activity);
+    const type =
+      getActivityType(activity);
 
-    const typeLabel = activity.querySelector(
-      ".admin-activity-top span:nth-child(2)"
-    );
+    const topLabels =
+      activity.querySelectorAll(
+        ".admin-activity-top > span"
+      );
 
-    if (typeLabel) {
-      typeLabel.textContent = type;
+    if (topLabels[1]) {
+      topLabels[1].textContent =
+        type;
     }
 
-    const dynamicFields = activity.querySelector(
-      ".admin-dynamic-fields"
-    );
+
+    const dynamicFields =
+      activity.querySelector(
+        ".admin-dynamic-fields"
+      );
 
     if (dynamicFields) {
-      dynamicFields.innerHTML = buildExtraFields(type);
+      dynamicFields.innerHTML =
+        buildExtraFields(type);
     }
   }
 
+
+  /* =========================================
+     ACTIVITY CONTROLS
+     ========================================= */
+
   function addRemoveButton(activity) {
-    const top = activity.querySelector(".admin-activity-top");
+    const top =
+      activity.querySelector(
+        ".admin-activity-top"
+      );
 
     if (!top) {
       return;
     }
 
-    let removeButton = activity.querySelector(
-      ".admin-remove-activity"
-    );
+
+    let removeButton =
+      activity.querySelector(
+        ".admin-remove-activity"
+      );
+
 
     if (!removeButton) {
-      removeButton = document.createElement("button");
+      removeButton =
+        document.createElement("button");
 
       removeButton.type = "button";
-      removeButton.className = "admin-remove-activity";
+
+      removeButton.className =
+        "admin-remove-activity";
+
       removeButton.setAttribute(
         "aria-label",
         "Remove activity"
       );
 
-      removeButton.textContent = "Remove";
+      removeButton.textContent =
+        "Remove";
 
-      top.appendChild(removeButton);
+      top.appendChild(
+        removeButton
+      );
     }
 
-    removeButton.addEventListener("click", () => {
-      const activities = scheduleSection.querySelectorAll(
+
+    removeButton.addEventListener(
+      "click",
+      () => {
+        const activities =
+          scheduleSection.querySelectorAll(
+            ".admin-activity"
+          );
+
+        if (
+          activities.length <= 1
+        ) {
+          return;
+        }
+
+        activity.remove();
+
+        updateActivityNumbers();
+      }
+    );
+  }
+
+
+  function updateActivityNumbers() {
+    const activities =
+      scheduleSection.querySelectorAll(
         ".admin-activity"
       );
 
-      if (activities.length <= 1) {
-        return;
+    activities.forEach(
+      (activity, index) => {
+        const numberLabel =
+          activity.querySelector(
+            ".admin-activity-top span:first-child"
+          );
+
+        if (numberLabel) {
+          numberLabel.textContent =
+            `Activity ${String(index + 1).padStart(
+              2,
+              "0"
+            )}`;
+        }
+
+
+        const removeButton =
+          activity.querySelector(
+            ".admin-remove-activity"
+          );
+
+        if (removeButton) {
+          removeButton.hidden =
+            activities.length === 1;
+        }
       }
-
-      activity.remove();
-
-      updateActivityNumbers();
-    });
-  }
-
-  function updateActivityNumbers() {
-    const activities = scheduleSection.querySelectorAll(
-      ".admin-activity"
     );
-
-    activities.forEach((activity, index) => {
-      const numberLabel = activity.querySelector(
-        ".admin-activity-top span:first-child"
-      );
-
-      if (numberLabel) {
-        numberLabel.textContent =
-          `Activity ${String(index + 1).padStart(2, "0")}`;
-      }
-
-      const removeButton = activity.querySelector(
-        ".admin-remove-activity"
-      );
-
-      if (removeButton) {
-        removeButton.hidden =
-          activities.length === 1;
-      }
-    });
   }
+
 
   function prepareActivity(activity) {
-    let dynamicFields = activity.querySelector(
-      ".admin-dynamic-fields"
-    );
+    let dynamicFields =
+      activity.querySelector(
+        ".admin-dynamic-fields"
+      );
+
 
     if (!dynamicFields) {
-      dynamicFields = document.createElement("div");
+      dynamicFields =
+        document.createElement("div");
 
       dynamicFields.className =
         "admin-fields admin-dynamic-fields";
 
-      const notesField = Array.from(
-        activity.querySelectorAll(".admin-field")
-      ).find((field) =>
-        field.textContent.trim().startsWith("Notes")
+
+      const allFields = Array.from(
+        activity.querySelectorAll(
+          ".admin-field"
+        )
       );
 
-      const venueField = Array.from(
-        activity.querySelectorAll(".admin-field")
-      ).find((field) =>
-        field.textContent.trim().startsWith("Venue")
-      );
 
-      const roomField = Array.from(
-        activity.querySelectorAll(".admin-field")
-      ).find((field) =>
-        field.textContent.trim().startsWith("Room")
-      );
+      const notesField =
+        allFields.find(
+          (field) =>
+            field.textContent
+              .trim()
+              .startsWith("Notes")
+        );
 
-      const callTimeField = Array.from(
-        activity.querySelectorAll(".admin-field")
-      ).find((field) =>
-        field.textContent.trim().startsWith("Call time")
-      );
+
+      const venueField =
+        allFields.find(
+          (field) =>
+            field.textContent
+              .trim()
+              .startsWith("Venue")
+        );
+
+
+      const roomField =
+        allFields.find(
+          (field) =>
+            field.textContent
+              .trim()
+              .startsWith("Room")
+        );
+
+
+      const callTimeField =
+        allFields.find(
+          (field) =>
+            field.textContent
+              .trim()
+              .startsWith("Call time")
+        );
+
 
       venueField?.remove();
       roomField?.remove();
       callTimeField?.remove();
+
 
       if (notesField) {
         notesField.parentElement.insertBefore(
@@ -327,21 +576,33 @@ document.addEventListener("DOMContentLoaded", () => {
           notesField
         );
       } else {
-        activity.appendChild(dynamicFields);
+        activity.appendChild(
+          dynamicFields
+        );
       }
     }
 
-    updateActivityFields(activity);
-    addRemoveButton(activity);
-  }
 
-  function resetActivityFields(activity) {
-    const fields = activity.querySelectorAll(
-      "input, textarea, select"
+    updateActivityFields(
+      activity
     );
 
+    addRemoveButton(
+      activity
+    );
+  }
+
+
+  function resetActivityFields(activity) {
+    const fields =
+      activity.querySelectorAll(
+        "input, textarea, select"
+      );
+
     fields.forEach((field) => {
-      if (field.tagName === "SELECT") {
+      if (
+        field.tagName === "SELECT"
+      ) {
         field.selectedIndex = 0;
       } else {
         field.value = "";
@@ -349,16 +610,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+
+  /* =========================================
+     ACTIVITY DATA
+     ========================================= */
+
   function getActivityData(activity) {
-    const type = getActivityType(activity);
+    const type =
+      getActivityType(activity);
+
 
     const data = {
-      date: getFieldByLabel(activity, "Date")?.value || "",
-      time: getFieldByLabel(activity, "Time")?.value || "",
+      date:
+        getFieldByLabel(
+          activity,
+          "Date"
+        )?.value || "",
+
+      time:
+        getFieldByLabel(
+          activity,
+          "Time"
+        )?.value || "",
+
       type,
-      title: getFieldByLabel(activity, "Title")?.value || "",
-      notes: getFieldByLabel(activity, "Notes")?.value || ""
+
+      title:
+        getFieldByLabel(
+          activity,
+          "Title"
+        )?.value.trim() || "",
+
+      notes:
+        getFieldByLabel(
+          activity,
+          "Notes"
+        )?.value.trim() || ""
     };
+
 
     if (
       type === "Rehearsal" ||
@@ -366,128 +655,126 @@ document.addEventListener("DOMContentLoaded", () => {
       type === "Reading Session"
     ) {
       data.venue =
-        getFieldByLabel(activity, "Venue")?.value || "";
+        getFieldByLabel(
+          activity,
+          "Venue"
+        )?.value || "";
 
       data.room =
-        getFieldByLabel(activity, "Room / Space")?.value || "";
+        getFieldByLabel(
+          activity,
+          "Room / Space"
+        )?.value.trim() || "";
 
       data.callTime =
-        getFieldByLabel(activity, "Call time")?.value || "";
+        getFieldByLabel(
+          activity,
+          "Call time"
+        )?.value || "";
     }
+
 
     if (type === "Hotel") {
       data.hotel =
-        getFieldByLabel(activity, "Hotel")?.value || "";
+        getFieldByLabel(
+          activity,
+          "Hotel"
+        )?.value.trim() || "";
     }
+
 
     if (type === "Meal") {
       data.place =
-        getFieldByLabel(activity, "Place / Restaurant")?.value || "";
+        getFieldByLabel(
+          activity,
+          "Place / Restaurant"
+        )?.value.trim() || "";
     }
+
 
     if (type === "Travel") {
       data.from =
-        getFieldByLabel(activity, "From")?.value || "";
+        getFieldByLabel(
+          activity,
+          "From"
+        )?.value.trim() || "";
 
       data.to =
-        getFieldByLabel(activity, "To")?.value || "";
+        getFieldByLabel(
+          activity,
+          "To"
+        )?.value.trim() || "";
 
       data.transport =
-        getFieldByLabel(activity, "Transport")?.value || "";
+        getFieldByLabel(
+          activity,
+          "Transport"
+        )?.value.trim() || "";
     }
+
 
     if (type === "Other") {
       data.place =
-        getFieldByLabel(activity, "Place")?.value || "";
+        getFieldByLabel(
+          activity,
+          "Place"
+        )?.value.trim() || "";
     }
+
 
     return data;
   }
 
-    function removeEmptyValues(value) {
-    if (Array.isArray(value)) {
-      return value
-        .map(removeEmptyValues)
-        .filter((item) => {
-          if (item === null || item === undefined || item === "") {
-            return false;
-          }
-  
-          if (
-            typeof item === "object" &&
-            !Array.isArray(item) &&
-            Object.keys(item).length === 0
-          ) {
-            return false;
-          }
-  
-          return true;
-        });
-    }
-  
-    if (value && typeof value === "object") {
-      const cleanedObject = {};
-  
-      Object.entries(value).forEach(([key, item]) => {
-        const cleanedValue = removeEmptyValues(item);
-  
-        if (
-          cleanedValue === "" ||
-          cleanedValue === null ||
-          cleanedValue === undefined
-        ) {
-          return;
-        }
-  
-        if (
-          typeof cleanedValue === "object" &&
-          !Array.isArray(cleanedValue) &&
-          Object.keys(cleanedValue).length === 0
-        ) {
-          return;
-        }
-  
-        cleanedObject[key] = cleanedValue;
-      });
-  
-      return cleanedObject;
-    }
-  
-    return value;
-  }
-  
-  
-  function sortActivities(activities) {
-    return activities.sort((a, b) => {
-      const dateA = `${a.date || "9999-12-31"}T${a.time || "23:59"}`;
-      const dateB = `${b.date || "9999-12-31"}T${b.time || "23:59"}`;
-  
-      return dateA.localeCompare(dateB);
-    });
-  }
-  
+
+  /* =========================================
+     GENERATE ARTIST DATA
+     ========================================= */
+
   function generateArtistData() {
-    const artistSection = getSectionByTitle("Artist");
-    const staySection = getSectionByTitle("Stay");
-    const hotelSection = getSectionByTitle("Hotel");
-    const contactSection = getSectionByTitle("Main contact");
+    const artistSection =
+      getSectionByTitle("Artist");
+
+    const staySection =
+      getSectionByTitle("Stay");
+
+    const hotelSection =
+      getSectionByTitle("Hotel");
+
+    const contactSection =
+      getSectionByTitle("Main contact");
+
 
     const artistName =
-      getFieldByLabel(artistSection, "Artist name")?.value.trim() || "";
+      getFieldByLabel(
+        artistSection,
+        "Artist name"
+      )?.value.trim() || "";
 
-    const slug = slugify(artistName || "artist");
 
-    const activities = sortActivities(
-    Array.from(
-      scheduleSection.querySelectorAll(".admin-activity")
-    ).map(getActivityData)
-  );
+    const slug =
+      slugify(
+        artistName || "artist"
+      );
+
+
+    const activities =
+      sortActivities(
+        Array.from(
+          scheduleSection.querySelectorAll(
+            ".admin-activity"
+          )
+        ).map(
+          getActivityData
+        )
+      );
+
 
     const artistData = {
       id: slug,
 
       artist: {
-        name: artistName,
+        name:
+          artistName,
 
         category:
           getFieldByLabel(
@@ -501,6 +788,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "Email"
           )?.value.trim() || ""
       },
+
 
       stay: {
         arrivalDate:
@@ -540,6 +828,7 @@ document.addEventListener("DOMContentLoaded", () => {
           )?.value.trim() || ""
       },
 
+
       hotel: {
         name:
           getFieldByLabel(
@@ -566,6 +855,7 @@ document.addEventListener("DOMContentLoaded", () => {
           )?.value || ""
       },
 
+
       mainContact: {
         name:
           getFieldByLabel(
@@ -580,92 +870,279 @@ document.addEventListener("DOMContentLoaded", () => {
           )?.value.trim() || ""
       },
 
-      schedule: activities
+
+      schedule:
+        activities
     };
 
-    return removeEmptyValues(artistData);
+
+    return removeEmptyValues(
+      artistData
+    );
   }
 
-  prepareActivity(firstActivity);
+
+  /* =========================================
+     INITIAL ACTIVITY
+     ========================================= */
+
+  prepareActivity(
+    firstActivity
+  );
+
   updateActivityNumbers();
 
-  addButton.addEventListener("click", () => {
-    const newActivity = firstActivity.cloneNode(true);
 
-    resetActivityFields(newActivity);
+  /* =========================================
+     ADD ACTIVITY
+     ========================================= */
 
-    const oldRemoveButton = newActivity.querySelector(
-      ".admin-remove-activity"
-    );
+  addButton.addEventListener(
+    "click",
+    () => {
+      const newActivity =
+        firstActivity.cloneNode(
+          true
+        );
 
-    oldRemoveButton?.remove();
 
-    prepareActivity(newActivity);
+      resetActivityFields(
+        newActivity
+      );
 
-    scheduleSection.insertBefore(
-      newActivity,
-      addButton
-    );
 
-    updateActivityNumbers();
+      const oldRemoveButton =
+        newActivity.querySelector(
+          ".admin-remove-activity"
+        );
 
-    newActivity.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  });
+      oldRemoveButton?.remove();
+
+
+      prepareActivity(
+        newActivity
+      );
+
+
+      scheduleSection.insertBefore(
+        newActivity,
+        addButton
+      );
+
+
+      updateActivityNumbers();
+
+
+      newActivity.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  );
+
+
+  /* =========================================
+     CHANGE ACTIVITY TYPE
+     ========================================= */
 
   scheduleSection.addEventListener(
     "change",
     (event) => {
-      const activity = event.target.closest(
-        ".admin-activity"
-      );
+      const activity =
+        event.target.closest(
+          ".admin-activity"
+        );
 
       if (!activity) {
         return;
       }
 
-      const typeField = getFieldByLabel(
-        activity,
-        "Type"
-      );
 
-      if (event.target === typeField) {
-        updateActivityFields(activity);
+      const typeField =
+        getFieldByLabel(
+          activity,
+          "Type"
+        );
+
+
+      if (
+        event.target === typeField
+      ) {
+        updateActivityFields(
+          activity
+        );
       }
     }
   );
 
-  generateButton?.addEventListener("click", () => {
-    const artistData = generateArtistData();
 
-    if (previewArtistName) {
-      previewArtistName.textContent =
-        artistData.artist.name || "Unnamed artist";
+  /* =========================================
+     GENERATE PREVIEW
+     ========================================= */
+
+  generateButton?.addEventListener(
+    "click",
+    () => {
+      const artistData =
+        generateArtistData();
+
+
+      currentArtistData =
+        artistData;
+
+
+      if (previewArtistName) {
+        previewArtistName.textContent =
+          artistData.artist?.name ||
+          "Unnamed artist";
+      }
+
+
+      if (previewArtistSlug) {
+        previewArtistSlug.textContent =
+          artistData.id;
+      }
+
+
+      if (previewJSON) {
+        previewJSON.textContent =
+          JSON.stringify(
+            artistData,
+            null,
+            2
+          );
+      }
+
+
+      if (artistLinkInput) {
+        const guidePath =
+          window.location.pathname.replace(
+            /admin\.html$/,
+            ""
+          );
+
+        artistLinkInput.value =
+          `${window.location.origin}${guidePath}?artist=${encodeURIComponent(
+            artistData.id
+          )}`;
+      }
+
+
+      if (previewSection) {
+        previewSection.hidden =
+          false;
+
+        previewSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
     }
+  );
 
-    if (previewArtistSlug) {
-      previewArtistSlug.textContent =
-        artistData.id;
-    }
 
-    if (previewJSON) {
-      previewJSON.textContent =
+  /* =========================================
+     DOWNLOAD ARTIST FILE
+     ========================================= */
+
+  downloadArtistButton?.addEventListener(
+    "click",
+    () => {
+      if (!currentArtistData) {
+        return;
+      }
+
+
+      const json =
         JSON.stringify(
-          artistData,
+          currentArtistData,
           null,
           2
         );
-    }
 
-    if (previewSection) {
-      previewSection.hidden = false;
 
-      previewSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
+      const blob =
+        new Blob(
+          [json],
+          {
+            type: "application/json"
+          }
+        );
+
+
+      const url =
+        URL.createObjectURL(
+          blob
+        );
+
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+
+      link.href =
+        url;
+
+      link.download =
+        `${currentArtistData.id}.json`;
+
+
+      document.body.appendChild(
+        link
+      );
+
+      link.click();
+
+      link.remove();
+
+
+      URL.revokeObjectURL(
+        url
+      );
     }
-  });
+  );
+
+
+  /* =========================================
+     COPY ARTIST LINK
+     ========================================= */
+
+  copyArtistLinkButton?.addEventListener(
+    "click",
+    async () => {
+      if (
+        !artistLinkInput?.value
+      ) {
+        return;
+      }
+
+
+      try {
+        await navigator.clipboard.writeText(
+          artistLinkInput.value
+        );
+      } catch {
+        artistLinkInput.select();
+
+        document.execCommand(
+          "copy"
+        );
+      }
+
+
+      copyArtistLinkButton.textContent =
+        "Copied";
+
+
+      setTimeout(
+        () => {
+          copyArtistLinkButton.textContent =
+            "Copy link";
+        },
+        1400
+      );
+    }
+  );
 });
