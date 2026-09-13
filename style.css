@@ -3357,3 +3357,405 @@ span:nth-child(even) {
 .info-panel-trigger {
   cursor: pointer;
 }
+
+/* =========================================
+   ADMIN · ARTIST GUIDE GENERATOR
+   ========================================= */
+
+.admin-body {
+  background: #0a0a0a;
+}
+
+.admin-app {
+  width: 100%;
+  max-width: 760px;
+
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  padding-bottom: 70px;
+
+  background: var(--black);
+}
+
+.admin-header {
+  padding:
+    28px
+    24px
+    34px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+}
+
+.admin-logo {
+  width: 125px;
+
+  display: block;
+}
+
+.admin-header-copy {
+  margin-top: 54px;
+}
+
+.admin-eyebrow {
+  color: var(--mixtur-gold);
+
+  font-size: 0.54rem;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.11em;
+
+  text-transform: uppercase;
+}
+
+.admin-header h1 {
+  margin-top: 12px;
+
+  font-size:
+    clamp(
+      2.7rem,
+      10vw,
+      5rem
+    );
+
+  font-weight: 400;
+
+  line-height: 0.92;
+
+  letter-spacing: -0.05em;
+
+  text-transform: uppercase;
+}
+
+.admin-header p {
+  max-width: 400px;
+
+  margin-top: 22px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.7rem;
+
+  line-height: 1.55;
+}
+
+
+/* ADMIN SECTIONS */
+
+.admin-section {
+  padding:
+    30px
+    24px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+}
+
+.admin-section-heading {
+  display: grid;
+
+  grid-template-columns:
+    34px
+    minmax(0, 1fr);
+
+  gap: 12px;
+
+  align-items: center;
+
+  margin-bottom: 24px;
+}
+
+.admin-section-heading span {
+  color: var(--mixtur-gold);
+
+  font-size: 0.55rem;
+
+  letter-spacing: 0.08em;
+}
+
+.admin-section-heading h2 {
+  font-size: 1rem;
+
+  font-weight: 400;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.03em;
+
+  text-transform: uppercase;
+}
+
+
+/* ADMIN FIELDS */
+
+.admin-fields {
+  display: grid;
+
+  gap: 18px;
+}
+
+.admin-fields + .admin-fields {
+  margin-top: 18px;
+}
+
+.admin-grid-two {
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+}
+
+.admin-field {
+  min-width: 0;
+
+  display: block;
+}
+
+.admin-field > span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.54rem;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+.admin-field input,
+.admin-field select,
+.admin-field textarea {
+  width: 100%;
+
+  border: 0;
+
+  border-bottom:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.28
+    );
+
+  border-radius: 0;
+
+  padding:
+    10px
+    0
+    12px;
+
+  background: transparent;
+
+  color: var(--white);
+
+  font-family:
+    Verdana,
+    Geneva,
+    sans-serif;
+
+  font-size: 0.72rem;
+
+  line-height: 1.4;
+
+  outline: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.admin-field textarea {
+  resize: vertical;
+
+  min-height: 88px;
+}
+
+.admin-field select {
+  cursor: pointer;
+}
+
+.admin-field select option {
+  color: #000;
+}
+
+.admin-field input::placeholder,
+.admin-field textarea::placeholder {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.32
+    );
+}
+
+.admin-field input:focus,
+.admin-field select:focus,
+.admin-field textarea:focus {
+  border-bottom-color:
+    var(--mixtur-gold);
+}
+
+
+/* ADMIN ACTIVITY */
+
+.admin-activity {
+  padding:
+    20px;
+
+  border:
+    1px solid
+    var(--line);
+
+  background:
+    #0d0d0d;
+}
+
+.admin-activity-top {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  margin-bottom: 24px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.54rem;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+.admin-activity-top span:last-child {
+  color: var(--mixtur-gold);
+}
+
+.admin-add-button {
+  width: 100%;
+
+  min-height: 50px;
+
+  margin-top: 16px;
+
+  border:
+    1px solid
+    var(--line);
+
+  background: transparent;
+
+  color: var(--white);
+
+  font-family:
+    Verdana,
+    Geneva,
+    sans-serif;
+
+  font-size: 0.6rem;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+
+/* GENERATE */
+
+.admin-generate {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  padding:
+    34px
+    24px;
+}
+
+.admin-generate h2 {
+  margin-top: 8px;
+
+  font-size: 1.3rem;
+
+  font-weight: 400;
+
+  line-height: 1.15;
+}
+
+.admin-generate p {
+  max-width: 310px;
+
+  margin-top: 10px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.62rem;
+
+  line-height: 1.5;
+}
+
+.admin-generate-button {
+  flex: 0 0 auto;
+
+  min-height: 48px;
+
+  padding:
+    0
+    20px;
+
+  border: 0;
+
+  background:
+    var(--mixtur-gold);
+
+  color: #000;
+
+  font-family:
+    Verdana,
+    Geneva,
+    sans-serif;
+
+  font-size: 0.58rem;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+
+/* ADMIN RESPONSIVE */
+
+@media (max-width: 560px) {
+
+  .admin-grid-two {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-generate {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-generate-button {
+    width: 100%;
+  }
+
+}
