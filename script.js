@@ -1,797 +1,3195 @@
 /* =========================================
-   ARTIST DATA TEST
+   MIXTUR ARTIST GUIDE · MAIN SCRIPT
    ========================================= */
 
-(async function loadArtistDataTest() {
-  const params = new URLSearchParams(
-    window.location.search
-  );
+document.addEventListener("DOMContentLoaded", async () => {
+  const params = new URLSearchParams(window.location.search);
+  const artistId = params.get("artist");
 
-  const artistId =
-    params.get("artist");
+  let artistData = null;
 
-  if (!artistId) {
-    console.log(
-      "Mixtur Artist Guide: no artist selected."
-    );
 
-    return;
+  /* =========================================
+     SHARED HELPERS
+     ========================================= */
+
+  const venueData = {
+    "Fabra i Coats": {
+      name: "Fabra i Coats",
+      address: "Carrer de Sant Adrià, 20, 08030 Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=Fabra+i+Coats+Barcelona"
+    },
+
+    "ESMUC": {
+      name: "ESMUC",
+      address: "Carrer de Padilla, 155, 08013 Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=ESMUC+Barcelona"
+    },
+
+    "PHONOS": {
+      name: "PHONOS",
+      address: "Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=PHONOS+Barcelona"
+    },
+
+    "Museu de la Música": {
+      name: "Museu de la Música",
+      address:
+        "L'Auditori, Carrer de Lepant, 150, 08013 Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=Museu+de+la+Musica+Barcelona"
+    },
+
+    "TDM": {
+      name: "TDM",
+      address: "Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=TDM+Barcelona"
+    },
+
+    "CMMB": {
+      name:
+        "Conservatori Municipal de Música de Barcelona",
+      address:
+        "Carrer del Bruc, 110-112, 08009 Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=Conservatori+Municipal+de+Musica+de+Barcelona"
+    },
+
+    "Santa Mònica": {
+      name: "Santa Mònica",
+      address: "La Rambla, 7, 08002 Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=Santa+Monica+Barcelona+La+Rambla+7"
+    },
+
+    "L'Auditori": {
+      name: "L'Auditori",
+      address:
+        "Carrer de Lepant, 150, 08013 Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=L%27Auditori+Barcelona"
+    },
+
+    "Espai Bota": {
+      name: "Espai Bota",
+      address: "Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=Espai+Bota+Barcelona"
+    },
+
+    "ALMO2BAR": {
+      name: "ALMO2BAR",
+      address: "Barcelona",
+      maps:
+        "https://www.google.com/maps/search/?api=1&query=ALMO2BAR+Barcelona"
+    }
+  };
+
+
+  function escapeHTML(value = "") {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
-  try {
-    const response = await fetch(
-      `artists/${encodeURIComponent(
-        artistId
-      )}.json`
-    );
 
-    if (!response.ok) {
-      throw new Error(
-        `Artist file not found: ${response.status}`
+  function normalizeText(value = "") {
+    return String(value)
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  }
+
+
+  function parseLocalDate(dateString) {
+    if (!dateString) return null;
+
+    const [year, month, day] =
+      dateString
+        .split("-")
+        .map(Number);
+
+    if (!year || !month || !day) {
+      return null;
+    }
+
+    return new Date(
+      year,
+      month - 1,
+      day
+    );
+  }
+
+
+  function formatDateLong(dateString) {
+    const date =
+      parseLocalDate(dateString);
+
+    if (!date) return "";
+
+    return new Intl.DateTimeFormat(
+      "en-GB",
+      {
+        weekday: "long",
+        day: "numeric",
+        month: "long"
+      }
+    ).format(date);
+  }
+
+
+  function formatDayNumberMonth(
+    dateString
+  ) {
+    const date =
+      parseLocalDate(dateString);
+
+    if (!date) return "";
+
+    return new Intl.DateTimeFormat(
+      "en-GB",
+      {
+        day: "numeric",
+        month: "long"
+      }
+    ).format(date);
+  }
+
+
+  function formatWeekday(dateString) {
+    const date =
+      parseLocalDate(dateString);
+
+    if (!date) return "";
+
+    return new Intl.DateTimeFormat(
+      "en-GB",
+      {
+        weekday: "long"
+      }
+    ).format(date);
+  }
+
+
+  function formatStayDates(
+    stay = {}
+  ) {
+    const arrival =
+      parseLocalDate(
+        stay.arrivalDate
+      );
+
+    const departure =
+      parseLocalDate(
+        stay.departureDate
+      );
+
+    if (!arrival && !departure) {
+      return "";
+    }
+
+
+    if (arrival && departure) {
+      const sameMonth =
+        arrival.getFullYear() ===
+          departure.getFullYear() &&
+        arrival.getMonth() ===
+          departure.getMonth();
+
+
+      if (sameMonth) {
+        const month =
+          new Intl.DateTimeFormat(
+            "en-GB",
+            {
+              month: "long"
+            }
+          ).format(arrival);
+
+        return (
+          `${arrival.getDate()}–${departure.getDate()} ${month}`
+        ).toUpperCase();
+      }
+
+
+      return (
+        `${formatDayNumberMonth(
+          stay.arrivalDate
+        )} – ${formatDayNumberMonth(
+          stay.departureDate
+        )}`
+      ).toUpperCase();
+    }
+
+
+    return formatDayNumberMonth(
+      stay.arrivalDate ||
+      stay.departureDate
+    ).toUpperCase();
+  }
+
+
+  function activityLocation(
+    activity = {}
+  ) {
+    if (activity.venue) {
+      return activity.room
+        ? `${activity.venue} · ${activity.room}`
+        : activity.venue;
+    }
+
+
+    if (activity.hotel) {
+      return activity.hotel;
+    }
+
+
+    if (activity.place) {
+      return activity.place;
+    }
+
+
+    if (
+      activity.from &&
+      activity.to
+    ) {
+      return (
+        `${activity.from} → ${activity.to}`
       );
     }
 
-    const artistData =
-      await response.json();
 
-    console.log(
-      "Mixtur Artist Guide: artist loaded successfully"
-    );
+    if (activity.to) {
+      return activity.to;
+    }
 
-    console.log(
-      artistData
-    );
 
-    window.mixturArtistData =
-      artistData;
+    if (activity.from) {
+      return activity.from;
+    }
 
-           const welcomeTitle =
-        document.querySelector(".welcome");
-      
-      if (
-        welcomeTitle &&
-        artistData.artist?.name
-      ) {
-        welcomeTitle.textContent =
-          `WELCOME, ${artistData.artist.name}`;
-      }
 
-  } catch (error) {
-    console.error(
-      "Mixtur Artist Guide: could not load artist",
-      error
+    return "";
+  }
+
+
+  function getMapsURL(
+    activity = {}
+  ) {
+    if (
+      activity.venue &&
+      venueData[activity.venue]
+    ) {
+      return (
+        venueData[
+          activity.venue
+        ].maps
+      );
+    }
+
+
+    if (activity.hotel) {
+      const query =
+        artistData?.hotel?.address ||
+        activity.hotel;
+
+      return (
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(query)
+      );
+    }
+
+
+    if (activity.place) {
+      return (
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(
+          activity.place +
+          " Barcelona"
+        )
+      );
+    }
+
+
+    if (activity.to) {
+      return (
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(
+          activity.to
+        )
+      );
+    }
+
+
+    return "";
+  }
+
+
+  function internalHref(
+    page,
+    hash = ""
+  ) {
+    if (!artistId) {
+      return `${page}${hash}`;
+    }
+
+    return (
+      `${page}?artist=` +
+      `${encodeURIComponent(
+        artistId
+      )}${hash}`
     );
   }
-})();
 
-document.addEventListener("DOMContentLoaded", () => {
+
+  function preserveArtistInNavigation() {
+    if (!artistId) {
+      return;
+    }
+
+
+    document
+      .querySelectorAll("a[href]")
+      .forEach((link) => {
+        const rawHref =
+          link.getAttribute("href");
+
+
+        if (
+          !rawHref ||
+          rawHref.startsWith("http") ||
+          rawHref.startsWith("mailto:") ||
+          rawHref.startsWith("tel:") ||
+          rawHref.startsWith("#")
+        ) {
+          return;
+        }
+
+
+        const match =
+          rawHref.match(
+            /^(index\.html|schedule\.html|places\.html|info\.html)(#[^?]*)?$/
+          );
+
+
+        if (!match) {
+          return;
+        }
+
+
+        link.setAttribute(
+          "href",
+          internalHref(
+            match[1],
+            match[2] || ""
+          )
+        );
+      });
+  }
+
+
+  async function loadArtistData() {
+    if (!artistId) {
+      console.log(
+        "Mixtur Artist Guide: no artist selected."
+      );
+
+      return null;
+    }
+
+
+    try {
+      const response =
+        await fetch(
+          `artists/${encodeURIComponent(
+            artistId
+          )}.json`,
+          {
+            cache: "no-store"
+          }
+        );
+
+
+      if (!response.ok) {
+        throw new Error(
+          `Artist file not found: ${response.status}`
+        );
+      }
+
+
+      const data =
+        await response.json();
+
+
+      window.mixturArtistData =
+        data;
+
+
+      console.log(
+        "Mixtur Artist Guide: artist loaded successfully",
+        data
+      );
+
+
+      return data;
+
+    } catch (error) {
+      console.error(
+        "Mixtur Artist Guide: could not load artist",
+        error
+      );
+
+      return null;
+    }
+  }
+
 
   /* =========================================
-     SLIDE-UP PANELS
+     GENERIC SLIDE-UP PANELS
      ========================================= */
-
-  const panelTriggers = document.querySelectorAll(
-    ".nearby-trigger, .info-panel-trigger"
-  );
-
-  const panels = document.querySelectorAll(".place-panel");
 
   function openPanel(panel) {
-    if (!panel) return;
+    if (!panel) {
+      return;
+    }
 
-    panel.classList.add("open");
-    panel.setAttribute("aria-hidden", "false");
 
-    document.body.classList.add("panel-open");
+    panel.classList.add(
+      "open"
+    );
+
+    panel.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    document.body.classList.add(
+      "panel-open"
+    );
   }
+
 
   function closePanel(panel) {
-    if (!panel) return;
+    if (!panel) {
+      return;
+    }
 
-    panel.classList.remove("open");
-    panel.setAttribute("aria-hidden", "true");
 
-    document.body.classList.remove("panel-open");
+    panel.classList.remove(
+      "open"
+    );
+
+    panel.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    document.body.classList.remove(
+      "panel-open"
+    );
   }
 
-  panelTriggers.forEach((trigger) => {
-    trigger.addEventListener("click", () => {
-      const panelId = trigger.dataset.panel;
 
-      if (!panelId) return;
+  function initStaticPanels() {
+    document
+      .querySelectorAll(
+        ".nearby-trigger, .info-panel-trigger"
+      )
+      .forEach((trigger) => {
 
-      const panel = document.getElementById(panelId);
+        if (
+          trigger.dataset
+            .dynamicActivity ===
+          "true"
+        ) {
+          return;
+        }
 
-      openPanel(panel);
-    });
 
-    trigger.addEventListener("keydown", (event) => {
-      if (
-        event.key === "Enter" ||
-        event.key === " "
-      ) {
+        const activate = () => {
+          const panelId =
+            trigger.dataset.panel;
+
+          if (!panelId) {
+            return;
+          }
+
+          openPanel(
+            document.getElementById(
+              panelId
+            )
+          );
+        };
+
+
+        trigger.addEventListener(
+          "click",
+          (event) => {
+            event.preventDefault();
+            activate();
+          }
+        );
+
+
+        trigger.addEventListener(
+          "keydown",
+          (event) => {
+            if (
+              event.key ===
+                "Enter" ||
+              event.key === " "
+            ) {
+              event.preventDefault();
+              activate();
+            }
+          }
+        );
+      });
+
+
+    document
+      .querySelectorAll(
+        ".place-panel"
+      )
+      .forEach((panel) => {
+
+        panel
+          .querySelector(
+            ".panel-backdrop"
+          )
+          ?.addEventListener(
+            "click",
+            () => {
+              closePanel(panel);
+            }
+          );
+
+
+        panel
+          .querySelector(
+            ".panel-close"
+          )
+          ?.addEventListener(
+            "click",
+            () => {
+              closePanel(panel);
+            }
+          );
+      });
+  }
+
+
+  function ensureActivityPanel() {
+    let panel =
+      document.getElementById(
+        "activity-detail-panel"
+      );
+
+
+    if (panel) {
+      return panel;
+    }
+
+
+    document.body
+      .insertAdjacentHTML(
+        "beforeend",
+        `
+        <div
+          class="place-panel"
+          id="activity-detail-panel"
+          aria-hidden="true"
+        >
+
+          <div
+            class="panel-backdrop"
+          ></div>
+
+          <div
+            class="panel-sheet"
+          >
+
+            <div
+              class="panel-handle"
+            ></div>
+
+
+            <button
+              class="panel-close"
+              type="button"
+              aria-label="Close activity details"
+            >
+              ×
+            </button>
+
+
+            <div
+              class="panel-category"
+              data-activity-panel-category
+            ></div>
+
+
+            <h2
+              class="panel-title"
+              data-activity-panel-title
+            ></h2>
+
+
+            <p
+              class="panel-description"
+              data-activity-panel-description
+            ></p>
+
+
+            <div
+              class="panel-info"
+              data-activity-panel-info
+            ></div>
+
+
+            <a
+              class="panel-map-link"
+              data-activity-panel-map
+              target="_blank"
+              rel="noopener noreferrer"
+              hidden
+            >
+              Open in Maps →
+            </a>
+
+          </div>
+
+        </div>
+        `
+      );
+
+
+    panel =
+      document.getElementById(
+        "activity-detail-panel"
+      );
+
+
+    panel
+      .querySelector(
+        ".panel-backdrop"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+          closePanel(panel);
+        }
+      );
+
+
+    panel
+      .querySelector(
+        ".panel-close"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+          closePanel(panel);
+        }
+      );
+
+
+    return panel;
+  }
+
+
+  function activityInfoRows(
+    activity = {}
+  ) {
+    const rows = [];
+
+
+    if (activity.venue) {
+      rows.push([
+        "Venue",
+        activity.venue
+      ]);
+    }
+
+
+    if (activity.room) {
+      rows.push([
+        "Room",
+        activity.room
+      ]);
+    }
+
+
+    if (activity.callTime) {
+      rows.push([
+        "Call time",
+        activity.callTime
+      ]);
+    }
+
+
+    if (activity.hotel) {
+      rows.push([
+        "Hotel",
+        activity.hotel
+      ]);
+    }
+
+
+    if (activity.place) {
+      rows.push([
+        "Place",
+        activity.place
+      ]);
+    }
+
+
+    if (activity.from) {
+      rows.push([
+        "From",
+        activity.from
+      ]);
+    }
+
+
+    if (activity.to) {
+      rows.push([
+        "To",
+        activity.to
+      ]);
+    }
+
+
+    if (activity.transport) {
+      rows.push([
+        "Transport",
+        activity.transport
+      ]);
+    }
+
+
+    if (activity.notes) {
+      rows.push([
+        "Notes",
+        activity.notes
+      ]);
+    }
+
+
+    if (
+      artistData
+        ?.mainContact
+        ?.name
+    ) {
+      rows.push([
+        "Contact",
+
+        `${artistData.mainContact.name}${
+          artistData.mainContact.role
+            ? ` · ${artistData.mainContact.role}`
+            : ""
+        }`
+      ]);
+    }
+
+
+    return rows;
+  }
+
+
+  function openActivityDetail(
+    activity
+  ) {
+    if (!activity) {
+      return;
+    }
+
+
+    const panel =
+      ensureActivityPanel();
+
+
+    panel.querySelector(
+      "[data-activity-panel-category]"
+    ).textContent =
+      activity.type ||
+      "Activity";
+
+
+    panel.querySelector(
+      "[data-activity-panel-title]"
+    ).textContent =
+      activity.title ||
+      activity.type ||
+      "Activity";
+
+
+    const dateText =
+      formatDateLong(
+        activity.date
+      );
+
+
+    const description =
+      [
+        dateText,
+        activity.time
+      ]
+        .filter(Boolean)
+        .join(" · ");
+
+
+    panel.querySelector(
+      "[data-activity-panel-description]"
+    ).textContent =
+      description;
+
+
+    const info =
+      panel.querySelector(
+        "[data-activity-panel-info]"
+      );
+
+
+    info.innerHTML =
+      activityInfoRows(
+        activity
+      )
+        .map(
+          ([label, value]) => `
+            <div
+              class="panel-info-row"
+            >
+              <span
+                class="panel-info-label"
+              >
+                ${escapeHTML(label)}
+              </span>
+
+              <span
+                class="panel-info-value"
+              >
+                ${escapeHTML(value)}
+              </span>
+            </div>
+          `
+        )
+        .join("");
+
+
+    const mapLink =
+      panel.querySelector(
+        "[data-activity-panel-map]"
+      );
+
+
+    const mapsURL =
+      getMapsURL(
+        activity
+      );
+
+
+    if (mapsURL) {
+      mapLink.href =
+        mapsURL;
+
+      mapLink.hidden =
+        false;
+
+    } else {
+      mapLink.removeAttribute(
+        "href"
+      );
+
+      mapLink.hidden =
+        true;
+    }
+
+
+    openPanel(panel);
+  }
+
+
+  function initDynamicActivityDelegation() {
+
+    document.addEventListener(
+      "click",
+      (event) => {
+
+        const trigger =
+          event.target.closest(
+            "[data-activity-index]"
+          );
+
+
+        if (
+          !trigger ||
+          !artistData?.schedule
+        ) {
+          return;
+        }
+
+
+        const index =
+          Number(
+            trigger.dataset
+              .activityIndex
+          );
+
+
+        const activity =
+          artistData.schedule[
+            index
+          ];
+
+
+        openActivityDetail(
+          activity
+        );
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.key !==
+            "Enter" &&
+          event.key !== " "
+        ) {
+          return;
+        }
+
+
+        const trigger =
+          event.target.closest(
+            "[data-activity-index]"
+          );
+
+
+        if (
+          !trigger ||
+          !artistData?.schedule
+        ) {
+          return;
+        }
+
+
         event.preventDefault();
 
-        const panelId = trigger.dataset.panel;
 
-        if (!panelId) return;
-
-        const panel = document.getElementById(panelId);
-
-        openPanel(panel);
-      }
-    });
-  });
-
-  panels.forEach((panel) => {
-    const backdrop =
-      panel.querySelector(".panel-backdrop");
-
-    const closeButton =
-      panel.querySelector(".panel-close");
-
-    backdrop?.addEventListener("click", () => {
-      closePanel(panel);
-    });
-
-    closeButton?.addEventListener("click", () => {
-      closePanel(panel);
-    });
-  });
+        const index =
+          Number(
+            trigger.dataset
+              .activityIndex
+          );
 
 
-  /* =========================================
-     PLACES FILTERS
-     ========================================= */
-
-  const filterButtons =
-    document.querySelectorAll(".filter-button");
-
-  const placeCards =
-    document.querySelectorAll(".place-card");
-
-  filterButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const filter = button.dataset.filter;
-
-      filterButtons.forEach((item) => {
-        item.classList.remove("active");
-      });
-
-      button.classList.add("active");
-
-      placeCards.forEach((card) => {
-        const category =
-          card.dataset.category;
-
-        const hasFood =
-          card.dataset.food === "true";
-
-        let visible = false;
-
-        if (filter === "all") {
-          visible = true;
-        }
-
-        if (filter === "venues") {
-          visible =
-            category === "venues";
-        }
-
-        if (filter === "food") {
-          visible = hasFood;
-        }
-
-        if (filter === "other") {
-          visible =
-            category === "other";
-        }
-
-        card.style.display =
-          visible ? "" : "none";
-      });
-    });
-  });
-
-
-  /* =========================================
-     INFO ACCORDION
-     ========================================= */
-
-  const infoSections =
-    document.querySelectorAll(".info-section");
-
-  infoSections.forEach((section) => {
-    const button =
-      section.querySelector(".info-section-toggle");
-
-    if (!button) return;
-
-    button.addEventListener("click", () => {
-      const isOpen =
-        section.classList.contains("open");
-
-      infoSections.forEach((item) => {
-        item.classList.remove("open");
-
-        const itemButton =
-          item.querySelector(".info-section-toggle");
-
-        itemButton?.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-      });
-
-      if (!isOpen) {
-        section.classList.add("open");
-
-        button.setAttribute(
-          "aria-expanded",
-          "true"
+        openActivityDetail(
+          artistData.schedule[
+            index
+          ]
         );
       }
-    });
-  });
+    );
+  }
 
 
   /* =========================================
+     TODAY · ARTIST DATA
+     ========================================= */
+
+  function chooseTodayDate(
+    schedule = []
+  ) {
+    if (!schedule.length) {
+      return "";
+    }
+
+
+    const now =
+      new Date();
+
+
+    const today =
+      [
+        now.getFullYear(),
+
+        String(
+          now.getMonth() + 1
+        ).padStart(
+          2,
+          "0"
+        ),
+
+        String(
+          now.getDate()
+        ).padStart(
+          2,
+          "0"
+        )
+      ].join("-");
+
+
+    if (
+      schedule.some(
+        (item) =>
+          item.date ===
+          today
+      )
+    ) {
+      return today;
+    }
+
+
+    return (
+      schedule.find(
+        (item) =>
+          item.date
+      )?.date ||
+      ""
+    );
+  }
+
+     function renderTodayPage() {
+    if (!artistData) {
+      return;
+    }
+
+
+    const welcomeTitle =
+      document.querySelector(
+        ".welcome"
+      );
+
+
+    if (
+      welcomeTitle &&
+      artistData.artist?.name
+    ) {
+      welcomeTitle.textContent =
+        `WELCOME, ${artistData.artist.name}`;
+    }
+
+
+    const stayDates =
+      formatStayDates(
+        artistData.stay
+      );
+
+
+    const stayDateCandidates = [
+      ".welcome-dates",
+      ".hero-dates",
+      ".artist-dates",
+      "[data-artist-stay-dates]"
+    ];
+
+
+    stayDateCandidates.forEach(
+      (selector) => {
+        const element =
+          document.querySelector(
+            selector
+          );
+
+        if (
+          element &&
+          stayDates
+        ) {
+          element.textContent =
+            stayDates;
+        }
+      }
+    );
+
+
+    const schedule =
+      Array.isArray(
+        artistData.schedule
+      )
+        ? artistData.schedule
+        : [];
+
+
+    if (!schedule.length) {
+      return;
+    }
+
+
+    const selectedDate =
+      chooseTodayDate(
+        schedule
+      );
+
+
+    const dayActivities =
+      schedule
+        .map(
+          (activity, index) => ({
+            ...activity,
+            __index: index
+          })
+        )
+        .filter(
+          (activity) =>
+            activity.date ===
+            selectedDate
+        );
+
+
+    const nextActivity =
+      dayActivities[0];
+
+
+    renderTodayNextUp(
+      nextActivity
+    );
+
+
+    renderTodaySchedule(
+      selectedDate,
+      dayActivities
+    );
+
+
+    renderTodayContact();
+  }
+
+
+  function renderTodayNextUp(
+    activity
+  ) {
+    if (!activity) {
+      return;
+    }
+
+
+    const nextCard =
+      document.querySelector(
+        ".next-card, .next-up-card, [data-next-up]"
+      );
+
+
+    if (!nextCard) {
+      return;
+    }
+
+
+    nextCard.setAttribute(
+      "role",
+      "button"
+    );
+
+    nextCard.setAttribute(
+      "tabindex",
+      "0"
+    );
+
+    nextCard.dataset.activityIndex =
+      String(
+        activity.__index
+      );
+
+
+    const time =
+      nextCard.querySelector(
+        ".next-time, .next-up-time, [data-next-time]"
+      );
+
+
+    if (time) {
+      time.textContent =
+        activity.time || "";
+    }
+
+
+    const type =
+      nextCard.querySelector(
+        ".next-type, .next-up-type, [data-next-type]"
+      );
+
+
+    if (type) {
+      type.textContent =
+        activity.type || "";
+    }
+
+
+    const title =
+      nextCard.querySelector(
+        "h2, h3, .next-title, [data-next-title]"
+      );
+
+
+    if (title) {
+      title.textContent =
+        activity.title ||
+        activity.type ||
+        "Activity";
+    }
+
+
+    const location =
+      nextCard.querySelector(
+        ".next-location, .next-place, p, [data-next-location]"
+      );
+
+
+    if (location) {
+      location.textContent =
+        activityLocation(
+          activity
+        );
+    }
+  }
+
+
+  function findTodayScheduleContainer() {
+    return (
+      document.querySelector(
+        "[data-today-schedule]"
+      ) ||
+      document.querySelector(
+        ".today-schedule-list"
+      ) ||
+      document.querySelector(
+        ".schedule-preview"
+      ) ||
+      document.querySelector(
+        ".today-list"
+      )
+    );
+  }
+
+
+  function renderTodaySchedule(
+    selectedDate,
+    activities
+  ) {
+    const container =
+      findTodayScheduleContainer();
+
+
+    if (!container) {
+      makeExistingTodayRowsClickable(
+        activities
+      );
+
+      return;
+    }
+
+
+    const heading =
+      document.querySelector(
+        "[data-today-date], .today-date, .schedule-preview-date"
+      );
+
+
+    if (
+      heading &&
+      selectedDate
+    ) {
+      heading.textContent =
+        formatDateLong(
+          selectedDate
+        ).toUpperCase();
+    }
+
+
+    container.innerHTML =
+      activities
+        .map(
+          (activity) => `
+            <article
+              class="today-event info-panel-trigger"
+              data-dynamic-activity="true"
+              data-activity-index="${activity.__index}"
+              role="button"
+              tabindex="0"
+              aria-label="Open ${escapeHTML(
+                activity.title ||
+                activity.type ||
+                "activity"
+              )} details"
+            >
+              <div class="today-event-time">
+                ${escapeHTML(
+                  activity.time || ""
+                )}
+              </div>
+
+              <div class="today-event-info">
+                <div class="today-event-type">
+                  ${escapeHTML(
+                    activity.type || ""
+                  )}
+                </div>
+
+                <h3>
+                  ${escapeHTML(
+                    activity.title ||
+                    activity.type ||
+                    "Activity"
+                  )}
+                </h3>
+
+                ${
+                  activityLocation(
+                    activity
+                  )
+                    ? `
+                      <p>
+                        ${escapeHTML(
+                          activityLocation(
+                            activity
+                          )
+                        )}
+                      </p>
+                    `
+                    : ""
+                }
+              </div>
+
+              <div class="today-event-arrow">
+                →
+              </div>
+            </article>
+          `
+        )
+        .join("");
+  }
+
+
+  function makeExistingTodayRowsClickable(
+    activities
+  ) {
+    const existingRows =
+      document.querySelectorAll(
+        ".today-event, .today-schedule-item, .schedule-preview-item"
+      );
+
+
+    existingRows.forEach(
+      (row, index) => {
+        const activity =
+          activities[index];
+
+        if (!activity) {
+          return;
+        }
+
+
+        row.dataset.activityIndex =
+          String(
+            activity.__index
+          );
+
+        row.dataset.dynamicActivity =
+          "true";
+
+        row.setAttribute(
+          "role",
+          "button"
+        );
+
+        row.setAttribute(
+          "tabindex",
+          "0"
+        );
+      }
+    );
+  }
+
+
+  function renderTodayContact() {
+    const contact =
+      artistData?.mainContact;
+
+    if (
+      !contact?.name
+    ) {
+      return;
+    }
+
+
+    const contactCards =
+      document.querySelectorAll(
+        ".contact-card, .today-contact-card, [data-main-contact]"
+      );
+
+
+    contactCards.forEach(
+      (card) => {
+        const name =
+          card.querySelector(
+            ".contact-name, h2, h3, [data-contact-name]"
+          );
+
+
+        const role =
+          card.querySelector(
+            ".contact-role, p, [data-contact-role]"
+          );
+
+
+        if (name) {
+          name.textContent =
+            contact.name;
+        }
+
+
+        if (
+          role &&
+          contact.role
+        ) {
+          role.textContent =
+            contact.role;
+        }
+      }
+    );
+  }
+
+
+  /* =========================================
+     SCHEDULE · DYNAMIC
+     ========================================= */
+
+  function findScheduleContainer() {
+    return (
+      document.querySelector(
+        "[data-full-schedule]"
+      ) ||
+      document.querySelector(
+        ".schedule-content"
+      ) ||
+      document.querySelector(
+        ".schedule-list"
+      ) ||
+      document.querySelector(
+        "main .schedule-page"
+      )
+    );
+  }
+
+
+  function groupScheduleByDate(
+    schedule
+  ) {
+    const groups = {};
+
+
+    schedule.forEach(
+      (activity, index) => {
+        if (!activity.date) {
+          return;
+        }
+
+
+        if (
+          !groups[
+            activity.date
+          ]
+        ) {
+          groups[
+            activity.date
+          ] = [];
+        }
+
+
+        groups[
+          activity.date
+        ].push({
+          ...activity,
+          __index: index
+        });
+      }
+    );
+
+
+    return groups;
+  }
+
+
+  function renderSchedulePage() {
+    if (
+      !artistData ||
+      !Array.isArray(
+        artistData.schedule
+      )
+    ) {
+      return;
+    }
+
+
+    const container =
+      findScheduleContainer();
+
+
+    if (!container) {
+      makeExistingScheduleRowsClickable();
+
+      return;
+    }
+
+
+    const groups =
+      groupScheduleByDate(
+        artistData.schedule
+      );
+
+
+    const dates =
+      Object.keys(groups)
+        .sort();
+
+
+    if (!dates.length) {
+      return;
+    }
+
+
+    container.innerHTML =
+      dates
+        .map(
+          (date) => `
+            <section
+              class="schedule-day"
+            >
+              <div
+                class="schedule-day-heading"
+              >
+                <div
+                  class="schedule-day-name"
+                >
+                  ${escapeHTML(
+                    formatWeekday(
+                      date
+                    )
+                  )}
+                </div>
+
+                <div
+                  class="schedule-day-date"
+                >
+                  ${escapeHTML(
+                    formatDayNumberMonth(
+                      date
+                    )
+                  )}
+                </div>
+              </div>
+
+              <div
+                class="schedule-day-events"
+              >
+                ${groups[date]
+                  .map(
+                    (
+                      activity
+                    ) => `
+                      <article
+                        class="schedule-event info-panel-trigger"
+                        data-dynamic-activity="true"
+                        data-activity-index="${activity.__index}"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Open ${escapeHTML(
+                          activity.title ||
+                          activity.type ||
+                          "activity"
+                        )} details"
+                      >
+
+                        <div
+                          class="schedule-time"
+                        >
+                          ${escapeHTML(
+                            activity.time || ""
+                          )}
+                        </div>
+
+
+                        <div
+                          class="schedule-event-info"
+                        >
+
+                          <div
+                            class="schedule-event-type"
+                          >
+                            ${escapeHTML(
+                              activity.type || ""
+                            )}
+                          </div>
+
+
+                          <h2>
+                            ${escapeHTML(
+                              activity.title ||
+                              activity.type ||
+                              "Activity"
+                            )}
+                          </h2>
+
+
+                          ${
+                            activityLocation(
+                              activity
+                            )
+                              ? `
+                                <p>
+                                  ${escapeHTML(
+                                    activityLocation(
+                                      activity
+                                    )
+                                  )}
+                                </p>
+                              `
+                              : ""
+                          }
+
+                        </div>
+
+
+                        <div
+                          class="schedule-event-arrow"
+                        >
+                          →
+                        </div>
+
+                      </article>
+                    `
+                  )
+                  .join("")}
+              </div>
+            </section>
+          `
+        )
+        .join("");
+  }
+
+
+  function makeExistingScheduleRowsClickable() {
+    const rows =
+      document.querySelectorAll(
+        ".schedule-event"
+      );
+
+
+    rows.forEach(
+      (row, index) => {
+        const activity =
+          artistData.schedule[
+            index
+          ];
+
+        if (!activity) {
+          return;
+        }
+
+
+        row.dataset.activityIndex =
+          String(index);
+
+        row.dataset.dynamicActivity =
+          "true";
+
+        row.setAttribute(
+          "role",
+          "button"
+        );
+
+        row.setAttribute(
+          "tabindex",
+          "0"
+        );
+      }
+    );
+  }
+
+
+  /* =========================================
+     PLACES · FILTERS
+     ========================================= */
+
+  function initPlacesFilters() {
+    const filterButtons =
+      document.querySelectorAll(
+        ".place-filter, .filter-button"
+      );
+
+
+    const placeCards =
+      document.querySelectorAll(
+        ".featured-place, .place-card"
+      );
+
+
+    if (
+      !filterButtons.length ||
+      !placeCards.length
+    ) {
+      return;
+    }
+
+
+    filterButtons.forEach(
+      (button) => {
+        button.addEventListener(
+          "click",
+          () => {
+            const filter =
+              button.dataset.filter ||
+              normalizeText(
+                button.textContent
+              );
+
+
+            filterButtons.forEach(
+              (item) => {
+                item.classList.remove(
+                  "active"
+                );
+              }
+            );
+
+
+            button.classList.add(
+              "active"
+            );
+
+
+            placeCards.forEach(
+              (card) => {
+                const category =
+                  normalizeText(
+                    card.dataset
+                      .category || ""
+                  );
+
+
+                const hasFood =
+                  card.dataset.food ===
+                  "true";
+
+
+                let visible = false;
+
+
+                if (
+                  filter === "all"
+                ) {
+                  visible = true;
+                }
+
+
+                if (
+                  filter ===
+                    "venues" ||
+                  filter ===
+                    "venue"
+                ) {
+                  visible =
+                    category ===
+                      "venues" ||
+                    category ===
+                      "venue";
+                }
+
+
+                if (
+                  filter === "food"
+                ) {
+                  visible =
+                    hasFood ||
+                    category ===
+                      "food";
+                }
+
+
+                if (
+                  filter === "other"
+                ) {
+                  visible =
+                    category ===
+                    "other";
+                }
+
+
+                card.hidden =
+                  !visible;
+
+                card.style.display =
+                  visible
+                    ? ""
+                    : "none";
+              }
+            );
+          }
+        );
+      }
+    );
+  }
+
+
+  /* =========================================
+     PLACES · MAP LINKS
+     ========================================= */
+
+  function repairPlacesMapLinks() {
+    const cards =
+      document.querySelectorAll(
+        ".featured-place, .place-card"
+      );
+
+
+    cards.forEach(
+      (card) => {
+        const titleElement =
+          card.querySelector(
+            "h2, h3, .place-title"
+          );
+
+
+        const title =
+          titleElement?.textContent
+            ?.trim();
+
+
+        if (!title) {
+          return;
+        }
+
+
+        let mapsURL = "";
+
+
+        const exactVenue =
+          Object.keys(
+            venueData
+          ).find(
+            (venue) =>
+              normalizeText(
+                title
+              ).includes(
+                normalizeText(
+                  venue
+                )
+              )
+          );
+
+
+        if (exactVenue) {
+          mapsURL =
+            venueData[
+              exactVenue
+            ].maps;
+        }
+
+
+        if (
+          !mapsURL &&
+          artistData?.hotel?.name &&
+          normalizeText(
+            title
+          ).includes(
+            normalizeText(
+              artistData.hotel.name
+            )
+          )
+        ) {
+          const hotelQuery =
+            artistData.hotel
+              .address ||
+            artistData.hotel
+              .name;
+
+
+          mapsURL =
+            "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent(
+              hotelQuery
+            );
+        }
+
+
+        const links =
+          card.querySelectorAll(
+            "a"
+          );
+
+
+        links.forEach(
+          (link) => {
+            const text =
+              normalizeText(
+                link.textContent
+              );
+
+
+            if (
+              text.includes(
+                "open in maps"
+              ) ||
+              text.includes(
+                "maps"
+              ) ||
+              link.classList.contains(
+                "place-map-link"
+              )
+            ) {
+              if (mapsURL) {
+                link.href =
+                  mapsURL;
+
+                link.target =
+                  "_blank";
+
+                link.rel =
+                  "noopener noreferrer";
+              }
+            }
+          }
+        );
+      }
+    );
+  }
+
+
+  function renderArtistHotelInPlaces() {
+    const hotel =
+      artistData?.hotel;
+
+
+    if (
+      !hotel?.name
+    ) {
+      return;
+    }
+
+
+    const hotelCard =
+      document.querySelector(
+        "#my-hotel, [data-artist-hotel]"
+      ) ||
+      Array.from(
+        document.querySelectorAll(
+          ".featured-place, .place-card"
+        )
+      ).find(
+        (card) =>
+          normalizeText(
+            card.dataset.category
+          ) ===
+            "other" &&
+          normalizeText(
+            card.textContent
+          ).includes(
+            "hotel"
+          )
+      );
+
+
+    if (!hotelCard) {
+      return;
+    }
+
+
+    const title =
+      hotelCard.querySelector(
+        "h2, h3, .place-title"
+      );
+
+
+    if (title) {
+      title.textContent =
+        hotel.name;
+    }
+
+
+    const address =
+      hotelCard.querySelector(
+        ".place-address, [data-place-address]"
+      );
+
+
+    if (
+      address &&
+      hotel.address
+    ) {
+      address.textContent =
+        hotel.address;
+    }
+
+
+    const mapURL =
+      "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent(
+        hotel.address ||
+        hotel.name
+      );
+
+
+    hotelCard
+      .querySelectorAll("a")
+      .forEach(
+        (link) => {
+          if (
+            normalizeText(
+              link.textContent
+            ).includes(
+              "maps"
+            )
+          ) {
+            link.href =
+              mapURL;
+
+            link.target =
+              "_blank";
+
+            link.rel =
+              "noopener noreferrer";
+          }
+        }
+      );
+  }
+
+
+  /* =========================================
+     INFO · ACCORDIONS
+     ========================================= */
+
+  function initInfoAccordion() {
+    const infoSections =
+      document.querySelectorAll(
+        ".info-section"
+      );
+
+
+    infoSections.forEach(
+      (section) => {
+        const button =
+          section.querySelector(
+            ".info-toggle, .info-section-toggle"
+          );
+
+
+        if (!button) {
+          return;
+        }
+
+
+        button.addEventListener(
+          "click",
+          () => {
+            const isOpen =
+              section.classList.contains(
+                "open"
+              );
+
+
+            infoSections.forEach(
+              (item) => {
+                item.classList.remove(
+                  "open"
+                );
+
+
+                const itemButton =
+                  item.querySelector(
+                    ".info-toggle, .info-section-toggle"
+                  );
+
+
+                itemButton?.setAttribute(
+                  "aria-expanded",
+                  "false"
+                );
+              }
+            );
+
+
+            if (!isOpen) {
+              section.classList.add(
+                "open"
+              );
+
+
+              button.setAttribute(
+                "aria-expanded",
+                "true"
+              );
+            }
+          }
+        );
+      }
+    );
+
+
+    return infoSections;
+  }
+
+
+  /* =========================================
+     INFO · ARTIST DATA
+     ========================================= */
+
+  function setTextIfFound(
+    selectors,
+    value
+  ) {
+    if (
+      value === undefined ||
+      value === null ||
+      value === ""
+    ) {
+      return;
+    }
+
+
+    selectors.forEach(
+      (selector) => {
+        document
+          .querySelectorAll(
+            selector
+          )
+          .forEach(
+            (element) => {
+              element.textContent =
+                value;
+            }
+          );
+      }
+    );
+  }
+
+
+  function renderInfoArtistData() {
+    if (!artistData) {
+      return;
+    }
+
+
+    const stay =
+      artistData.stay || {};
+
+    const hotel =
+      artistData.hotel || {};
+
+    const contact =
+      artistData.mainContact ||
+      {};
+
+
+    setTextIfFound(
+      [
+        "[data-arrival-date]"
+      ],
+      stay.arrivalDate
+        ? formatDateLong(
+            stay.arrivalDate
+          )
+        : ""
+    );
+
+
+    setTextIfFound(
+      [
+        "[data-arrival-time]"
+      ],
+      stay.arrivalTime
+    );
+
+
+    setTextIfFound(
+      [
+        "[data-arrival-place]"
+      ],
+      stay.arrivalPlace
+    );
+
+
+    setTextIfFound(
+      [
+        "[data-departure-date]"
+      ],
+      stay.departureDate
+        ? formatDateLong(
+            stay.departureDate
+          )
+        : ""
+    );
+
+
+    setTextIfFound(
+      [
+        "[data-departure-time]"
+      ],
+      stay.departureTime
+    );
+
+
+    setTextIfFound(
+      [
+        "[data-departure-place]"
+      ],
+      stay.departurePlace
+    );
+
+
+    setTextIfFound(
+      [
+        "[data-hotel-name]"
+      ],
+      hotel.name
+    );
+
+
+    setTextIfFound(
+      [
+        "[data-hotel-address]"
+      ],
+      hotel.address
+    );
+
+
+    setTextIfFound(
+      [
+        "[data-check-in]"
+      ],
+      hotel.checkIn
+    );
+
+
+    setTextIfFound(
+      [
+        "[data-check-out]"
+      ],
+      hotel.checkOut
+    );
+
+
+    const contactArea =
+      document.querySelector(
+        "#my-contact"
+      ) ||
+      document.querySelector(
+        ".main-contact-card"
+      ) ||
+      document.querySelector(
+        ".info-contact-card"
+      );
+
+
+    if (
+      contactArea &&
+      contact.name
+    ) {
+      const name =
+        contactArea.querySelector(
+          "h2, h3, .contact-name, [data-contact-name]"
+        );
+
+
+      const role =
+        contactArea.querySelector(
+          ".contact-role, p, [data-contact-role]"
+        );
+
+
+      if (name) {
+        name.textContent =
+          contact.name;
+      }
+
+
+      if (
+        role &&
+        contact.role
+      ) {
+        role.textContent =
+          contact.role;
+      }
+    }
+  }
+
+
+  /* =========================================
+     INFO · SUB PANELS
+     ========================================= */
+
+  function initInfoDetailPanels() {
+    document
+      .querySelectorAll(
+        ".info-panel-trigger"
+      )
+      .forEach(
+        (trigger) => {
+          if (
+            trigger.dataset
+              .dynamicActivity ===
+            "true"
+          ) {
+            return;
+          }
+
+
+          if (
+            trigger.dataset
+              .panelBound ===
+            "true"
+          ) {
+            return;
+          }
+
+
+          trigger.dataset.panelBound =
+            "true";
+
+
+          const activate = () => {
+            const panelId =
+              trigger.dataset.panel;
+
+
+            if (!panelId) {
+              return;
+            }
+
+
+            openPanel(
+              document.getElementById(
+                panelId
+              )
+            );
+          };
+
+
+          trigger.addEventListener(
+            "click",
+            (event) => {
+              event.preventDefault();
+              activate();
+            }
+          );
+
+
+          trigger.addEventListener(
+            "keydown",
+            (event) => {
+              if (
+                event.key ===
+                  "Enter" ||
+                event.key === " "
+              ) {
+                event.preventDefault();
+                activate();
+              }
+            }
+          );
+        }
+      );
+  }
+
+     /* =========================================
      MAIN MENU
      ========================================= */
 
   const currentPage =
     window.location.pathname
       .split("/")
-      .pop() || "index.html";
-
-  const menuHTML = `
-    <div
-      class="main-menu"
-      aria-hidden="true"
-    >
-
-      <div class="main-menu-inner">
-
-        <div class="main-menu-header">
-
-          <img
-            src="logo-mixtur.png"
-            alt="Mixtur"
-            class="main-menu-logo"
-          >
-
-          <button
-            class="main-menu-close"
-            type="button"
-            aria-label="Close menu"
-          >
-            ×
-          </button>
-
-        </div>
+      .pop() ||
+    "index.html";
 
 
-        <div class="main-menu-meta">
-          Artist Guide · Barcelona
-        </div>
+  function buildMainMenu() {
+    const menuHTML = `
+      <div
+        class="main-menu"
+        aria-hidden="true"
+      >
 
+        <div class="main-menu-inner">
 
-        <nav
-          class="main-menu-primary"
-          aria-label="Main navigation"
-        >
+          <div class="main-menu-header">
 
-          <a
-            href="index.html"
-            data-page="index.html"
-          >
-            Today
-          </a>
+            <img
+              src="logo-mixtur.png"
+              alt="Mixtur"
+              class="main-menu-logo"
+            >
 
-          <a
-            href="schedule.html"
-            data-page="schedule.html"
-          >
-            Schedule
-          </a>
+            <button
+              class="main-menu-close"
+              type="button"
+              aria-label="Close menu"
+            >
+              ×
+            </button>
 
-          <a
-            href="places.html"
-            data-page="places.html"
-          >
-            Places
-          </a>
-
-          <a
-            href="info.html"
-            data-page="info.html"
-          >
-            Info
-          </a>
-
-        </nav>
-
-
-        <div class="main-menu-section">
-
-          <div class="main-menu-section-label">
-            Discover
           </div>
 
-          <button
-            class="main-menu-small-link"
-            type="button"
-            data-editorial="welcome"
-          >
-            Welcome →
-          </button>
 
-          <button
-            class="main-menu-small-link"
-            type="button"
-            data-editorial="mixtur"
-          >
-            About Mixtur →
-          </button>
-
-        </div>
-
-
-        <div class="main-menu-section">
-
-          <div class="main-menu-section-label">
-            Quick Access
+          <div class="main-menu-meta">
+            Artist Guide · Barcelona
           </div>
 
-          <a
-            class="main-menu-small-link"
-            href="places.html#my-hotel"
+
+          <nav
+            class="main-menu-primary"
+            aria-label="Main navigation"
           >
-            My Hotel →
-          </a>
 
-          <a
-            class="main-menu-small-link"
-            href="info.html#my-contact"
-          >
-            My Contact →
-          </a>
+            <a
+              href="${internalHref(
+                "index.html"
+              )}"
+              data-page="index.html"
+            >
+              Today
+            </a>
 
-          <a
-            class="main-menu-small-link"
-            href="info.html#getting-around"
-          >
-            Getting Around →
-          </a>
+            <a
+              href="${internalHref(
+                "schedule.html"
+              )}"
+              data-page="schedule.html"
+            >
+              Schedule
+            </a>
 
-        </div>
+            <a
+              href="${internalHref(
+                "places.html"
+              )}"
+              data-page="places.html"
+            >
+              Places
+            </a>
+
+            <a
+              href="${internalHref(
+                "info.html"
+              )}"
+              data-page="info.html"
+            >
+              Info
+            </a>
+
+          </nav>
 
 
-        <div class="main-menu-footer">
+          <div class="main-menu-section">
 
-          <a
-            href="https://mixturbcn.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Mixtur Festival ↗
-          </a>
+            <div
+              class="main-menu-section-label"
+            >
+              Discover
+            </div>
+
+
+            <button
+              class="main-menu-small-link"
+              type="button"
+              data-editorial="welcome"
+            >
+              Welcome →
+            </button>
+
+
+            <button
+              class="main-menu-small-link"
+              type="button"
+              data-editorial="mixtur"
+            >
+              About Mixtur →
+            </button>
+
+          </div>
+
+
+          <div class="main-menu-section">
+
+            <div
+              class="main-menu-section-label"
+            >
+              Quick Access
+            </div>
+
+
+            <a
+              class="main-menu-small-link"
+              href="${internalHref(
+                "places.html",
+                "#my-hotel"
+              )}"
+            >
+              My Hotel →
+            </a>
+
+
+            <a
+              class="main-menu-small-link"
+              href="${internalHref(
+                "info.html",
+                "#my-contact"
+              )}"
+            >
+              My Contact →
+            </a>
+
+
+            <a
+              class="main-menu-small-link"
+              href="${internalHref(
+                "info.html",
+                "#getting-around"
+              )}"
+            >
+              Getting Around →
+            </a>
+
+          </div>
+
+
+          <div class="main-menu-footer">
+
+            <a
+              href="https://mixturbcn.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Mixtur Festival ↗
+            </a>
+
+          </div>
 
         </div>
 
       </div>
+    `;
 
-    </div>
-  `;
 
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    menuHTML
-  );
+    document.body
+      .insertAdjacentHTML(
+        "beforeend",
+        menuHTML
+      );
 
-  const mainMenu =
-    document.querySelector(".main-menu");
 
-  const menuButtons =
-    document.querySelectorAll(".menu-button");
+    const mainMenu =
+      document.querySelector(
+        ".main-menu"
+      );
 
-  const menuClose =
-    document.querySelector(".main-menu-close");
 
-  const menuLinks =
-    document.querySelectorAll(
-      ".main-menu-primary a"
+    const menuButtons =
+      document.querySelectorAll(
+        ".menu-button"
+      );
+
+
+    const menuClose =
+      document.querySelector(
+        ".main-menu-close"
+      );
+
+
+    const menuLinks =
+      document.querySelectorAll(
+        ".main-menu-primary a"
+      );
+
+
+    menuLinks.forEach(
+      (link) => {
+        if (
+          link.dataset.page ===
+          currentPage
+        ) {
+          link.classList.add(
+            "active"
+          );
+        }
+      }
     );
 
-  menuLinks.forEach((link) => {
-    if (
-      link.dataset.page === currentPage
-    ) {
-      link.classList.add("active");
+
+    function openMenu() {
+      if (!mainMenu) {
+        return;
+      }
+
+
+      mainMenu.classList.add(
+        "open"
+      );
+
+
+      mainMenu.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      document.body
+        .classList.add(
+          "menu-open"
+        );
     }
-  });
 
-  function openMenu() {
-    if (!mainMenu) return;
 
-    mainMenu.classList.add("open");
+    function closeMenu() {
+      if (!mainMenu) {
+        return;
+      }
 
-    mainMenu.setAttribute(
-      "aria-hidden",
-      "false"
+
+      mainMenu.classList.remove(
+        "open"
+      );
+
+
+      mainMenu.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      document.body
+        .classList.remove(
+          "menu-open"
+        );
+    }
+
+
+    menuButtons.forEach(
+      (button) => {
+        button.addEventListener(
+          "click",
+          openMenu
+        );
+      }
     );
 
-    document.body.classList.add(
-      "menu-open"
-    );
-  }
 
-  function closeMenu() {
-    if (!mainMenu) return;
-
-    mainMenu.classList.remove("open");
-
-    mainMenu.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-    document.body.classList.remove(
-      "menu-open"
-    );
-  }
-
-  menuButtons.forEach((button) => {
-    button.addEventListener(
+    menuClose?.addEventListener(
       "click",
-      openMenu
+      closeMenu
     );
-  });
 
-  menuClose?.addEventListener(
-    "click",
-    closeMenu
-  );
+
+    return {
+      mainMenu,
+      openMenu,
+      closeMenu
+    };
+  }
 
 
   /* =========================================
      EDITORIAL PANELS
      ========================================= */
 
-  const editorialHTML = `
-    <div
-      class="editorial-panel"
-      aria-hidden="true"
-    >
-
-      <div class="editorial-panel-inner">
-
-        <div class="editorial-panel-header">
-
-          <button
-            class="editorial-back"
-            type="button"
-          >
-            ← Back
-          </button>
-
-          <button
-            class="editorial-close"
-            type="button"
-            aria-label="Close"
-          >
-            ×
-          </button>
-
-        </div>
-
+  function buildEditorialPanel(
+    menuAPI
+  ) {
+    const editorialHTML = `
+      <div
+        class="editorial-panel"
+        aria-hidden="true"
+      >
 
         <div
-          class="editorial-content"
-          data-editorial-content="welcome"
+          class="editorial-panel-inner"
         >
 
-          <div class="editorial-label">
-            Welcome
-          </div>
-
-          <h1 class="editorial-title">
-            Welcome<br>
-            to Mixtur
-          </h1>
-
-          <p class="editorial-lead">
-            We are very happy to welcome
-            you to Barcelona for Mixtur.
-          </p>
-
-          <div class="editorial-copy">
-
-            <p>
-              This Artist Guide has been
-              prepared to accompany you
-              throughout your stay and bring
-              together everything you may
-              need during the festival:
-              your schedule, venues, travel
-              information and the people you
-              may need to contact.
-            </p>
-
-            <p>
-              We hope you enjoy the festival,
-              the music, the encounters and
-              your time in Barcelona.
-            </p>
-
-          </div>
-
-          <div class="editorial-signature">
-            — Mixtur
-          </div>
-
-        </div>
-
-
-        <div
-          class="editorial-content"
-          data-editorial-content="mixtur"
-          hidden
-        >
-
-          <div class="editorial-label">
-            About Mixtur
-          </div>
-
-          <h1 class="editorial-title">
-            New creation<br>
-            at the centre
-          </h1>
-
-          <p class="editorial-lead">
-            Mixtur is a festival for
-            contemporary sound creation
-            based in Barcelona.
-          </p>
-
-          <div class="editorial-copy">
-
-            <p>
-              At its core is
-              <strong>new creation</strong>:
-              bringing composers, performers
-              and artists together to develop,
-              explore and present new work.
-            </p>
-
-            <p>
-              Through concerts, commissions,
-              workshops, calls for scores and
-              educational projects, Mixtur
-              creates a space for
-              experimentation, exchange and
-              discovery between emerging and
-              established artists.
-            </p>
-
-            <p>
-              More than a festival, Mixtur
-              is a meeting point for the
-              international contemporary
-              music community.
-            </p>
-
-          </div>
-
-
-          <div class="editorial-keywords">
-
-            <span>
-              Creation
-            </span>
-
-            <span>
-              Experimentation
-            </span>
-
-            <span>
-              Exchange
-            </span>
-
-          </div>
-
-
-          <a
-            class="editorial-web-link"
-            href="https://mixturbcn.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+          <div
+            class="editorial-panel-header"
           >
-            Visit Mixtur Festival ↗
-          </a>
+
+            <button
+              class="editorial-back"
+              type="button"
+            >
+              ← Back
+            </button>
+
+
+            <button
+              class="editorial-close"
+              type="button"
+              aria-label="Close"
+            >
+              ×
+            </button>
+
+          </div>
+
+
+          <div
+            class="editorial-content"
+            data-editorial-content="welcome"
+          >
+
+            <div
+              class="editorial-label"
+            >
+              Welcome
+            </div>
+
+
+            <h1
+              class="editorial-title"
+            >
+              Welcome<br>
+              to Mixtur
+            </h1>
+
+
+            <p
+              class="editorial-lead"
+            >
+              We are very happy to welcome
+              you to Barcelona for Mixtur.
+            </p>
+
+
+            <div
+              class="editorial-copy"
+            >
+
+              <p>
+                This Artist Guide has been
+                prepared to accompany you
+                throughout your stay and
+                bring together everything
+                you may need during the
+                festival: your schedule,
+                venues, travel information
+                and the people you may need
+                to contact.
+              </p>
+
+
+              <p>
+                We hope you enjoy the
+                festival, the music, the
+                encounters and your time
+                in Barcelona.
+              </p>
+
+            </div>
+
+
+            <div
+              class="editorial-signature"
+            >
+              — Mixtur
+            </div>
+
+          </div>
+
+
+          <div
+            class="editorial-content"
+            data-editorial-content="mixtur"
+            hidden
+          >
+
+            <div
+              class="editorial-label"
+            >
+              About Mixtur
+            </div>
+
+
+            <h1
+              class="editorial-title"
+            >
+              New creation<br>
+              at the centre
+            </h1>
+
+
+            <p
+              class="editorial-lead"
+            >
+              Mixtur is a festival for
+              contemporary sound creation
+              based in Barcelona.
+            </p>
+
+
+            <div
+              class="editorial-copy"
+            >
+
+              <p>
+                At its core is
+                <strong>
+                  new creation
+                </strong>:
+                bringing composers,
+                performers and artists
+                together to develop,
+                explore and present
+                new work.
+              </p>
+
+
+              <p>
+                Through concerts,
+                commissions, workshops,
+                calls for scores and
+                educational projects,
+                Mixtur creates a space
+                for experimentation,
+                exchange and discovery
+                between emerging and
+                established artists.
+              </p>
+
+
+              <p>
+                More than a festival,
+                Mixtur is a meeting point
+                for the international
+                contemporary music
+                community.
+              </p>
+
+            </div>
+
+
+            <div
+              class="editorial-keywords"
+            >
+
+              <span>
+                Creation
+              </span>
+
+              <span>
+                Experimentation
+              </span>
+
+              <span>
+                Exchange
+              </span>
+
+            </div>
+
+
+            <a
+              class="editorial-web-link"
+              href="https://mixturbcn.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit Mixtur Festival ↗
+            </a>
+
+          </div>
 
         </div>
 
       </div>
+    `;
 
-    </div>
-  `;
 
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    editorialHTML
-  );
+    document.body
+      .insertAdjacentHTML(
+        "beforeend",
+        editorialHTML
+      );
 
-  const editorialPanel =
-    document.querySelector(
-      ".editorial-panel"
-    );
 
-  const editorialTriggers =
-    document.querySelectorAll(
-      "[data-editorial]"
-    );
+    const editorialPanel =
+      document.querySelector(
+        ".editorial-panel"
+      );
 
-  const editorialContents =
-    document.querySelectorAll(
-      "[data-editorial-content]"
-    );
 
-  const editorialBack =
-    document.querySelector(
-      ".editorial-back"
-    );
+    const editorialContents =
+      document.querySelectorAll(
+        "[data-editorial-content]"
+      );
 
-  const editorialClose =
-    document.querySelector(
-      ".editorial-close"
-    );
 
-  function openEditorial(name) {
-    if (!editorialPanel) return;
+    const editorialBack =
+      document.querySelector(
+        ".editorial-back"
+      );
 
-    editorialContents.forEach(
-      (content) => {
-        content.hidden =
-          content.dataset.editorialContent !==
-          name;
+
+    const editorialClose =
+      document.querySelector(
+        ".editorial-close"
+      );
+
+
+    function openEditorial(
+      name
+    ) {
+      if (!editorialPanel) {
+        return;
+      }
+
+
+      editorialContents.forEach(
+        (content) => {
+          content.hidden =
+            content.dataset
+              .editorialContent !==
+            name;
+        }
+      );
+
+
+      menuAPI.closeMenu();
+
+
+      editorialPanel
+        .classList.add(
+          "open"
+        );
+
+
+      editorialPanel
+        .setAttribute(
+          "aria-hidden",
+          "false"
+        );
+
+
+      document.body
+        .classList.add(
+          "editorial-open"
+        );
+
+
+      editorialPanel.scrollTop =
+        0;
+    }
+
+
+    function closeEditorial() {
+      if (!editorialPanel) {
+        return;
+      }
+
+
+      editorialPanel
+        .classList.remove(
+          "open"
+        );
+
+
+      editorialPanel
+        .setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+
+      document.body
+        .classList.remove(
+          "editorial-open"
+        );
+    }
+
+
+    document.addEventListener(
+      "click",
+      (event) => {
+
+        const trigger =
+          event.target.closest(
+            "[data-editorial]"
+          );
+
+
+        if (!trigger) {
+          return;
+        }
+
+
+        openEditorial(
+          trigger.dataset.editorial
+        );
       }
     );
 
-    closeMenu();
 
-    editorialPanel.classList.add(
-      "open"
-    );
-
-    editorialPanel.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-    document.body.classList.add(
-      "editorial-open"
-    );
-
-    editorialPanel.scrollTop = 0;
-  }
-
-  function closeEditorial() {
-    if (!editorialPanel) return;
-
-    editorialPanel.classList.remove(
-      "open"
-    );
-
-    editorialPanel.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-    document.body.classList.remove(
-      "editorial-open"
-    );
-  }
-
-  editorialTriggers.forEach(
-    (trigger) => {
-      trigger.addEventListener(
+    editorialBack
+      ?.addEventListener(
         "click",
         () => {
-          openEditorial(
-            trigger.dataset.editorial
-          );
+          closeEditorial();
+          menuAPI.openMenu();
         }
       );
-    }
-  );
 
-  editorialBack?.addEventListener(
-    "click",
-    () => {
-      closeEditorial();
-      openMenu();
-    }
-  );
 
-  editorialClose?.addEventListener(
-    "click",
-    closeEditorial
-  );
+    editorialClose
+      ?.addEventListener(
+        "click",
+        closeEditorial
+      );
+
+
+    return {
+      editorialPanel,
+      closeEditorial
+    };
+  }
 
 
   /* =========================================
      QUICK ACCESS
      ========================================= */
 
-  function openInfoSection(section) {
-    if (!section) return;
+  function openInfoSection(
+    section
+  ) {
+    if (!section) {
+      return;
+    }
 
-    infoSections.forEach((item) => {
-      item.classList.remove("open");
 
-      const button =
-        item.querySelector(
-          ".info-section-toggle"
+    const infoSections =
+      document.querySelectorAll(
+        ".info-section"
+      );
+
+
+    infoSections.forEach(
+      (item) => {
+        item.classList.remove(
+          "open"
         );
 
-      button?.setAttribute(
-        "aria-expanded",
-        "false"
-      );
-    });
 
-    section.classList.add("open");
+        const button =
+          item.querySelector(
+            ".info-toggle, .info-section-toggle"
+          );
+
+
+        button?.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      }
+    );
+
+
+    section.classList.add(
+      "open"
+    );
+
 
     const button =
       section.querySelector(
-        ".info-section-toggle"
+        ".info-toggle, .info-section-toggle"
       );
+
 
     button?.setAttribute(
       "aria-expanded",
       "true"
     );
 
-    setTimeout(() => {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }, 100);
+
+    setTimeout(
+      () => {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      },
+      120
+    );
   }
+
 
   function handleQuickAccess() {
     const hash =
       window.location.hash;
 
+
     if (
-      currentPage === "places.html" &&
+      currentPage ===
+        "places.html" &&
       hash === "#my-hotel"
     ) {
       const hotel =
         document.querySelector(
+          "#my-hotel"
+        ) ||
+        document.querySelector(
+          "[data-artist-hotel]"
+        ) ||
+        document.querySelector(
           ".featured-place"
         );
 
+
       if (hotel) {
-        setTimeout(() => {
-          hotel.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }, 100);
+        setTimeout(
+          () => {
+            hotel.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+          },
+          120
+        );
       }
     }
 
+
     if (
-      currentPage === "info.html" &&
+      currentPage ===
+        "info.html" &&
       hash === "#my-contact"
     ) {
+      const contactSection =
+        document.querySelector(
+          "#my-contact"
+        );
+
+
+      if (
+        contactSection?.classList
+          .contains(
+            "info-section"
+          )
+      ) {
+        openInfoSection(
+          contactSection
+        );
+
+        return;
+      }
+
+
       const sections =
         document.querySelectorAll(
           ".info-section"
         );
+
 
       if (sections[2]) {
         openInfoSection(
@@ -800,14 +3198,38 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+
     if (
-      currentPage === "info.html" &&
-      hash === "#getting-around"
+      currentPage ===
+        "info.html" &&
+      hash ===
+        "#getting-around"
     ) {
+      const gettingAround =
+        document.querySelector(
+          "#getting-around"
+        );
+
+
+      if (
+        gettingAround?.classList
+          .contains(
+            "info-section"
+          )
+      ) {
+        openInfoSection(
+          gettingAround
+        );
+
+        return;
+      }
+
+
       const sections =
         document.querySelectorAll(
           ".info-section"
         );
+
 
       if (sections[0]) {
         openInfoSection(
@@ -817,45 +3239,338 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  handleQuickAccess();
+
+  /* =========================================
+     BOTTOM NAV
+     KEEP ARTIST PARAMETER
+     ========================================= */
+
+  function repairBottomNavigation() {
+    document
+      .querySelectorAll(
+        ".bottom-nav a, nav a"
+      )
+      .forEach(
+        (link) => {
+
+          const href =
+            link.getAttribute(
+              "href"
+            );
+
+
+          if (!href) {
+            return;
+          }
+
+
+          const match =
+            href.match(
+              /^(index\.html|schedule\.html|places\.html|info\.html)(#[^?]*)?$/
+            );
+
+
+          if (!match) {
+            return;
+          }
+
+
+          link.setAttribute(
+            "href",
+            internalHref(
+              match[1],
+              match[2] || ""
+            )
+          );
+        }
+      );
+  }
+
+
+  /* =========================================
+     FALLBACK MAP LINKS
+     ========================================= */
+
+  function repairGenericMapLinks() {
+    document
+      .querySelectorAll(
+        'a[href="#"]'
+      )
+      .forEach(
+        (link) => {
+
+          const text =
+            normalizeText(
+              link.textContent
+            );
+
+
+          if (
+            !text.includes(
+              "maps"
+            )
+          ) {
+            return;
+          }
+
+
+          const card =
+            link.closest(
+              ".featured-place, .place-card, .place-panel"
+            );
+
+
+          if (!card) {
+            return;
+          }
+
+
+          const title =
+            card.querySelector(
+              "h2, h3, .place-title, .panel-title"
+            )
+              ?.textContent
+              ?.trim();
+
+
+          if (!title) {
+            return;
+          }
+
+
+          const venue =
+            Object.keys(
+              venueData
+            ).find(
+              (name) =>
+                normalizeText(
+                  title
+                ).includes(
+                  normalizeText(
+                    name
+                  )
+                )
+            );
+
+
+          if (venue) {
+            link.href =
+              venueData[
+                venue
+              ].maps;
+
+            link.target =
+              "_blank";
+
+            link.rel =
+              "noopener noreferrer";
+
+            return;
+          }
+
+
+          if (
+            artistData
+              ?.hotel
+              ?.name &&
+            normalizeText(
+              title
+            ).includes(
+              normalizeText(
+                artistData
+                  .hotel
+                  .name
+              )
+            )
+          ) {
+            link.href =
+              "https://www.google.com/maps/search/?api=1&query=" +
+              encodeURIComponent(
+                artistData.hotel
+                  .address ||
+                artistData.hotel
+                  .name
+              );
+
+            link.target =
+              "_blank";
+
+            link.rel =
+              "noopener noreferrer";
+          }
+        }
+      );
+  }
 
 
   /* =========================================
      ESCAPE KEY
      ========================================= */
 
-  document.addEventListener(
-    "keydown",
-    (event) => {
-      if (event.key !== "Escape") {
-        return;
-      }
+  function initEscapeKey(
+    menuAPI,
+    editorialAPI
+  ) {
+    document.addEventListener(
+      "keydown",
+      (event) => {
 
-      panels.forEach((panel) => {
         if (
-          panel.classList.contains("open")
+          event.key !==
+          "Escape"
         ) {
-          closePanel(panel);
+          return;
         }
-      });
 
-      if (
-        editorialPanel?.classList.contains(
-          "open"
-        )
-      ) {
-        closeEditorial();
-        return;
-      }
 
-      if (
-        mainMenu?.classList.contains(
-          "open"
-        )
-      ) {
-        closeMenu();
+        let panelWasOpen =
+          false;
+
+
+        document
+          .querySelectorAll(
+            ".place-panel.open"
+          )
+          .forEach(
+            (panel) => {
+              panelWasOpen =
+                true;
+
+              closePanel(
+                panel
+              );
+            }
+          );
+
+
+        if (panelWasOpen) {
+          return;
+        }
+
+
+        if (
+          editorialAPI
+            .editorialPanel
+            ?.classList
+            .contains(
+              "open"
+            )
+        ) {
+          editorialAPI
+            .closeEditorial();
+
+          return;
+        }
+
+
+        if (
+          menuAPI
+            .mainMenu
+            ?.classList
+            .contains(
+              "open"
+            )
+        ) {
+          menuAPI.closeMenu();
+        }
       }
+    );
+  }
+
+
+  /* =========================================
+     INITIALISE
+     ========================================= */
+
+  artistData =
+    await loadArtistData();
+
+
+  const menuAPI =
+    buildMainMenu();
+
+
+  const editorialAPI =
+    buildEditorialPanel(
+      menuAPI
+    );
+
+
+  initDynamicActivityDelegation();
+
+
+  if (
+    currentPage ===
+      "index.html" ||
+    currentPage === ""
+  ) {
+    renderTodayPage();
+  }
+
+
+  if (
+    currentPage ===
+    "schedule.html"
+  ) {
+    renderSchedulePage();
+  }
+
+
+  if (
+    currentPage ===
+    "places.html"
+  ) {
+    renderArtistHotelInPlaces();
+
+    initPlacesFilters();
+
+    repairPlacesMapLinks();
+  }
+
+
+  if (
+    currentPage ===
+    "info.html"
+  ) {
+    initInfoAccordion();
+
+    renderInfoArtistData();
+  }
+
+
+  initStaticPanels();
+
+  initInfoDetailPanels();
+
+  repairGenericMapLinks();
+
+  preserveArtistInNavigation();
+
+  repairBottomNavigation();
+
+  handleQuickAccess();
+
+  initEscapeKey(
+    menuAPI,
+    editorialAPI
+  );
+
+
+  /* =========================================
+     READY
+     ========================================= */
+
+  console.log(
+    "Mixtur Artist Guide ready.",
+    {
+      page:
+        currentPage,
+      artist:
+        artistId ||
+        null
     }
   );
 
 });
+
+                          
