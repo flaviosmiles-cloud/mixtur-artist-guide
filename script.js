@@ -45,6 +45,17 @@
     window.mixturArtistData =
       artistData;
 
+           const welcomeTitle =
+        document.querySelector(".welcome");
+      
+      if (
+        welcomeTitle &&
+        artistData.artist?.name
+      ) {
+        welcomeTitle.textContent =
+          `WELCOME, ${artistData.artist.name}`;
+      }
+
   } catch (error) {
     console.error(
       "Mixtur Artist Guide: could not load artist",
