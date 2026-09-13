@@ -137,15 +137,21 @@
 
       <div class="place-nearby">
 
-        <a href="#">
-          Nearby food
-          <span>→</span>
-        </a>
+        <button
+  class="nearby-trigger"
+  data-panel="food-panel"
+>
+  Nearby food
+  <span>→</span>
+</button>
 
-        <a href="#">
-          Essentials
-          <span>→</span>
-        </a>
+<button
+  class="nearby-trigger"
+  data-panel="essentials-panel"
+>
+  Essentials
+  <span>→</span>
+</button>
 
       </div>
 
@@ -434,7 +440,246 @@
 
 </section>
 
+<!-- ======================================
+     NEARBY PANELS
+     ====================================== -->
 
+
+<!-- FOOD PANEL -->
+
+<div
+  class="place-panel"
+  id="food-panel"
+  aria-hidden="true"
+>
+
+  <div class="panel-backdrop"></div>
+
+  <section class="panel-sheet">
+
+    <div class="panel-handle"></div>
+
+    <div class="panel-header">
+
+      <div>
+
+        <p class="panel-location">
+          Near your hotel
+        </p>
+
+        <h2>
+          Nearby food
+        </h2>
+
+        <p class="panel-intro">
+          Selected recommendations within walking distance
+        </p>
+
+      </div>
+
+      <button
+        class="panel-close"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="panel-list">
+
+
+      <article class="panel-place">
+
+        <div class="panel-place-meta">
+          Coffee · 3 min walk
+        </div>
+
+        <h3>
+          Café example
+        </h3>
+
+        <p>
+          Coffee · Breakfast · Pastries
+        </p>
+
+        <a href="#">
+          Open in Maps
+          <span>→</span>
+        </a>
+
+      </article>
+
+
+      <article class="panel-place">
+
+        <div class="panel-place-meta">
+          Quick lunch · 5 min walk
+        </div>
+
+        <h3>
+          Restaurant example
+        </h3>
+
+        <p>
+          Mediterranean · Vegetarian options · €€
+        </p>
+
+        <a href="#">
+          Open in Maps
+          <span>→</span>
+        </a>
+
+      </article>
+
+
+      <article class="panel-place">
+
+        <div class="panel-place-meta">
+          Dinner · 7 min walk
+        </div>
+
+        <h3>
+          Dinner example
+        </h3>
+
+        <p>
+          Local cuisine · €€
+        </p>
+
+        <a href="#">
+          Open in Maps
+          <span>→</span>
+        </a>
+
+      </article>
+
+
+    </div>
+
+  </section>
+
+</div>
+
+
+
+<!-- ESSENTIALS PANEL -->
+
+<div
+  class="place-panel"
+  id="essentials-panel"
+  aria-hidden="true"
+>
+
+  <div class="panel-backdrop"></div>
+
+  <section class="panel-sheet">
+
+    <div class="panel-handle"></div>
+
+    <div class="panel-header">
+
+      <div>
+
+        <p class="panel-location">
+          Near your hotel
+        </p>
+
+        <h2>
+          Essentials
+        </h2>
+
+        <p class="panel-intro">
+          Useful places within walking distance
+        </p>
+
+      </div>
+
+      <button
+        class="panel-close"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="panel-list">
+
+
+      <article class="panel-place">
+
+        <div class="panel-place-meta">
+          Pharmacy · 3 min walk
+        </div>
+
+        <h3>
+          Pharmacy example
+        </h3>
+
+        <p>
+          Pharmacy
+        </p>
+
+        <a href="#">
+          Open in Maps
+          <span>→</span>
+        </a>
+
+      </article>
+
+
+      <article class="panel-place">
+
+        <div class="panel-place-meta">
+          Supermarket · 5 min walk
+        </div>
+
+        <h3>
+          Supermarket example
+        </h3>
+
+        <p>
+          Food · Drinks · Everyday essentials
+        </p>
+
+        <a href="#">
+          Open in Maps
+          <span>→</span>
+        </a>
+
+      </article>
+
+
+      <article class="panel-place">
+
+        <div class="panel-place-meta">
+          ATM · 4 min walk
+        </div>
+
+        <h3>
+          ATM example
+        </h3>
+
+        <p>
+          Cash withdrawal
+        </p>
+
+        <a href="#">
+          Open in Maps
+          <span>→</span>
+        </a>
+
+      </article>
+
+
+    </div>
+
+  </section>
+
+</div>
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav" aria-label="Main navigation">
 
@@ -461,7 +706,7 @@
     </nav>
 
   </main>
-
+<script src="script.js"></script>
 </body>
 
 </html>
