@@ -8,7 +8,7 @@
 
   <title>Mixtur · Schedule</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 
 <body>
@@ -64,6 +64,7 @@
         <span>Thursday</span>
         <span>17 October</span>
       </div>
+
 
       <article class="schedule-event">
 
@@ -180,6 +181,9 @@
       <article
         class="schedule-event current-event info-panel-trigger"
         data-panel="rehearsal-panel"
+        role="button"
+        tabindex="0"
+        aria-label="Open rehearsal details"
       >
 
         <div class="schedule-time">
@@ -466,7 +470,7 @@
 
 
   <!-- =====================================
-       REHEARSAL PANEL
+       REHEARSAL DETAIL PANEL
        ===================================== -->
 
   <div
@@ -477,9 +481,11 @@
 
     <div class="panel-backdrop"></div>
 
+
     <div class="panel-sheet">
 
       <div class="panel-handle"></div>
+
 
       <button
         class="panel-close"
@@ -494,9 +500,11 @@
         Rehearsal
       </div>
 
+
       <h2 class="panel-title">
         Stage rehearsal
       </h2>
+
 
       <p class="panel-description">
         Friday · 18 October · 10:00
@@ -560,7 +568,7 @@
   </div>
 
 
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=4"></script>
 
 </body>
 
