@@ -2758,3 +2758,215 @@ body.panel-open {
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+
+/* =========================================
+   MAIN MENU OVERLAY
+   ========================================= */
+
+.main-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  background: #000;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.main-menu.open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.main-menu-inner {
+  width: 100%;
+  max-width: var(--page-width);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding:
+    22px
+    20px
+    max(30px, env(safe-area-inset-bottom));
+}
+
+
+/* =========================================
+   MENU HEADER
+   ========================================= */
+
+.main-menu-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.main-menu-logo {
+  width: 118px;
+  height: auto;
+  display: block;
+}
+
+.main-menu-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--white);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1.2rem;
+  line-height: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.main-menu-meta {
+  margin-top: 44px;
+}
+
+.main-menu-eyebrow {
+  color: var(--mixtur-gold);
+  font-size: 0.56rem;
+  line-height: 1.2;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.main-menu-city {
+  margin-top: 7px;
+  color: var(--text-secondary);
+  font-size: 0.6rem;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================
+   PRIMARY NAVIGATION
+   ========================================= */
+
+.main-menu-nav {
+  margin-top: 44px;
+  border-top: 1px solid var(--line);
+}
+
+.main-menu-nav a {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--line);
+  color: var(--white);
+  text-decoration: none;
+}
+
+.main-menu-nav-title {
+  font-size: clamp(1.55rem, 7vw, 2.15rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+.main-menu-nav-number {
+  color: var(--text-secondary);
+  font-size: 0.54rem;
+  letter-spacing: 0.07em;
+}
+
+.main-menu-nav a.active {
+  color: var(--mixtur-gold);
+}
+
+.main-menu-nav a.active
+.main-menu-nav-number {
+  color: var(--mixtur-gold);
+}
+
+
+/* =========================================
+   QUICK ACCESS
+   ========================================= */
+
+.main-menu-quick {
+  margin-top: 34px;
+}
+
+.main-menu-section-label {
+  margin-bottom: 10px;
+  color: var(--mixtur-gold);
+  font-size: 0.54rem;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.main-menu-quick a {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--line);
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.64rem;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.main-menu-quick a:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.main-menu-quick-arrow {
+  color: var(--mixtur-gold);
+  font-size: 0.8rem;
+}
+
+
+/* =========================================
+   MENU FOOTER
+   ========================================= */
+
+.main-menu-footer {
+  margin-top: auto;
+  padding-top: 34px;
+}
+
+.main-menu-external {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.56rem;
+  line-height: 1.2;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.main-menu-external span:last-child {
+  color: var(--mixtur-gold);
+}
+
+body.menu-open {
+  overflow: hidden;
+}
