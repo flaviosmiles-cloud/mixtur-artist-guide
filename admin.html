@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -19,7 +20,7 @@
 
   <link
     rel="stylesheet"
-    href="style.css?v=6"
+    href="style.css?v=7"
   >
 </head>
 
@@ -441,27 +442,27 @@
               <option>
                 Rehearsal
               </option>
-            
+
               <option>
                 Performance
               </option>
-            
+
               <option>
                 Reading Session
               </option>
-            
+
               <option>
                 Hotel
               </option>
-            
+
               <option>
                 Meal
               </option>
-            
+
               <option>
                 Travel
               </option>
-            
+
               <option>
                 Other
               </option>
@@ -490,55 +491,55 @@
             <span>
               Venue
             </span>
-          
+
             <select>
-          
+
               <option>
                 Fabra i Coats
               </option>
-          
+
               <option>
                 ESMUC
               </option>
-          
+
               <option>
                 PHONOS
               </option>
-          
+
               <option>
                 Museu de la Música
               </option>
-          
+
               <option>
                 TDM
               </option>
-          
+
               <option>
                 CMMB
               </option>
-          
+
               <option>
                 Santa Mònica
               </option>
-          
+
               <option>
                 L'Auditori
               </option>
-          
+
               <option>
                 Espai Bota
               </option>
-          
+
               <option>
                 ALMO2BAR
               </option>
-          
+
               <option>
                 Other
               </option>
-          
+
             </select>
-          
+
           </label>
 
 
@@ -595,9 +596,6 @@
     </section>
 
 
-   
-
-
     <!-- =====================================
          GENERATE
          ===================================== -->
@@ -605,130 +603,138 @@
     <section class="admin-generate">
 
       <div>
-    
+
         <div class="admin-eyebrow">
           Generate
         </div>
-    
+
         <h2>
           Ready to generate
         </h2>
-    
+
         <p>
           Review the artist information
           before creating their guide.
         </p>
-    
+
       </div>
-    
-    
+
+
       <button
         type="button"
         class="admin-generate-button"
       >
         Generate Artist
       </button>
-    
+
     </section>
-    
-    
+
+
+    <!-- =====================================
+         PREVIEW / RESULT
+         ===================================== -->
+
     <section
       class="admin-preview"
       id="artist-preview"
       hidden
     >
-    
+
       <div class="admin-section-heading">
-    
+
         <span>
           Preview
         </span>
-    
+
         <h2>
           Artist data
         </h2>
-    
+
       </div>
-    
-    
+
+
       <div class="admin-preview-header">
-    
+
         <div>
-    
+
           <div class="admin-eyebrow">
             Artist
           </div>
-    
+
           <h3 id="preview-artist-name">
             —
           </h3>
-    
+
         </div>
-    
-    
+
+
         <div class="admin-preview-slug">
-    
+
           <span>
             Artist ID
           </span>
-    
+
           <strong id="preview-artist-slug">
             —
           </strong>
-    
+
         </div>
-    
+
       </div>
-    
-    
+
+
       <pre
         class="admin-preview-code"
         id="preview-json"
       ></pre>
 
-          <div class="admin-result-actions">
-    
-      <button
-        type="button"
-        class="admin-download-button"
-        id="download-artist-file"
-      >
-        Download Artist File
-      </button>
-    
-      <div class="admin-link-block">
-    
-        <span>
-          Artist link
-        </span>
-    
-        <div class="admin-link-row">
-    
-          <input
-            type="text"
-            id="artist-link"
-            readonly
-          >
-    
-          <button
-            type="button"
-            id="copy-artist-link"
-          >
-            Copy link
-          </button>
-    
+
+      <div class="admin-result-actions">
+
+        <button
+          type="button"
+          class="admin-download-button"
+          id="download-artist-file"
+        >
+          Download Artist File
+        </button>
+
+
+        <div class="admin-link-block">
+
+          <span>
+            Artist link
+          </span>
+
+
+          <div class="admin-link-row">
+
+            <input
+              type="text"
+              id="artist-link"
+              readonly
+            >
+
+            <button
+              type="button"
+              id="copy-artist-link"
+            >
+              Copy link
+            </button>
+
+          </div>
+
         </div>
-    
+
       </div>
-    
-    </div>
-      
+
     </section>
 
   </main>
 
-<script src="admin.js?v=5"></script>
-  
+
+  <script src="admin.js?v=7"></script>
+
 </body>
 
 </html>
