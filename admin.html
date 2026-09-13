@@ -605,30 +605,87 @@
     <section class="admin-generate">
 
       <div>
-
+    
         <div class="admin-eyebrow">
-          Preview
+          Generate
         </div>
-
+    
         <h2>
           Ready to generate
         </h2>
-
+    
         <p>
-          The next version will turn these
-          fields into the artist data file.
+          Review the artist information
+          before creating their guide.
         </p>
-
+    
       </div>
-
-
+    
+    
       <button
         type="button"
         class="admin-generate-button"
       >
         Generate Artist
       </button>
-
+    
+    </section>
+    
+    
+    <section
+      class="admin-preview"
+      id="artist-preview"
+      hidden
+    >
+    
+      <div class="admin-section-heading">
+    
+        <span>
+          Preview
+        </span>
+    
+        <h2>
+          Artist data
+        </h2>
+    
+      </div>
+    
+    
+      <div class="admin-preview-header">
+    
+        <div>
+    
+          <div class="admin-eyebrow">
+            Artist
+          </div>
+    
+          <h3 id="preview-artist-name">
+            —
+          </h3>
+    
+        </div>
+    
+    
+        <div class="admin-preview-slug">
+    
+          <span>
+            Artist ID
+          </span>
+    
+          <strong id="preview-artist-slug">
+            —
+          </strong>
+    
+        </div>
+    
+      </div>
+    
+    
+      <pre
+        class="admin-preview-code"
+        id="preview-json"
+      ></pre>
+    
     </section>
 
   </main>
