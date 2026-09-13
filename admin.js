@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const addButton = document.querySelector(".admin-add-button");
-  const scheduleSection = addButton?.closest(".admin-section");
+  const addButton =
+    document.querySelector(".admin-add-button");
+
+  const scheduleSection =
+    addButton?.closest(".admin-section");
+
   const firstActivity =
     scheduleSection?.querySelector(".admin-activity");
 
@@ -27,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const copyArtistLinkButton =
     document.getElementById("copy-artist-link");
+
 
   let currentArtistData = null;
 
@@ -79,22 +84,24 @@ document.addEventListener("DOMContentLoaded", () => {
       return null;
     }
 
-    const fields = Array.from(
-      section.querySelectorAll(".admin-field")
-    );
-
-    const field = fields.find((item) => {
-      const label =
-        item.querySelector(":scope > span");
-
-      return (
-        label &&
-        label.textContent
-          .trim()
-          .toLowerCase() ===
-          labelText.toLowerCase()
+    const fields =
+      Array.from(
+        section.querySelectorAll(".admin-field")
       );
-    });
+
+    const field =
+      fields.find((item) => {
+        const label =
+          item.querySelector(":scope > span");
+
+        return (
+          label &&
+          label.textContent
+            .trim()
+            .toLowerCase() ===
+            labelText.toLowerCase()
+        );
+      });
 
     if (!field) {
       return null;
@@ -107,9 +114,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   function getSectionByTitle(title) {
-    const sections = Array.from(
-      document.querySelectorAll(".admin-section")
-    );
+    const sections =
+      Array.from(
+        document.querySelectorAll(".admin-section")
+      );
 
     return sections.find((section) => {
       const heading =
@@ -189,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return cleanedObject;
     }
 
-
     return value;
   }
 
@@ -230,44 +237,26 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       return `
         <label class="admin-field">
+          <span>Venue</span>
 
-          <span>
-            Venue
-          </span>
-
-          <select class="activity-venue">
+          <select>
             ${venueOptions}
           </select>
-
         </label>
 
-
         <label class="admin-field">
-
-          <span>
-            Room / Space
-          </span>
+          <span>Room / Space</span>
 
           <input
-            class="activity-room"
             type="text"
             placeholder="Sala / room"
           >
-
         </label>
 
-
         <label class="admin-field">
+          <span>Call time</span>
 
-          <span>
-            Call time
-          </span>
-
-          <input
-            class="activity-call-time"
-            type="time"
-          >
-
+          <input type="time">
         </label>
       `;
     }
@@ -276,17 +265,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (type === "Hotel") {
       return `
         <label class="admin-field">
-
-          <span>
-            Hotel
-          </span>
+          <span>Hotel</span>
 
           <input
-            class="activity-hotel"
             type="text"
             placeholder="Hotel name"
           >
-
         </label>
       `;
     }
@@ -295,17 +279,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (type === "Meal") {
       return `
         <label class="admin-field">
-
-          <span>
-            Place / Restaurant
-          </span>
+          <span>Place / Restaurant</span>
 
           <input
-            class="activity-place"
             type="text"
             placeholder="Restaurant or meeting point"
           >
-
         </label>
       `;
     }
@@ -314,47 +293,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (type === "Travel") {
       return `
         <label class="admin-field">
-
-          <span>
-            From
-          </span>
+          <span>From</span>
 
           <input
-            class="activity-from"
             type="text"
             placeholder="Barcelona Airport"
           >
-
         </label>
 
-
         <label class="admin-field">
-
-          <span>
-            To
-          </span>
+          <span>To</span>
 
           <input
-            class="activity-to"
             type="text"
             placeholder="Hotel"
           >
-
         </label>
 
-
         <label class="admin-field">
-
-          <span>
-            Transport
-          </span>
+          <span>Transport</span>
 
           <input
-            class="activity-transport"
             type="text"
             placeholder="Taxi, transfer, train..."
           >
-
         </label>
       `;
     }
@@ -362,17 +324,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return `
       <label class="admin-field">
-
-        <span>
-          Place
-        </span>
+        <span>Place</span>
 
         <input
-          class="activity-place"
           type="text"
           placeholder="Venue, meeting point or location"
         >
-
       </label>
     `;
   }
@@ -406,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     ACTIVITY CONTROLS
+     REMOVE / NUMBER
      ========================================= */
 
   function addRemoveButton(activity) {
@@ -430,7 +387,8 @@ document.addEventListener("DOMContentLoaded", () => {
       removeButton =
         document.createElement("button");
 
-      removeButton.type = "button";
+      removeButton.type =
+        "button";
 
       removeButton.className =
         "admin-remove-activity";
@@ -486,10 +444,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (numberLabel) {
           numberLabel.textContent =
-            `Activity ${String(index + 1).padStart(
-              2,
-              "0"
-            )}`;
+            `Activity ${String(
+              index + 1
+            ).padStart(2, "0")}`;
         }
 
 
@@ -507,6 +464,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  /* =========================================
+     PREPARE ACTIVITY
+     ========================================= */
+
   function prepareActivity(activity) {
     let dynamicFields =
       activity.querySelector(
@@ -522,46 +483,43 @@ document.addEventListener("DOMContentLoaded", () => {
         "admin-fields admin-dynamic-fields";
 
 
-      const allFields = Array.from(
-        activity.querySelectorAll(
-          ".admin-field"
-        )
-      );
+      const fields =
+        Array.from(
+          activity.querySelectorAll(
+            ".admin-field"
+          )
+        );
 
 
       const notesField =
-        allFields.find(
-          (field) =>
-            field.textContent
-              .trim()
-              .startsWith("Notes")
+        fields.find((field) =>
+          field.textContent
+            .trim()
+            .startsWith("Notes")
         );
 
 
       const venueField =
-        allFields.find(
-          (field) =>
-            field.textContent
-              .trim()
-              .startsWith("Venue")
+        fields.find((field) =>
+          field.textContent
+            .trim()
+            .startsWith("Venue")
         );
 
 
       const roomField =
-        allFields.find(
-          (field) =>
-            field.textContent
-              .trim()
-              .startsWith("Room")
+        fields.find((field) =>
+          field.textContent
+            .trim()
+            .startsWith("Room")
         );
 
 
       const callTimeField =
-        allFields.find(
-          (field) =>
-            field.textContent
-              .trim()
-              .startsWith("Call time")
+        fields.find((field) =>
+          field.textContent
+            .trim()
+            .startsWith("Call time")
         );
 
 
@@ -599,20 +557,23 @@ document.addEventListener("DOMContentLoaded", () => {
         "input, textarea, select"
       );
 
+
     fields.forEach((field) => {
       if (
         field.tagName === "SELECT"
       ) {
-        field.selectedIndex = 0;
+        field.selectedIndex =
+          0;
       } else {
-        field.value = "";
+        field.value =
+          "";
       }
     });
   }
 
 
   /* =========================================
-     ACTIVITY DATA
+     READ ACTIVITY
      ========================================= */
 
   function getActivityData(activity) {
@@ -727,7 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     GENERATE ARTIST DATA
+     GENERATE DATA
      ========================================= */
 
   function generateArtistData() {
@@ -763,9 +724,7 @@ document.addEventListener("DOMContentLoaded", () => {
           scheduleSection.querySelectorAll(
             ".admin-activity"
           )
-        ).map(
-          getActivityData
-        )
+        ).map(getActivityData)
       );
 
 
@@ -788,7 +747,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "Email"
           )?.value.trim() || ""
       },
-
 
       stay: {
         arrivalDate:
@@ -828,7 +786,6 @@ document.addEventListener("DOMContentLoaded", () => {
           )?.value.trim() || ""
       },
 
-
       hotel: {
         name:
           getFieldByLabel(
@@ -855,7 +812,6 @@ document.addEventListener("DOMContentLoaded", () => {
           )?.value || ""
       },
 
-
       mainContact: {
         name:
           getFieldByLabel(
@@ -870,7 +826,6 @@ document.addEventListener("DOMContentLoaded", () => {
           )?.value.trim() || ""
       },
 
-
       schedule:
         activities
     };
@@ -883,7 +838,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     INITIAL ACTIVITY
+     START
      ========================================= */
 
   prepareActivity(
@@ -901,9 +856,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "click",
     () => {
       const newActivity =
-        firstActivity.cloneNode(
-          true
-        );
+        firstActivity.cloneNode(true);
 
 
       resetActivityFields(
@@ -911,12 +864,11 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
 
-      const oldRemoveButton =
-        newActivity.querySelector(
+      newActivity
+        .querySelector(
           ".admin-remove-activity"
-        );
-
-      oldRemoveButton?.remove();
+        )
+        ?.remove();
 
 
       prepareActivity(
@@ -942,7 +894,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     CHANGE ACTIVITY TYPE
+     CHANGE TYPE
      ========================================= */
 
   scheduleSection.addEventListener(
@@ -977,7 +929,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     GENERATE PREVIEW
+     GENERATE
      ========================================= */
 
   generateButton?.addEventListener(
@@ -1042,7 +994,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     DOWNLOAD ARTIST FILE
+     DOWNLOAD JSON
      ========================================= */
 
   downloadArtistButton?.addEventListener(
@@ -1071,15 +1023,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       const url =
-        URL.createObjectURL(
-          blob
-        );
+        URL.createObjectURL(blob);
 
 
       const link =
-        document.createElement(
-          "a"
-        );
+        document.createElement("a");
 
 
       link.href =
@@ -1106,7 +1054,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     COPY ARTIST LINK
+     COPY LINK
      ========================================= */
 
   copyArtistLinkButton?.addEventListener(
