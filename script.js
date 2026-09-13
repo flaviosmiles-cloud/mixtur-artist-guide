@@ -40,8 +40,10 @@ function closePanel(panel) {
 triggers.forEach((trigger) => {
 
   trigger.addEventListener(
-    "click",
-    () => {
+  "click",
+  (event) => {
+
+    event.preventDefault();
 
       const panel =
         document.getElementById(
