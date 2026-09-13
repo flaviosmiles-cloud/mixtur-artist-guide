@@ -3211,3 +3211,18 @@ span:nth-child(even) {
   }
 
 }
+
+/* =========================================
+   HEADER CLICK FIX
+   ========================================= */
+
+.topbar {
+  position: relative;
+  z-index: 100;
+}
+
+.menu-button {
+  position: relative;
+  z-index: 101;
+  pointer-events: auto;
+}
