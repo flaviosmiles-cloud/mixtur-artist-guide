@@ -1,3 +1,58 @@
+/* =========================================
+   ARTIST DATA TEST
+   ========================================= */
+
+(async function loadArtistDataTest() {
+  const params = new URLSearchParams(
+    window.location.search
+  );
+
+  const artistId =
+    params.get("artist");
+
+  if (!artistId) {
+    console.log(
+      "Mixtur Artist Guide: no artist selected."
+    );
+
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `artists/${encodeURIComponent(
+        artistId
+      )}.json`
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Artist file not found: ${response.status}`
+      );
+    }
+
+    const artistData =
+      await response.json();
+
+    console.log(
+      "Mixtur Artist Guide: artist loaded successfully"
+    );
+
+    console.log(
+      artistData
+    );
+
+    window.mixturArtistData =
+      artistData;
+
+  } catch (error) {
+    console.error(
+      "Mixtur Artist Guide: could not load artist",
+      error
+    );
+  }
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
 
   /* =========================================
