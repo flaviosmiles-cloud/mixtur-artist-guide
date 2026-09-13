@@ -1,5 +1,11 @@
-const triggers =
-  document.querySelectorAll(".nearby-trigger");
+/* =========================================
+   SLIDE-UP PANELS
+   ========================================= */
+
+const panelTriggers =
+  document.querySelectorAll(
+    ".nearby-trigger, .info-panel-trigger"
+  );
 
 const panels =
   document.querySelectorAll(".place-panel");
@@ -37,13 +43,13 @@ function closePanel(panel) {
 }
 
 
-triggers.forEach((trigger) => {
+panelTriggers.forEach((trigger) => {
 
   trigger.addEventListener(
-  "click",
-  (event) => {
+    "click",
+    (event) => {
 
-    event.preventDefault();
+      event.preventDefault();
 
       const panel =
         document.getElementById(
@@ -63,30 +69,34 @@ triggers.forEach((trigger) => {
 panels.forEach((panel) => {
 
   const closeButton =
-    panel.querySelector(
-      ".panel-close"
-    );
+    panel.querySelector(".panel-close");
 
   const backdrop =
-    panel.querySelector(
-      ".panel-backdrop"
+    panel.querySelector(".panel-backdrop");
+
+
+  if (closeButton) {
+
+    closeButton.addEventListener(
+      "click",
+      () => {
+        closePanel(panel);
+      }
     );
 
-
-  closeButton.addEventListener(
-    "click",
-    () => {
-      closePanel(panel);
-    }
-  );
+  }
 
 
-  backdrop.addEventListener(
-    "click",
-    () => {
-      closePanel(panel);
-    }
-  );
+  if (backdrop) {
+
+    backdrop.addEventListener(
+      "click",
+      () => {
+        closePanel(panel);
+      }
+    );
+
+  }
 
 });
 
@@ -103,9 +113,11 @@ document.addEventListener(
         );
 
       if (openPanelElement) {
+
         closePanel(
           openPanelElement
         );
+
       }
 
     }
@@ -114,12 +126,15 @@ document.addEventListener(
 );
 
 
+
 /* =========================================
    PLACES FILTERS
    ========================================= */
 
 const filterButtons =
-  document.querySelectorAll(".place-filter");
+  document.querySelectorAll(
+    ".place-filter"
+  );
 
 const placeCards =
   document.querySelectorAll(
@@ -137,8 +152,6 @@ filterButtons.forEach((button) => {
         button.dataset.filter;
 
 
-      /* Active button */
-
       filterButtons.forEach(
         (filterButton) => {
 
@@ -149,12 +162,11 @@ filterButtons.forEach((button) => {
         }
       );
 
+
       button.classList.add(
         "active"
       );
 
-
-      /* Filter cards */
 
       placeCards.forEach((card) => {
 
@@ -227,54 +239,82 @@ filterButtons.forEach((button) => {
 
 });
 
+
+
 /* =========================================
    INFO ACCORDION
    ========================================= */
 
 const infoSections =
-  document.querySelectorAll(".info-section");
+  document.querySelectorAll(
+    ".info-section"
+  );
+
 
 infoSections.forEach((section) => {
 
   const toggle =
-    section.querySelector(".info-toggle");
-
-  toggle.addEventListener("click", () => {
-
-    const isOpen =
-      section.classList.contains("open");
+    section.querySelector(
+      ".info-toggle"
+    );
 
 
-    /* Close all sections */
+  if (!toggle) {
+    return;
+  }
 
-    infoSections.forEach((otherSection) => {
 
-      otherSection.classList.remove("open");
+  toggle.addEventListener(
+    "click",
+    () => {
 
-      const otherToggle =
-        otherSection.querySelector(".info-toggle");
+      const isOpen =
+        section.classList.contains(
+          "open"
+        );
 
-      otherToggle.setAttribute(
-        "aria-expanded",
-        "false"
+
+      infoSections.forEach(
+        (otherSection) => {
+
+          otherSection.classList.remove(
+            "open"
+          );
+
+
+          const otherToggle =
+            otherSection.querySelector(
+              ".info-toggle"
+            );
+
+
+          if (otherToggle) {
+
+            otherToggle.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          }
+
+        }
       );
 
-    });
 
+      if (!isOpen) {
 
-    /* Open selected section */
+        section.classList.add(
+          "open"
+        );
 
-    if (!isOpen) {
+        toggle.setAttribute(
+          "aria-expanded",
+          "true"
+        );
 
-      section.classList.add("open");
-
-      toggle.setAttribute(
-        "aria-expanded",
-        "true"
-      );
+      }
 
     }
-
-  });
+  );
 
 });
