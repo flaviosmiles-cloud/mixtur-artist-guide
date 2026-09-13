@@ -1,419 +1,795 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const addButton = document.querySelector(".admin-add-button");
-  const scheduleSection = addButton?.closest(".admin-section");
-  const firstActivity = scheduleSection?.querySelector(".admin-activity");
 
-  if (!addButton || !scheduleSection || !firstActivity) {
-    return;
+  /* =========================================
+     SLIDE-UP PANELS
+     ========================================= */
+
+  const panelTriggers = document.querySelectorAll(
+    ".nearby-trigger, .info-panel-trigger"
+  );
+
+  const panels = document.querySelectorAll(".place-panel");
+
+  function openPanel(panel) {
+    if (!panel) return;
+
+    panel.classList.add("open");
+    panel.setAttribute("aria-hidden", "false");
+
+    document.body.classList.add("panel-open");
   }
 
-  const venueOptions = `
-    <option>Fabra i Coats</option>
-    <option>ESMUC</option>
-    <option>PHONOS</option>
-    <option>Museu de la Música</option>
-    <option>TDM</option>
-    <option>CMMB</option>
-    <option>Santa Mònica</option>
-    <option>L'Auditori</option>
-    <option>Espai Bota</option>
-    <option>ALMO2BAR</option>
-    <option>Other</option>
-  `;
+  function closePanel(panel) {
+    if (!panel) return;
 
-  function getActivityType(activity) {
-    const selects = activity.querySelectorAll("select");
-    return selects[0]?.value || "Rehearsal";
+    panel.classList.remove("open");
+    panel.setAttribute("aria-hidden", "true");
+
+    document.body.classList.remove("panel-open");
   }
 
-  function buildExtraFields(type) {
-    if (
-      type === "Rehearsal" ||
-      type === "Performance" ||
-      type === "Reading Session"
-    ) {
-      return `
-        <label class="admin-field">
+  panelTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const panelId = trigger.dataset.panel;
 
-          <span>
-            Venue
-          </span>
+      if (!panelId) return;
 
-          <select class="activity-venue">
-            ${venueOptions}
-          </select>
+      const panel = document.getElementById(panelId);
 
-        </label>
-
-
-        <label class="admin-field">
-
-          <span>
-            Room / Space
-          </span>
-
-          <input
-            class="activity-room"
-            type="text"
-            placeholder="Sala 2"
-          >
-
-        </label>
-
-
-        <label class="admin-field">
-
-          <span>
-            Call time
-          </span>
-
-          <input
-            class="activity-call-time"
-            type="time"
-          >
-
-        </label>
-      `;
-    }
-
-    if (type === "Hotel") {
-      return `
-        <label class="admin-field">
-
-          <span>
-            Hotel
-          </span>
-
-          <input
-            class="activity-hotel"
-            type="text"
-            placeholder="Hotel name"
-          >
-
-        </label>
-      `;
-    }
-
-    if (type === "Meal") {
-      return `
-        <label class="admin-field">
-
-          <span>
-            Place / Restaurant
-          </span>
-
-          <input
-            class="activity-place"
-            type="text"
-            placeholder="Restaurant or meeting point"
-          >
-
-        </label>
-      `;
-    }
-
-    if (type === "Travel") {
-      return `
-        <label class="admin-field">
-
-          <span>
-            From
-          </span>
-
-          <input
-            class="activity-from"
-            type="text"
-            placeholder="Barcelona Airport"
-          >
-
-        </label>
-
-
-        <label class="admin-field">
-
-          <span>
-            To
-          </span>
-
-          <input
-            class="activity-to"
-            type="text"
-            placeholder="Hotel"
-          >
-
-        </label>
-
-
-        <label class="admin-field">
-
-          <span>
-            Transport
-          </span>
-
-          <input
-            class="activity-transport"
-            type="text"
-            placeholder="Taxi, transfer, train..."
-          >
-
-        </label>
-      `;
-    }
-
-    return `
-      <label class="admin-field">
-
-        <span>
-          Place
-        </span>
-
-        <input
-          class="activity-place"
-          type="text"
-          placeholder="Venue, meeting point or location"
-        >
-
-      </label>
-    `;
-  }
-
-  function updateActivityFields(activity) {
-    const type = getActivityType(activity);
-
-    const typeLabel = activity.querySelector(
-      ".admin-activity-top span:nth-child(2)"
-    );
-
-    if (typeLabel) {
-      typeLabel.textContent = type;
-    }
-
-    const dynamicFields = activity.querySelector(
-      ".admin-dynamic-fields"
-    );
-
-    if (dynamicFields) {
-      dynamicFields.innerHTML = buildExtraFields(type);
-    }
-  }
-
-  function addRemoveButton(activity) {
-    const top = activity.querySelector(".admin-activity-top");
-
-    if (!top) {
-      return;
-    }
-
-    let removeButton = activity.querySelector(
-      ".admin-remove-activity"
-    );
-
-    if (!removeButton) {
-      removeButton = document.createElement("button");
-
-      removeButton.type = "button";
-      removeButton.className = "admin-remove-activity";
-      removeButton.setAttribute(
-        "aria-label",
-        "Remove activity"
-      );
-
-      removeButton.textContent = "Remove";
-
-      top.appendChild(removeButton);
-    }
-
-    removeButton.addEventListener("click", () => {
-      const activities =
-        scheduleSection.querySelectorAll(
-          ".admin-activity"
-        );
-
-      if (activities.length <= 1) {
-        return;
-      }
-
-      activity.remove();
-
-      updateActivityNumbers();
+      openPanel(panel);
     });
-  }
 
-  function updateActivityNumbers() {
-    const activities =
-      scheduleSection.querySelectorAll(
-        ".admin-activity"
-      );
+    trigger.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+        event.preventDefault();
 
-    activities.forEach((activity, index) => {
-      const numberLabel = activity.querySelector(
-        ".admin-activity-top span:first-child"
-      );
+        const panelId = trigger.dataset.panel;
 
-      if (numberLabel) {
-        numberLabel.textContent =
-          `Activity ${String(index + 1).padStart(2, "0")}`;
+        if (!panelId) return;
+
+        const panel = document.getElementById(panelId);
+
+        openPanel(panel);
       }
-
-      const removeButton = activity.querySelector(
-        ".admin-remove-activity"
-      );
-
-      if (removeButton) {
-        removeButton.hidden =
-          activities.length === 1;
-      }
-    });
-  }
-
-  function prepareActivity(activity) {
-    const fieldsContainer =
-      activity.querySelector(".admin-fields");
-
-    if (!fieldsContainer) {
-      return;
-    }
-
-    let dynamicFields =
-      activity.querySelector(
-        ".admin-dynamic-fields"
-      );
-
-    if (!dynamicFields) {
-      dynamicFields =
-        document.createElement("div");
-
-      dynamicFields.className =
-        "admin-fields admin-dynamic-fields";
-
-      const notesField =
-        Array.from(
-          activity.querySelectorAll(
-            ".admin-field"
-          )
-        ).find((field) =>
-          field.textContent
-            .trim()
-            .startsWith("Notes")
-        );
-
-      const venueField =
-        Array.from(
-          activity.querySelectorAll(
-            ".admin-field"
-          )
-        ).find((field) =>
-          field.textContent
-            .trim()
-            .startsWith("Venue")
-        );
-
-      const roomField =
-        Array.from(
-          activity.querySelectorAll(
-            ".admin-field"
-          )
-        ).find((field) =>
-          field.textContent
-            .trim()
-            .startsWith("Room")
-        );
-
-      const callTimeField =
-        Array.from(
-          activity.querySelectorAll(
-            ".admin-field"
-          )
-        ).find((field) =>
-          field.textContent
-            .trim()
-            .startsWith("Call time")
-        );
-
-      venueField?.remove();
-      roomField?.remove();
-      callTimeField?.remove();
-
-      if (notesField) {
-        notesField.parentElement.insertBefore(
-          dynamicFields,
-          notesField
-        );
-      } else {
-        activity.appendChild(dynamicFields);
-      }
-    }
-
-    updateActivityFields(activity);
-    addRemoveButton(activity);
-  }
-
-  function resetActivityFields(activity) {
-    const fields =
-      activity.querySelectorAll(
-        "input, textarea, select"
-      );
-
-    fields.forEach((field) => {
-      if (field.tagName === "SELECT") {
-        field.selectedIndex = 0;
-      } else {
-        field.value = "";
-      }
-    });
-  }
-
-  prepareActivity(firstActivity);
-  updateActivityNumbers();
-
-  addButton.addEventListener("click", () => {
-    const newActivity =
-      firstActivity.cloneNode(true);
-
-    resetActivityFields(newActivity);
-
-    const oldRemoveButton =
-      newActivity.querySelector(
-        ".admin-remove-activity"
-      );
-
-    oldRemoveButton?.remove();
-
-    prepareActivity(newActivity);
-
-    scheduleSection.insertBefore(
-      newActivity,
-      addButton
-    );
-
-    updateActivityNumbers();
-
-    newActivity.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
     });
   });
 
-  scheduleSection.addEventListener(
-    "change",
-    (event) => {
-      const activity =
-        event.target.closest(
-          ".admin-activity"
+  panels.forEach((panel) => {
+    const backdrop =
+      panel.querySelector(".panel-backdrop");
+
+    const closeButton =
+      panel.querySelector(".panel-close");
+
+    backdrop?.addEventListener("click", () => {
+      closePanel(panel);
+    });
+
+    closeButton?.addEventListener("click", () => {
+      closePanel(panel);
+    });
+  });
+
+
+  /* =========================================
+     PLACES FILTERS
+     ========================================= */
+
+  const filterButtons =
+    document.querySelectorAll(".filter-button");
+
+  const placeCards =
+    document.querySelectorAll(".place-card");
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const filter = button.dataset.filter;
+
+      filterButtons.forEach((item) => {
+        item.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+      placeCards.forEach((card) => {
+        const category =
+          card.dataset.category;
+
+        const hasFood =
+          card.dataset.food === "true";
+
+        let visible = false;
+
+        if (filter === "all") {
+          visible = true;
+        }
+
+        if (filter === "venues") {
+          visible =
+            category === "venues";
+        }
+
+        if (filter === "food") {
+          visible = hasFood;
+        }
+
+        if (filter === "other") {
+          visible =
+            category === "other";
+        }
+
+        card.style.display =
+          visible ? "" : "none";
+      });
+    });
+  });
+
+
+  /* =========================================
+     INFO ACCORDION
+     ========================================= */
+
+  const infoSections =
+    document.querySelectorAll(".info-section");
+
+  infoSections.forEach((section) => {
+    const button =
+      section.querySelector(".info-section-toggle");
+
+    if (!button) return;
+
+    button.addEventListener("click", () => {
+      const isOpen =
+        section.classList.contains("open");
+
+      infoSections.forEach((item) => {
+        item.classList.remove("open");
+
+        const itemButton =
+          item.querySelector(".info-section-toggle");
+
+        itemButton?.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      });
+
+      if (!isOpen) {
+        section.classList.add("open");
+
+        button.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+      }
+    });
+  });
+
+
+  /* =========================================
+     MAIN MENU
+     ========================================= */
+
+  const currentPage =
+    window.location.pathname
+      .split("/")
+      .pop() || "index.html";
+
+  const menuHTML = `
+    <div
+      class="main-menu"
+      aria-hidden="true"
+    >
+
+      <div class="main-menu-inner">
+
+        <div class="main-menu-header">
+
+          <img
+            src="logo-mixtur.png"
+            alt="Mixtur"
+            class="main-menu-logo"
+          >
+
+          <button
+            class="main-menu-close"
+            type="button"
+            aria-label="Close menu"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <div class="main-menu-meta">
+          Artist Guide · Barcelona
+        </div>
+
+
+        <nav
+          class="main-menu-primary"
+          aria-label="Main navigation"
+        >
+
+          <a
+            href="index.html"
+            data-page="index.html"
+          >
+            Today
+          </a>
+
+          <a
+            href="schedule.html"
+            data-page="schedule.html"
+          >
+            Schedule
+          </a>
+
+          <a
+            href="places.html"
+            data-page="places.html"
+          >
+            Places
+          </a>
+
+          <a
+            href="info.html"
+            data-page="info.html"
+          >
+            Info
+          </a>
+
+        </nav>
+
+
+        <div class="main-menu-section">
+
+          <div class="main-menu-section-label">
+            Discover
+          </div>
+
+          <button
+            class="main-menu-small-link"
+            type="button"
+            data-editorial="welcome"
+          >
+            Welcome →
+          </button>
+
+          <button
+            class="main-menu-small-link"
+            type="button"
+            data-editorial="mixtur"
+          >
+            About Mixtur →
+          </button>
+
+        </div>
+
+
+        <div class="main-menu-section">
+
+          <div class="main-menu-section-label">
+            Quick Access
+          </div>
+
+          <a
+            class="main-menu-small-link"
+            href="places.html#my-hotel"
+          >
+            My Hotel →
+          </a>
+
+          <a
+            class="main-menu-small-link"
+            href="info.html#my-contact"
+          >
+            My Contact →
+          </a>
+
+          <a
+            class="main-menu-small-link"
+            href="info.html#getting-around"
+          >
+            Getting Around →
+          </a>
+
+        </div>
+
+
+        <div class="main-menu-footer">
+
+          <a
+            href="https://mixturbcn.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Mixtur Festival ↗
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    menuHTML
+  );
+
+  const mainMenu =
+    document.querySelector(".main-menu");
+
+  const menuButtons =
+    document.querySelectorAll(".menu-button");
+
+  const menuClose =
+    document.querySelector(".main-menu-close");
+
+  const menuLinks =
+    document.querySelectorAll(
+      ".main-menu-primary a"
+    );
+
+  menuLinks.forEach((link) => {
+    if (
+      link.dataset.page === currentPage
+    ) {
+      link.classList.add("active");
+    }
+  });
+
+  function openMenu() {
+    if (!mainMenu) return;
+
+    mainMenu.classList.add("open");
+
+    mainMenu.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    document.body.classList.add(
+      "menu-open"
+    );
+  }
+
+  function closeMenu() {
+    if (!mainMenu) return;
+
+    mainMenu.classList.remove("open");
+
+    mainMenu.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    document.body.classList.remove(
+      "menu-open"
+    );
+  }
+
+  menuButtons.forEach((button) => {
+    button.addEventListener(
+      "click",
+      openMenu
+    );
+  });
+
+  menuClose?.addEventListener(
+    "click",
+    closeMenu
+  );
+
+
+  /* =========================================
+     EDITORIAL PANELS
+     ========================================= */
+
+  const editorialHTML = `
+    <div
+      class="editorial-panel"
+      aria-hidden="true"
+    >
+
+      <div class="editorial-panel-inner">
+
+        <div class="editorial-panel-header">
+
+          <button
+            class="editorial-back"
+            type="button"
+          >
+            ← Back
+          </button>
+
+          <button
+            class="editorial-close"
+            type="button"
+            aria-label="Close"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <div
+          class="editorial-content"
+          data-editorial-content="welcome"
+        >
+
+          <div class="editorial-label">
+            Welcome
+          </div>
+
+          <h1 class="editorial-title">
+            Welcome<br>
+            to Mixtur
+          </h1>
+
+          <p class="editorial-lead">
+            We are very happy to welcome
+            you to Barcelona for Mixtur.
+          </p>
+
+          <div class="editorial-copy">
+
+            <p>
+              This Artist Guide has been
+              prepared to accompany you
+              throughout your stay and bring
+              together everything you may
+              need during the festival:
+              your schedule, venues, travel
+              information and the people you
+              may need to contact.
+            </p>
+
+            <p>
+              We hope you enjoy the festival,
+              the music, the encounters and
+              your time in Barcelona.
+            </p>
+
+          </div>
+
+          <div class="editorial-signature">
+            — Mixtur
+          </div>
+
+        </div>
+
+
+        <div
+          class="editorial-content"
+          data-editorial-content="mixtur"
+          hidden
+        >
+
+          <div class="editorial-label">
+            About Mixtur
+          </div>
+
+          <h1 class="editorial-title">
+            New creation<br>
+            at the centre
+          </h1>
+
+          <p class="editorial-lead">
+            Mixtur is a festival for
+            contemporary sound creation
+            based in Barcelona.
+          </p>
+
+          <div class="editorial-copy">
+
+            <p>
+              At its core is
+              <strong>new creation</strong>:
+              bringing composers, performers
+              and artists together to develop,
+              explore and present new work.
+            </p>
+
+            <p>
+              Through concerts, commissions,
+              workshops, calls for scores and
+              educational projects, Mixtur
+              creates a space for
+              experimentation, exchange and
+              discovery between emerging and
+              established artists.
+            </p>
+
+            <p>
+              More than a festival, Mixtur
+              is a meeting point for the
+              international contemporary
+              music community.
+            </p>
+
+          </div>
+
+
+          <div class="editorial-keywords">
+
+            <span>
+              Creation
+            </span>
+
+            <span>
+              Experimentation
+            </span>
+
+            <span>
+              Exchange
+            </span>
+
+          </div>
+
+
+          <a
+            class="editorial-web-link"
+            href="https://mixturbcn.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visit Mixtur Festival ↗
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    editorialHTML
+  );
+
+  const editorialPanel =
+    document.querySelector(
+      ".editorial-panel"
+    );
+
+  const editorialTriggers =
+    document.querySelectorAll(
+      "[data-editorial]"
+    );
+
+  const editorialContents =
+    document.querySelectorAll(
+      "[data-editorial-content]"
+    );
+
+  const editorialBack =
+    document.querySelector(
+      ".editorial-back"
+    );
+
+  const editorialClose =
+    document.querySelector(
+      ".editorial-close"
+    );
+
+  function openEditorial(name) {
+    if (!editorialPanel) return;
+
+    editorialContents.forEach(
+      (content) => {
+        content.hidden =
+          content.dataset.editorialContent !==
+          name;
+      }
+    );
+
+    closeMenu();
+
+    editorialPanel.classList.add(
+      "open"
+    );
+
+    editorialPanel.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    document.body.classList.add(
+      "editorial-open"
+    );
+
+    editorialPanel.scrollTop = 0;
+  }
+
+  function closeEditorial() {
+    if (!editorialPanel) return;
+
+    editorialPanel.classList.remove(
+      "open"
+    );
+
+    editorialPanel.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    document.body.classList.remove(
+      "editorial-open"
+    );
+  }
+
+  editorialTriggers.forEach(
+    (trigger) => {
+      trigger.addEventListener(
+        "click",
+        () => {
+          openEditorial(
+            trigger.dataset.editorial
+          );
+        }
+      );
+    }
+  );
+
+  editorialBack?.addEventListener(
+    "click",
+    () => {
+      closeEditorial();
+      openMenu();
+    }
+  );
+
+  editorialClose?.addEventListener(
+    "click",
+    closeEditorial
+  );
+
+
+  /* =========================================
+     QUICK ACCESS
+     ========================================= */
+
+  function openInfoSection(section) {
+    if (!section) return;
+
+    infoSections.forEach((item) => {
+      item.classList.remove("open");
+
+      const button =
+        item.querySelector(
+          ".info-section-toggle"
         );
 
-      if (!activity) {
+      button?.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+    });
+
+    section.classList.add("open");
+
+    const button =
+      section.querySelector(
+        ".info-section-toggle"
+      );
+
+    button?.setAttribute(
+      "aria-expanded",
+      "true"
+    );
+
+    setTimeout(() => {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }, 100);
+  }
+
+  function handleQuickAccess() {
+    const hash =
+      window.location.hash;
+
+    if (
+      currentPage === "places.html" &&
+      hash === "#my-hotel"
+    ) {
+      const hotel =
+        document.querySelector(
+          ".featured-place"
+        );
+
+      if (hotel) {
+        setTimeout(() => {
+          hotel.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }, 100);
+      }
+    }
+
+    if (
+      currentPage === "info.html" &&
+      hash === "#my-contact"
+    ) {
+      const sections =
+        document.querySelectorAll(
+          ".info-section"
+        );
+
+      if (sections[2]) {
+        openInfoSection(
+          sections[2]
+        );
+      }
+    }
+
+    if (
+      currentPage === "info.html" &&
+      hash === "#getting-around"
+    ) {
+      const sections =
+        document.querySelectorAll(
+          ".info-section"
+        );
+
+      if (sections[0]) {
+        openInfoSection(
+          sections[0]
+        );
+      }
+    }
+  }
+
+  handleQuickAccess();
+
+
+  /* =========================================
+     ESCAPE KEY
+     ========================================= */
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key !== "Escape") {
         return;
       }
 
-      const selects =
-        activity.querySelectorAll("select");
+      panels.forEach((panel) => {
+        if (
+          panel.classList.contains("open")
+        ) {
+          closePanel(panel);
+        }
+      });
 
-      const typeSelect = selects[0];
+      if (
+        editorialPanel?.classList.contains(
+          "open"
+        )
+      ) {
+        closeEditorial();
+        return;
+      }
 
-      if (event.target === typeSelect) {
-        updateActivityFields(activity);
+      if (
+        mainMenu?.classList.contains(
+          "open"
+        )
+      ) {
+        closeMenu();
       }
     }
   );
+
 });
