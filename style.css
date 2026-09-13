@@ -1271,3 +1271,490 @@ a {
 </body>
 
 </html>
+
+/* =========================================
+   PLACES PAGE
+   ========================================= */
+
+.places-intro {
+  padding:
+    18px
+    20px
+    0;
+
+  background: var(--black);
+}
+
+
+/* HERO IMAGE */
+
+.places-cover {
+  width: 100%;
+  height: 180px;
+
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2d2d2d,
+      #111111
+    );
+
+  display: flex;
+  align-items: flex-end;
+
+  padding: 14px;
+}
+
+
+.places-cover span {
+  color: rgba(255, 255, 255, 0.58);
+
+  font-size: 0.58rem;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+
+/* HEADING */
+
+.places-heading {
+  padding-top: 26px;
+}
+
+
+.places-heading .eyebrow {
+  margin-bottom: 18px;
+}
+
+
+.places-title {
+  font-size:
+    clamp(
+      2.9rem,
+      12vw,
+      3.9rem
+    );
+
+  font-weight: 400;
+
+  line-height: 0.9;
+
+  letter-spacing: 0.045em;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================
+   FILTERS
+   ========================================= */
+
+.places-filters {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  margin:
+    28px
+    20px
+    22px;
+
+  border:
+    1px solid
+    var(--line);
+}
+
+
+.place-filter {
+  min-height: 44px;
+
+  padding: 10px 6px;
+
+  border: 0;
+  border-right:
+    1px solid
+    var(--line);
+
+  background: transparent;
+  color: var(--text-secondary);
+
+  font-size: 0.63rem;
+
+  letter-spacing: 0.04em;
+
+  cursor: pointer;
+}
+
+
+.place-filter:last-child {
+  border-right: 0;
+}
+
+
+.place-filter.active {
+  background: var(--mixtur-blue);
+  color: var(--white);
+}
+
+
+/* =========================================
+   PLACES LIST
+   ========================================= */
+
+.places-list {
+  padding:
+    0
+    20px
+    34px;
+}
+
+
+/* MAIN PLACE */
+
+.featured-place {
+  border-top:
+    1px solid
+    var(--line);
+
+  padding-top: 18px;
+}
+
+
+.featured-place-image {
+  width: 100%;
+  height: 145px;
+
+  overflow: hidden;
+
+  border-radius: 6px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #333333,
+      #141414
+    );
+
+  display: flex;
+  align-items: flex-end;
+
+  padding: 12px;
+}
+
+
+.featured-place-image span {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.5
+    );
+
+  font-size: 0.55rem;
+
+  letter-spacing: 0.11em;
+
+  text-transform: uppercase;
+}
+
+
+.featured-place-content {
+  padding:
+    15px
+    0
+    22px;
+}
+
+
+.place-category {
+  margin-bottom: 7px;
+
+  color: var(--mixtur-gold);
+
+  font-size: 0.55rem;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+
+.place-title-row {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 18px;
+}
+
+
+.place-title-row h2 {
+  font-size: 1.18rem;
+
+  font-weight: 400;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.025em;
+}
+
+
+.place-description {
+  margin-top: 4px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.68rem;
+
+  line-height: 1.4;
+}
+
+
+.place-arrow {
+  flex-shrink: 0;
+
+  padding-top: 4px;
+
+  font-size: 1.15rem;
+}
+
+
+.place-address {
+  margin-top: 14px;
+
+  color: var(--text-secondary);
+
+  font-style: normal;
+
+  font-size: 0.68rem;
+
+  line-height: 1.45;
+}
+
+
+/* MAP LINK */
+
+.maps-link {
+  margin-top: 16px;
+
+  min-height: 44px;
+
+  display: grid;
+
+  grid-template-columns:
+    24px
+    minmax(0, 1fr)
+    22px;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: var(--white);
+
+  text-decoration: none;
+
+  border-top:
+    1px solid
+    var(--line);
+
+  border-bottom:
+    1px solid
+    var(--line);
+}
+
+
+.maps-symbol {
+  color: var(--mixtur-blue);
+
+  font-size: 1rem;
+}
+
+
+.maps-link span:nth-child(2) {
+  font-size: 0.68rem;
+}
+
+
+.maps-arrow {
+  justify-self: end;
+
+  font-size: 0.9rem;
+}
+
+
+/* =========================================
+   COMPACT PLACE ROWS
+   ========================================= */
+
+.compact-place {
+  display: grid;
+
+  grid-template-columns:
+    98px
+    minmax(0, 1fr)
+    24px;
+
+  align-items: center;
+
+  gap: 13px;
+
+  min-height: 104px;
+
+  padding:
+    16px
+    0;
+
+  border-top:
+    1px solid
+    var(--line);
+}
+
+
+.compact-place-image {
+  width: 98px;
+  height: 72px;
+
+  overflow: hidden;
+
+  border-radius: 5px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  padding: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #373737,
+      #161616
+    );
+}
+
+
+.compact-place-image span {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.45
+    );
+
+  font-size: 0.5rem;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+
+.compact-place-info {
+  min-width: 0;
+}
+
+
+.compact-place-info h2 {
+  font-size: 0.9rem;
+
+  font-weight: 400;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.02em;
+}
+
+
+.compact-place-info p {
+  margin-top: 5px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.62rem;
+
+  line-height: 1.4;
+}
+
+
+.compact-place-arrow {
+  justify-self: end;
+
+  font-size: 1rem;
+}
+
+
+/* =========================================
+   PLACEHOLDER IMAGE TREATMENT
+   Later replaced with real photos
+   ========================================= */
+
+.placeholder-image {
+  position: relative;
+
+  filter: grayscale(1);
+
+  isolation: isolate;
+}
+
+
+.placeholder-image::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: -1;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.06),
+      rgba(0, 0, 0, 0.18)
+    );
+}
+
+
+/* =========================================
+   SMALL PHONES
+   ========================================= */
+
+@media (max-width: 360px) {
+
+  .places-cover {
+    height: 160px;
+  }
+
+
+  .places-title {
+    font-size: 2.7rem;
+  }
+
+
+  .compact-place {
+    grid-template-columns:
+      88px
+      minmax(0, 1fr)
+      22px;
+  }
+
+
+  .compact-place-image {
+    width: 88px;
+    height: 68px;
+  }
+
+}
