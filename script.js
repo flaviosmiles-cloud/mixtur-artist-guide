@@ -1466,22 +1466,47 @@ document.addEventListener("DOMContentLoaded", async () => {
      ========================================= */
 
   function findScheduleContainer() {
-    return (
-      document.querySelector(
-        "[data-full-schedule]"
-      ) ||
-      document.querySelector(
-        ".schedule-content"
-      ) ||
-      document.querySelector(
-        ".schedule-list"
-      ) ||
-      document.querySelector(
-        "main .schedule-page"
-      )
+  const existingDays =
+    document.querySelectorAll(
+      ".schedule-day"
     );
+
+  if (!existingDays.length) {
+    return null;
   }
 
+  let container =
+    document.querySelector(
+      "#dynamic-schedule"
+    );
+
+  if (container) {
+    return container;
+  }
+
+  container =
+    document.createElement(
+      "div"
+    );
+
+  container.id =
+    "dynamic-schedule";
+
+  existingDays[0]
+    .parentNode
+    .insertBefore(
+      container,
+      existingDays[0]
+    );
+
+  existingDays.forEach(
+    (day) => {
+      day.remove();
+    }
+  );
+
+  return container;
+}
 
   function groupScheduleByDate(
     schedule
