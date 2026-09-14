@@ -636,7 +636,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             >
               ×
             </button>
-
+            
+            <div
+              class="activity-panel-image"
+              data-activity-panel-image
+              hidden
+            >
+              <img
+                src=""
+                alt=""
+                data-activity-panel-image-element
+              >
+            </div>
 
             <div
               class="panel-category"
@@ -671,7 +682,31 @@ document.addEventListener("DOMContentLoaded", async () => {
             >
               Open in Maps →
             </a>
-
+            
+                  <div
+                    class="place-nearby activity-panel-nearby"
+                    data-activity-panel-nearby
+                    hidden
+                  >
+                  
+                    <a
+                      href="#"
+                      data-activity-nearby-food
+                    >
+                      Nearby food
+                      <span>→</span>
+                    </a>
+                  
+                    <a
+                      href="#"
+                      data-activity-nearby-essentials
+                    >
+                      Essentials
+                      <span>→</span>
+                    </a>
+                  
+                  </div>
+                  
           </div>
 
         </div>
