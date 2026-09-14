@@ -88,6 +88,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         "https://www.google.com/maps/search/?api=1&query=ALMO2BAR+Barcelona"
     }
   };
+   const externalVenueData =
+     window.MIXTUR_VENUES || {};
+   
+   Object.assign(
+     venueData,
+     externalVenueData
+   );
 
 
   function escapeHTML(value = "") {
