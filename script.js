@@ -1475,355 +1475,597 @@ if (
     );
   }
 
-     function renderTodayPage() {
-    if (!artistData) {
-      return;
-    }
+     /* =========================================
+   TODAY · DYNAMIC ARTIST VIEW
+   ========================================= */
+
+function renderTodayPage() {
+  if (!artistData) {
+    return;
+  }
 
 
-    const welcomeTitle =
-      document.querySelector(
-        ".welcome"
-      );
+  /* -----------------------------------------
+     WELCOME
+     ----------------------------------------- */
+
+  const welcomeTitle =
+    document.querySelector(
+      ".welcome"
+    );
 
 
-    if (
-      welcomeTitle &&
-      artistData.artist?.name
-    ) {
-      welcomeTitle.textContent =
-        `WELCOME, ${artistData.artist.name}`;
-    }
+  if (
+    welcomeTitle &&
+    artistData.artist?.name
+  ) {
+    welcomeTitle.innerHTML =
+      `WELCOME,<br>${escapeHTML(
+        artistData.artist.name
+      ).toUpperCase()}`;
+  }
 
 
-    const stayDates =
-      formatStayDates(
-        artistData.stay
-      );
+  /* -----------------------------------------
+     PERSONAL SCHEDULE DATE RANGE
+     ----------------------------------------- */
+
+  const schedule =
+    Array.isArray(
+      artistData.schedule
+    )
+      ? artistData.schedule
+          .map(
+            (activity, index) => ({
+              ...activity,
+              __index: index
+            })
+          )
+          .filter(
+            (activity) =>
+              activity.date
+          )
+          .sort(
+            (a, b) => {
+              const dateA =
+                `${a.date}T${a.time || "00:00"}`;
+
+              const dateB =
+                `${b.date}T${b.time || "00:00"}`;
+
+              return dateA.localeCompare(
+                dateB
+              );
+            }
+          )
+      : [];
 
 
-    const stayDateCandidates = [
-      ".welcome-dates",
-      ".hero-dates",
-      ".artist-dates",
-      "[data-artist-stay-dates]"
-    ];
+  if (!schedule.length) {
+    renderTodayContact();
+    return;
+  }
 
 
-    stayDateCandidates.forEach(
-      (selector) => {
-        const element =
-          document.querySelector(
-            selector
+  const firstDate =
+    schedule[0].date;
+
+  const lastDate =
+    schedule[
+      schedule.length - 1
+    ].date;
+
+
+  const stayDatesElement =
+    document.querySelector(
+      ".stay-dates"
+    );
+
+
+  if (stayDatesElement) {
+    stayDatesElement.innerHTML =
+      `${formatArtistScheduleRange(
+        firstDate,
+        lastDate
+      )}<br>Barcelona`;
+  }
+
+
+  /* -----------------------------------------
+     SELECT DAY
+     ----------------------------------------- */
+
+  const selectedDate =
+    chooseTodayDate(
+      schedule
+    );
+
+
+  const dayActivities =
+    schedule.filter(
+      (activity) =>
+        activity.date ===
+        selectedDate
+    );
+
+
+  /* -----------------------------------------
+     NEXT UP
+     ----------------------------------------- */
+
+  const nextActivity =
+    chooseNextActivity(
+      schedule,
+      selectedDate
+    );
+
+
+  renderTodayNextUp(
+    nextActivity
+  );
+
+
+  /* -----------------------------------------
+     TODAY SCHEDULE
+     ----------------------------------------- */
+
+  renderTodaySchedule(
+    selectedDate,
+    dayActivities,
+    nextActivity
+  );
+
+
+  renderTodayContact();
+}
+
+
+
+/* =========================================
+   PERSONAL SCHEDULE RANGE
+   ========================================= */
+
+function formatArtistScheduleRange(
+  firstDate,
+  lastDate
+) {
+  if (
+    !firstDate ||
+    !lastDate
+  ) {
+    return "";
+  }
+
+
+  const first =
+    new Date(
+      `${firstDate}T12:00:00`
+    );
+
+  const last =
+    new Date(
+      `${lastDate}T12:00:00`
+    );
+
+
+  const firstDay =
+    String(
+      first.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+  const lastDay =
+    String(
+      last.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const firstMonth =
+    first
+      .toLocaleDateString(
+        "en-GB",
+        {
+          month: "short"
+        }
+      )
+      .toUpperCase();
+
+  const lastMonth =
+    last
+      .toLocaleDateString(
+        "en-GB",
+        {
+          month: "short"
+        }
+      )
+      .toUpperCase();
+
+
+  const firstYear =
+    first.getFullYear();
+
+  const lastYear =
+    last.getFullYear();
+
+
+  if (
+    firstDate ===
+    lastDate
+  ) {
+    return (
+      `${firstDay} ${firstMonth} ${firstYear}`
+    );
+  }
+
+
+  if (
+    firstMonth === lastMonth &&
+    firstYear === lastYear
+  ) {
+    return (
+      `${firstDay} → ${lastDay} ${lastMonth} ${lastYear}`
+    );
+  }
+
+
+  if (
+    firstYear === lastYear
+  ) {
+    return (
+      `${firstDay} ${firstMonth} → ${lastDay} ${lastMonth} ${lastYear}`
+    );
+  }
+
+
+  return (
+    `${firstDay} ${firstMonth} ${firstYear} → ` +
+    `${lastDay} ${lastMonth} ${lastYear}`
+  );
+}
+
+
+
+/* =========================================
+   NEXT ACTIVITY
+   ========================================= */
+
+function chooseNextActivity(
+  schedule,
+  selectedDate
+) {
+  if (
+    !Array.isArray(schedule) ||
+    !schedule.length
+  ) {
+    return null;
+  }
+
+
+  const now =
+    new Date();
+
+
+  const futureActivities =
+    schedule.filter(
+      (activity) => {
+        if (
+          !activity.date ||
+          !activity.time
+        ) {
+          return false;
+        }
+
+
+        const activityDate =
+          new Date(
+            `${activity.date}T${activity.time}:00`
           );
 
-        if (
-          element &&
-          stayDates
-        ) {
-          element.textContent =
-            stayDates;
-        }
+
+        return (
+          activityDate >= now
+        );
       }
     );
 
 
-    const schedule =
-      Array.isArray(
-        artistData.schedule
-      )
-        ? artistData.schedule
-        : [];
-
-
-    if (!schedule.length) {
-      return;
-    }
-
-
-    const selectedDate =
-      chooseTodayDate(
-        schedule
-      );
-
-
-    const dayActivities =
-      schedule
-        .map(
-          (activity, index) => ({
-            ...activity,
-            __index: index
-          })
-        )
-        .filter(
-          (activity) =>
-            activity.date ===
-            selectedDate
-        );
-
-
-    const nextActivity =
-      dayActivities[0];
-
-
-    renderTodayNextUp(
-      nextActivity
-    );
-
-
-    renderTodaySchedule(
-      selectedDate,
-      dayActivities
-    );
-
-
-    renderTodayContact();
+  if (futureActivities.length) {
+    return futureActivities[0];
   }
 
 
-  function renderTodayNextUp(
-    activity
+  const selectedActivities =
+    schedule.filter(
+      (activity) =>
+        activity.date ===
+        selectedDate
+    );
+
+
+  return (
+    selectedActivities[0] ||
+    null
+  );
+}
+
+
+
+/* =========================================
+   NEXT UP CARD
+   ========================================= */
+
+function renderTodayNextUp(
+  activity
+) {
+  const nextCard =
+    document.querySelector(
+      ".next-card"
+    );
+
+
+  if (
+    !nextCard ||
+    !activity
   ) {
-    if (!activity) {
-      return;
-    }
-
-
-    const nextCard =
-      document.querySelector(
-        ".next-card, .next-up-card, [data-next-up]"
-      );
-
-
-    if (!nextCard) {
-      return;
-    }
-
-
-    nextCard.setAttribute(
-      "role",
-      "button"
-    );
-
-    nextCard.setAttribute(
-      "tabindex",
-      "0"
-    );
-
-    nextCard.dataset.activityIndex =
-      String(
-        activity.__index
-      );
-
-
-    const time =
-      nextCard.querySelector(
-        ".next-time, .next-up-time, [data-next-time]"
-      );
-
-
-    if (time) {
-      time.textContent =
-        activity.time || "";
-    }
-
-
-    const type =
-      nextCard.querySelector(
-        ".next-type, .next-up-type, [data-next-type]"
-      );
-
-
-    if (type) {
-      type.textContent =
-        activity.type || "";
-    }
-
-
-    const title =
-      nextCard.querySelector(
-        "h2, h3, .next-title, [data-next-title]"
-      );
-
-
-    if (title) {
-      title.textContent =
-        activity.title ||
-        activity.type ||
-        "Activity";
-    }
-
-
-    const location =
-      nextCard.querySelector(
-        ".next-location, .next-place, p, [data-next-location]"
-      );
-
-
-    if (location) {
-      location.textContent =
-        activityLocation(
-          activity
-        );
-    }
+    return;
   }
 
 
-  function findTodayScheduleContainer() {
-    return (
-      document.querySelector(
-        "[data-today-schedule]"
-      ) ||
-      document.querySelector(
-        ".today-schedule-list"
-      ) ||
-      document.querySelector(
-        ".schedule-preview"
-      ) ||
-      document.querySelector(
-        ".today-list"
-      )
+  nextCard.setAttribute(
+    "role",
+    "button"
+  );
+
+  nextCard.setAttribute(
+    "tabindex",
+    "0"
+  );
+
+  nextCard.dataset.activityIndex =
+    String(
+      activity.__index
     );
+
+  nextCard.dataset.dynamicActivity =
+    "true";
+
+
+  const time =
+    nextCard.querySelector(
+      ".next-time"
+    );
+
+
+  const title =
+    nextCard.querySelector(
+      ".next-title"
+    );
+
+
+  const place =
+    nextCard.querySelector(
+      ".next-place"
+    );
+
+
+  if (time) {
+    time.textContent =
+      activity.time || "";
   }
 
 
-  function renderTodaySchedule(
-    selectedDate,
-    activities
-  ) {
-    const container =
-      findTodayScheduleContainer();
+  /*
+     IMPORTANT:
+     The large title is the ACTIVITY TYPE,
+     not the specific activity title.
+  */
+
+  if (title) {
+    title.textContent =
+      activity.type ||
+      "Activity";
+  }
 
 
-    if (!container) {
-      makeExistingTodayRowsClickable(
-        activities
+  if (place) {
+    place.textContent =
+      activityLocation(
+        activity
       );
-
-      return;
-    }
-
-
-    const heading =
-      document.querySelector(
-        "[data-today-date], .today-date, .schedule-preview-date"
-      );
+  }
+}
 
 
-    if (
-      heading &&
+
+/* =========================================
+   TODAY SCHEDULE
+   ========================================= */
+
+function renderTodaySchedule(
+  selectedDate,
+  activities,
+  nextActivity
+) {
+  const container =
+    document.querySelector(
+      ".today-list"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  const formattedHeading =
+    formatTodayHeading(
       selectedDate
-    ) {
-      heading.textContent =
-        formatDateLong(
-          selectedDate
-        ).toUpperCase();
-    }
+    );
 
 
-    container.innerHTML =
-      activities
-        .map(
-          (activity) => `
+  const rows =
+    activities
+      .map(
+        (activity) => {
+
+          const isNext =
+            nextActivity &&
+            activity.__index ===
+              nextActivity.__index;
+
+
+          const location =
+            activityLocation(
+              activity
+            );
+
+
+          return `
             <article
-              class="today-event info-panel-trigger"
+              class="today-item${
+                isNext
+                  ? " highlight"
+                  : ""
+              }"
               data-dynamic-activity="true"
               data-activity-index="${activity.__index}"
               role="button"
               tabindex="0"
               aria-label="Open ${escapeHTML(
-                activity.title ||
                 activity.type ||
                 "activity"
               )} details"
             >
-              <div class="today-event-time">
+
+              <div
+                class="today-time"
+              >
                 ${escapeHTML(
                   activity.time || ""
                 )}
               </div>
 
-              <div class="today-event-info">
-                <div class="today-event-type">
-                  ${escapeHTML(
-                    activity.type || ""
-                  )}
-                </div>
 
-                <h3>
+              <div
+                class="today-info"
+              >
+
+                <div
+                  class="today-title"
+                >
                   ${escapeHTML(
-                    activity.title ||
                     activity.type ||
                     "Activity"
                   )}
-                </h3>
+                </div>
+
 
                 ${
-                  activityLocation(
-                    activity
-                  )
+                  location
                     ? `
-                      <p>
+                      <div
+                        class="today-place"
+                      >
                         ${escapeHTML(
-                          activityLocation(
-                            activity
-                          )
+                          location
                         )}
-                      </p>
+                      </div>
                     `
                     : ""
                 }
+
               </div>
 
-              <div class="today-event-arrow">
-                →
-              </div>
+
+              ${
+                isNext
+                  ? `
+                    <div
+                      class="today-arrow"
+                    >
+                      →
+                    </div>
+                  `
+                  : ""
+              }
+
             </article>
-          `
-        )
-        .join("");
+          `;
+        }
+      )
+      .join("");
+
+
+  container.innerHTML = `
+    <div
+      class="section-label schedule-heading"
+    >
+      <span>
+        ${escapeHTML(
+          formattedHeading
+        )}
+      </span>
+
+      <span>
+        Today
+      </span>
+    </div>
+
+    ${rows}
+  `;
+}
+
+
+
+/* =========================================
+   TODAY DATE HEADING
+   ========================================= */
+
+function formatTodayHeading(
+  dateString
+) {
+  if (!dateString) {
+    return "";
   }
 
 
-  function makeExistingTodayRowsClickable(
-    activities
-  ) {
-    const existingRows =
-      document.querySelectorAll(
-        ".today-event, .today-schedule-item, .schedule-preview-item"
-      );
+  const date =
+    new Date(
+      `${dateString}T12:00:00`
+    );
 
 
-    existingRows.forEach(
-      (row, index) => {
-        const activity =
-          activities[index];
-
-        if (!activity) {
-          return;
-        }
-
-
-        row.dataset.activityIndex =
-          String(
-            activity.__index
-          );
-
-        row.dataset.dynamicActivity =
-          "true";
-
-        row.setAttribute(
-          "role",
-          "button"
-        );
-
-        row.setAttribute(
-          "tabindex",
-          "0"
-        );
+  const weekday =
+    date.toLocaleDateString(
+      "en-GB",
+      {
+        weekday: "long"
       }
     );
-  }
+
+
+  const day =
+    date.getDate();
+
+
+  const month =
+    date.toLocaleDateString(
+      "en-GB",
+      {
+        month: "long"
+      }
+    );
+
+
+  return (
+    `${weekday} · ${day} ${month}`
+  );
+}
 
 
   function renderTodayContact() {
