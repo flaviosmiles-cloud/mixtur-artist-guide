@@ -1884,34 +1884,6 @@ function renderTodayNextUp(activity) {
   nextCard.dataset.dynamicActivity =
     "true";
 
-
-  nextCard.onclick = (event) => {
-     event.preventDefault();
-     event.stopPropagation();
-   
-     alert("NEXT UP CLICK WORKS");
-   
-     openActivityDetail(
-       activity
-     );
-   };
-
-
-  nextCard.onkeydown = (event) => {
-    if (
-      event.key !== "Enter" &&
-      event.key !== " "
-    ) {
-      return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    openActivityDetail(
-      activity
-    );
-  };
 }
 
 /* =========================================
