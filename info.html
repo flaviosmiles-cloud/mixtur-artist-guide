@@ -108,66 +108,87 @@
       <div class="stay-summary-grid">
 
 
-        <article class="stay-summary-card">
+        <!-- ARRIVAL -->
 
-          <div class="stay-summary-date">
-            17 OCT
+        <article
+          class="stay-summary-card"
+          data-stay-arrival
+        >
+
+          <div
+            class="stay-summary-date"
+            data-arrival-date
+          >
+            —
           </div>
 
           <div class="stay-summary-type">
             Arrival
           </div>
 
-          <h2>
-            15:30
+          <h2 data-arrival-time>
+            —
           </h2>
 
-          <p>
-            Barcelona Airport
+          <p data-arrival-place>
+            —
           </p>
 
         </article>
 
 
 
-        <article class="stay-summary-card">
+        <!-- ACCOMMODATION · OPTIONAL -->
+
+        <article
+          class="stay-summary-card"
+          data-stay-hotel
+        >
 
           <div class="stay-summary-date">
             STAY
           </div>
 
           <div class="stay-summary-type">
-            Hotel
+            Accommodation
           </div>
 
-          <h2>
-            Your hotel
+          <h2 data-hotel-name>
+            —
           </h2>
 
-          <p>
-            Check-in · 17:00
+          <p data-hotel-summary>
+            —
           </p>
 
         </article>
 
 
 
-        <article class="stay-summary-card">
+        <!-- DEPARTURE -->
 
-          <div class="stay-summary-date">
-            20 OCT
+        <article
+          class="stay-summary-card"
+          data-stay-departure
+        >
+
+          <div
+            class="stay-summary-date"
+            data-departure-date
+          >
+            —
           </div>
 
           <div class="stay-summary-type">
             Departure
           </div>
 
-          <h2>
-            11:30
+          <h2 data-departure-time>
+            —
           </h2>
 
-          <p>
-            Airport transfer
+          <p data-departure-place>
+            —
           </p>
 
         </article>
@@ -190,7 +211,10 @@
            PRACTICAL INFO
            ==================================== -->
 
-      <article class="info-section">
+      <article
+        class="info-section"
+        id="getting-around"
+      >
 
         <button
           class="info-toggle"
@@ -215,8 +239,6 @@
 
         <div class="info-content">
 
-
-          <!-- TRANSPORT -->
 
           <div class="info-group-label">
             Getting around
@@ -273,8 +295,6 @@
           </a>
 
 
-
-          <!-- SIMPLE INFORMATION -->
 
           <div class="info-row">
 
@@ -511,7 +531,10 @@
            CONTACTS
            ==================================== -->
 
-      <article class="info-section">
+      <article
+        class="info-section"
+        id="my-contact"
+      >
 
         <button
           class="info-toggle"
@@ -537,14 +560,15 @@
         <div class="info-content">
 
 
-          <!-- CURRENT ARTIST MAIN CONTACT -->
-
           <div class="main-contact-card">
 
             <div class="main-contact-top">
 
-              <div class="contact-avatar">
-                FD
+              <div
+                class="contact-avatar"
+                data-contact-avatar
+              >
+                —
               </div>
 
 
@@ -554,12 +578,15 @@
                   Your contact
                 </p>
 
-                <h2>
-                  Flavio De Sá
+                <h2 data-contact-name>
+                  —
                 </h2>
 
-                <p class="main-contact-role">
-                  Production Assistant
+                <p
+                  class="main-contact-role"
+                  data-contact-role
+                >
+                  —
                 </p>
 
               </div>
@@ -574,12 +601,18 @@
 
             <div class="main-contact-actions">
 
-              <a href="#">
+              <a
+                href="#"
+                data-contact-whatsapp
+              >
                 WhatsApp
                 <span>→</span>
               </a>
 
-              <a href="#">
+              <a
+                href="#"
+                data-contact-call
+              >
                 Call
                 <span>→</span>
               </a>
@@ -587,134 +620,6 @@
             </div>
 
           </div>
-
-
-
-          <!-- TEAM -->
-
-          <div class="team-heading">
-            Mixtur Team
-          </div>
-
-
-          <article class="team-contact">
-
-            <div class="contact-avatar team-avatar">
-              SB
-            </div>
-
-            <div class="team-contact-content">
-
-              <h3>
-                Susana Bautista
-              </h3>
-
-              <p class="team-role">
-                Head of Production
-              </p>
-
-              <p class="team-description">
-                Production · Logistics
-              </p>
-
-              <div class="team-actions">
-                <a href="#">WhatsApp →</a>
-                <a href="#">Call →</a>
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="team-contact">
-
-            <div class="contact-avatar team-avatar">
-              AF
-            </div>
-
-            <div class="team-contact-content">
-
-              <h3>
-                Anxe Faraldo
-              </h3>
-
-              <p class="team-role">
-                Technical Manager
-              </p>
-
-              <p class="team-description">
-                Technical · Stage · Equipment
-              </p>
-
-              <div class="team-actions">
-                <a href="#">WhatsApp →</a>
-                <a href="#">Call →</a>
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="team-contact">
-
-            <div class="contact-avatar team-avatar">
-              PO
-            </div>
-
-            <div class="team-contact-content">
-
-              <h3>
-                Pablo Orts
-              </h3>
-
-              <p class="team-role">
-                Head of Communication
-              </p>
-
-              <p class="team-description">
-                Press · Interviews · Communication
-              </p>
-
-              <div class="team-actions">
-                <a href="#">WhatsApp →</a>
-                <a href="#">Call →</a>
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="team-contact">
-
-            <div class="contact-avatar team-avatar">
-              CR
-            </div>
-
-            <div class="team-contact-content">
-
-              <h3>
-                Catalina Riutort
-              </h3>
-
-              <p class="team-role">
-                Production Assistant
-              </p>
-
-              <p class="team-description">
-                Artist coordination · Logistics
-              </p>
-
-              <div class="team-actions">
-                <a href="#">WhatsApp →</a>
-                <a href="#">Call →</a>
-              </div>
-
-            </div>
-
-          </article>
 
 
         </div>
@@ -1453,8 +1358,9 @@
 
   </main>
 
+
   <script src="venues.js?v=1"></script>
-  <script src="script.js?v=18"></script>
+  <script src="script.js?v=27"></script>
 
 </body>
 
