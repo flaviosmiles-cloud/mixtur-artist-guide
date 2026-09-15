@@ -1332,44 +1332,140 @@ if (
   }
 
 
-  function initDynamicActivityDelegation() {
-    function activate(trigger) {
-      if (!trigger || !Array.isArray(artistData?.schedule)) return;
+ function initDynamicActivityDelegation() {
 
-      const index = Number(trigger.dataset.activityIndex);
-
-      if (!Number.isInteger(index) || !artistData.schedule[index]) return;
-
-      openActivityDetail(artistData.schedule[index]);
+  function activate(trigger) {
+    if (
+      !trigger ||
+      !Array.isArray(
+        artistData?.schedule
+      )
+    ) {
+      return;
     }
-           
-      document.addEventListener("click", (event) => {
-        const trigger = event.target.closest("[data-activity-index]");
-      
-        if (!trigger) {
-          alert("NO TRIGGER");
-          return;
-        }
-      
-        alert(
-          "TRIGGER FOUND · INDEX: " +
-          trigger.dataset.activityIndex
+
+
+    /* NEXT UP WHITE CARD */
+
+    if (
+      trigger.classList.contains(
+        "next-card"
+      )
+    ) {
+      const schedule =
+        artistData.schedule
+          .map(
+            (activity, index) => ({
+              ...activity,
+              __index: index
+            })
+          )
+          .sort(
+            (a, b) => {
+              const dateA =
+                activityDateTime(a);
+
+              const dateB =
+                activityDateTime(b);
+
+              return (
+                (dateA?.getTime() || 0) -
+                (dateB?.getTime() || 0)
+              );
+            }
+          );
+
+
+      const nextActivity =
+        chooseNextActivity(
+          schedule
         );
-      
-        event.preventDefault();
-        activate(trigger);
-      });
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
 
-      const trigger = event.target.closest("[data-activity-index]");
-      if (!trigger) return;
+      if (nextActivity) {
+        openActivityDetail(
+          nextActivity
+        );
+      }
+
+      return;
+    }
+
+
+    /* TODAY + SCHEDULE */
+
+    const index =
+      Number(
+        trigger.dataset
+          .activityIndex
+      );
+
+
+    if (
+      !Number.isInteger(index) ||
+      !artistData.schedule[index]
+    ) {
+      return;
+    }
+
+
+    openActivityDetail(
+      artistData.schedule[index]
+    );
+  }
+
+
+  document.addEventListener(
+    "click",
+    (event) => {
+
+      const trigger =
+        event.target.closest(
+          ".next-card, [data-activity-index]"
+        );
+
+
+      if (!trigger) {
+        return;
+      }
+
 
       event.preventDefault();
+
       activate(trigger);
-    });
-  }
+    }
+  );
+
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+
+      if (
+        event.key !== "Enter" &&
+        event.key !== " "
+      ) {
+        return;
+      }
+
+
+      const trigger =
+        event.target.closest(
+          ".next-card, [data-activity-index]"
+        );
+
+
+      if (!trigger) {
+        return;
+      }
+
+
+      event.preventDefault();
+
+      activate(trigger);
+    }
+  );
+}
 
 
   /* =========================================
