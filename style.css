@@ -3981,3 +3981,12 @@ span:nth-child(even) {
   font-size: 0.6rem;
   line-height: 1.45;
 }
+
+/* =========================================
+   VENUE IMAGES · BLACK & WHITE
+   ========================================= */
+
+.featured-place-image img,
+.activity-panel-image img {
+  filter: grayscale(100%);
+}
