@@ -747,6 +747,264 @@ document.addEventListener("DOMContentLoaded", async () => {
     return panel;
   }
 
+   function ensureVenueNearbyPanel() {
+  let panel =
+    document.getElementById(
+      "venue-nearby-panel"
+    );
+
+  if (panel) {
+    return panel;
+  }
+
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
+      <div
+        class="place-panel"
+        id="venue-nearby-panel"
+        aria-hidden="true"
+      >
+
+        <div
+          class="panel-backdrop"
+        ></div>
+
+        <section
+          class="panel-sheet"
+        >
+
+          <div
+            class="panel-handle"
+          ></div>
+
+
+          <div
+            class="panel-header"
+          >
+
+            <div>
+
+              <p
+                class="panel-location"
+                data-venue-nearby-location
+              ></p>
+
+              <h2
+                data-venue-nearby-title
+              ></h2>
+
+              <p
+                class="panel-intro"
+                data-venue-nearby-intro
+              ></p>
+
+            </div>
+
+
+            <button
+              class="panel-close"
+              type="button"
+              aria-label="Close"
+            >
+              ×
+            </button>
+
+          </div>
+
+
+          <div
+            class="panel-list"
+            data-venue-nearby-list
+          ></div>
+
+        </section>
+
+      </div>
+    `
+  );
+
+
+  panel =
+    document.getElementById(
+      "venue-nearby-panel"
+    );
+
+
+  panel
+    .querySelector(
+      ".panel-backdrop"
+    )
+    ?.addEventListener(
+      "click",
+      () => {
+        closePanel(panel);
+      }
+    );
+
+
+  panel
+    .querySelector(
+      ".panel-close"
+    )
+    ?.addEventListener(
+      "click",
+      () => {
+        closePanel(panel);
+      }
+    );
+
+
+  return panel;
+}
+
+
+function openVenueNearby(
+  venue,
+  kind
+) {
+  if (!venue) {
+    return;
+  }
+
+
+  const items =
+    kind === "food"
+      ? venue.nearbyFood
+      : venue.essentials;
+
+
+  if (
+    !Array.isArray(items) ||
+    !items.length
+  ) {
+    return;
+  }
+
+
+  const panel =
+    ensureVenueNearbyPanel();
+
+
+  panel.querySelector(
+    "[data-venue-nearby-location]"
+  ).textContent =
+    `Near ${venue.name}`;
+
+
+  panel.querySelector(
+    "[data-venue-nearby-title]"
+  ).textContent =
+    kind === "food"
+      ? "Nearby food"
+      : "Essentials";
+
+
+  panel.querySelector(
+    "[data-venue-nearby-intro]"
+  ).textContent =
+    kind === "food"
+      ? "Selected recommendations near the venue"
+      : "Useful places near the venue";
+
+
+  const list =
+    panel.querySelector(
+      "[data-venue-nearby-list]"
+    );
+
+
+  list.innerHTML =
+    items
+      .map(
+        (item) => `
+          <article
+            class="panel-place"
+          >
+
+            <div
+              class="panel-place-meta"
+            >
+              ${escapeHTML(
+                item.type || ""
+              )}
+            </div>
+
+
+            <h3>
+              ${escapeHTML(
+                item.name || ""
+              )}
+            </h3>
+
+
+            ${
+              item.description
+                ? `
+                  <p>
+                    ${escapeHTML(
+                      item.description
+                    )}
+                  </p>
+                `
+                : ""
+            }
+
+
+            ${
+              item.address
+                ? `
+                  <p
+                    class="venue-nearby-address"
+                  >
+                    ${escapeHTML(
+                      item.address
+                    )}
+                  </p>
+                `
+                : ""
+            }
+
+
+            ${
+              item.maps
+                ? `
+                  <a
+                    href="${escapeHTML(
+                      item.maps
+                    )}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open in Maps
+                    <span>→</span>
+                  </a>
+                `
+                : ""
+            }
+
+          </article>
+        `
+      )
+      .join("");
+
+
+  const activityPanel =
+    document.getElementById(
+      "activity-detail-panel"
+    );
+
+
+  closePanel(
+    activityPanel
+  );
+
+
+  openPanel(
+    panel
+  );
+}
 
   function activityInfoRows(
     activity = {}
@@ -858,6 +1116,45 @@ document.addEventListener("DOMContentLoaded", async () => {
     const panel =
       ensureActivityPanel();
 
+     const venue =
+  activity.venue
+    ? venueData[
+        activity.venue
+      ]
+    : null;
+
+
+const imageWrapper =
+  panel.querySelector(
+    "[data-activity-panel-image]"
+  );
+
+
+const imageElement =
+  panel.querySelector(
+    "[data-activity-panel-image-element]"
+  );
+
+
+if (
+  venue?.image &&
+  imageWrapper &&
+  imageElement
+) {
+  imageElement.src =
+    venue.image;
+
+  imageElement.alt =
+    venue.name || "Venue";
+
+  imageWrapper.hidden =
+    false;
+
+} else if (imageWrapper) {
+  imageWrapper.hidden =
+    true;
+}
+
 
     panel.querySelector(
       "[data-activity-panel-category]"
@@ -955,7 +1252,82 @@ document.addEventListener("DOMContentLoaded", async () => {
         true;
     }
 
+   const nearbyBlock =
+  panel.querySelector(
+    "[data-activity-panel-nearby]"
+  );
 
+
+const foodTrigger =
+  panel.querySelector(
+    "[data-activity-nearby-food]"
+  );
+
+
+const essentialsTrigger =
+  panel.querySelector(
+    "[data-activity-nearby-essentials]"
+  );
+
+
+const hasFood =
+  Array.isArray(
+    venue?.nearbyFood
+  ) &&
+  venue.nearbyFood.length > 0;
+
+
+const hasEssentials =
+  Array.isArray(
+    venue?.essentials
+  ) &&
+  venue.essentials.length > 0;
+
+
+if (
+  nearbyBlock &&
+  (hasFood || hasEssentials)
+) {
+  nearbyBlock.hidden =
+    false;
+
+
+  if (foodTrigger) {
+    foodTrigger.hidden =
+      !hasFood;
+
+    foodTrigger.onclick =
+      (event) => {
+        event.preventDefault();
+
+        openVenueNearby(
+          venue,
+          "food"
+        );
+      };
+  }
+
+
+  if (essentialsTrigger) {
+    essentialsTrigger.hidden =
+      !hasEssentials;
+
+    essentialsTrigger.onclick =
+      (event) => {
+        event.preventDefault();
+
+        openVenueNearby(
+          venue,
+          "essentials"
+        );
+      };
+  }
+
+} else if (nearbyBlock) {
+  nearbyBlock.hidden =
+    true;
+}
+     
     openPanel(panel);
   }
 
