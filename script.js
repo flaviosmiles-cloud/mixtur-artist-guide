@@ -1767,48 +1767,150 @@ function formatTimeUntilActivity(
    ========================================= */
 
 function renderTodayNextUp(activity) {
-  const nextCard = document.querySelector(".next-card");
-  const nextSection = document.querySelector(".next-section");
-  const countdown = nextSection?.querySelector(".section-label span:last-child");
+  const nextCard =
+    document.querySelector(".next-card");
 
-  if (!nextCard) return;
+  const nextSection =
+    document.querySelector(".next-section");
 
-  const arrowButton = nextCard.querySelector(".arrow-button");
-  if (arrowButton) {
-    arrowButton.type = "button";
-    arrowButton.tabIndex = -1;
-    arrowButton.setAttribute("aria-hidden", "true");
+  const countdown =
+    nextSection?.querySelector(
+      ".section-label span:last-child"
+    );
+
+  if (!nextCard) {
+    return;
   }
+
+
+  /* -----------------------------------------
+     NO MORE ACTIVITIES
+     ----------------------------------------- */
 
   if (!activity) {
     nextCard.hidden = true;
-    nextCard.removeAttribute("data-activity-index");
-    nextCard.removeAttribute("data-dynamic-activity");
 
-    if (countdown) countdown.textContent = "Schedule complete";
+    nextCard.removeAttribute(
+      "data-activity-index"
+    );
+
+    nextCard.removeAttribute(
+      "data-dynamic-activity"
+    );
+
+    nextCard.removeAttribute(
+      "role"
+    );
+
+    nextCard.removeAttribute(
+      "tabindex"
+    );
+
+    nextCard.onclick = null;
+    nextCard.onkeydown = null;
+
+    if (countdown) {
+      countdown.textContent =
+        "Schedule complete";
+    }
+
     return;
   }
+
+
+  /* -----------------------------------------
+     CONTENT
+     ----------------------------------------- */
 
   nextCard.hidden = false;
 
   if (countdown) {
-    countdown.textContent = formatTimeUntilActivity(activity);
+    countdown.textContent =
+      formatTimeUntilActivity(
+        activity
+      );
   }
 
-  nextCard.setAttribute("role", "button");
-  nextCard.setAttribute("tabindex", "0");
-  nextCard.dataset.activityIndex = String(activity.__index);
-  nextCard.dataset.dynamicActivity = "true";
 
-  const time = nextCard.querySelector(".next-time");
-  const title = nextCard.querySelector(".next-title");
-  const place = nextCard.querySelector(".next-place");
+  const time =
+    nextCard.querySelector(
+      ".next-time"
+    );
 
-  if (time) time.textContent = activity.time || "";
-  if (title) title.textContent = activity.type || "Activity";
-  if (place) place.textContent = activityLocation(activity);
+  const title =
+    nextCard.querySelector(
+      ".next-title"
+    );
+
+  const place =
+    nextCard.querySelector(
+      ".next-place"
+    );
+
+
+  if (time) {
+    time.textContent =
+      activity.time || "";
+  }
+
+  if (title) {
+    title.textContent =
+      activity.type || "Activity";
+  }
+
+  if (place) {
+    place.textContent =
+      activityLocation(activity);
+  }
+
+
+  /* -----------------------------------------
+     INTERACTION
+     ----------------------------------------- */
+
+  nextCard.setAttribute(
+    "role",
+    "button"
+  );
+
+  nextCard.setAttribute(
+    "tabindex",
+    "0"
+  );
+
+  nextCard.dataset.activityIndex =
+    String(activity.__index);
+
+  nextCard.dataset.dynamicActivity =
+    "true";
+
+
+  nextCard.onclick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    openActivityDetail(
+      activity
+    );
+  };
+
+
+  nextCard.onkeydown = (event) => {
+    if (
+      event.key !== "Enter" &&
+      event.key !== " "
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    openActivityDetail(
+      activity
+    );
+  };
 }
-
 
 /* =========================================
    TODAY SCHEDULE
