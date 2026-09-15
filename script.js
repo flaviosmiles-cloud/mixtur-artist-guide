@@ -2166,81 +2166,82 @@ function formatTodayHeading(
 
 
   function renderTodayContact() {
-  if (!artistData?.mainContact) {
-    return;
-  }
-
-  const contact = artistData.mainContact;
-
-  const contactArea =
-    document.querySelector(".today-contact-card") ||
-    document.querySelector(".contact-card") ||
-    document.querySelector("#my-contact");
-
-  if (!contactArea) {
-    return;
-  }
-
-  const name =
-    contactArea.querySelector(
-      ".contact-name, [data-contact-name], h3"
-    );
-
-  if (name && contact.name) {
-    name.textContent = contact.name;
-  }
-
-  const role =
-    contactArea.querySelector(
-      ".contact-role, [data-contact-role]"
-    );
-
-  if (role) {
-    if (contact.role) {
-      role.textContent = contact.role;
-      role.hidden = false;
-    } else {
-      role.hidden = true;
-    }
-  }
-
-  const phone =
-    String(contact.phone || "").trim();
-
-  const phoneDigits =
-    phone.replace(/\D/g, "");
-
-  const whatsappLink =
-    contactArea.querySelector(
-      '[data-contact-whatsapp], a[href*="wa.me"], a[href*="whatsapp"]'
-    );
-
-  if (whatsappLink) {
-    if (phoneDigits) {
-      whatsappLink.href =
-        `https://wa.me/${phoneDigits}`;
-
-      whatsappLink.hidden = false;
-    } else {
-      whatsappLink.hidden = true;
-    }
-  }
-
-  const callLink =
-    contactArea.querySelector(
-      '[data-contact-call], a[href^="tel:"]'
-    );
-
-  if (callLink) {
-    if (phone) {
-      callLink.href =
-        `tel:${phone}`;
-
-      callLink.hidden = false;
-    } else {
-      callLink.hidden = true;
-    }
-  }
+     if (!artistData?.mainContact) {
+       return;
+     }
+   
+     const contact = artistData.mainContact;
+   
+     const contactArea =
+       document.querySelector(".today-contact-card") ||
+       document.querySelector(".contact-card") ||
+       document.querySelector("#my-contact");
+   
+     if (!contactArea) {
+       return;
+     }
+   
+     /* NAME */
+   
+     const name =
+       contactArea.querySelector(
+         ".contact-name, [data-contact-name], h3"
+       );
+   
+     if (name) {
+       name.textContent = contact.name || "";
+     }
+   
+   
+     /* ROLE */
+   
+     const role =
+       contactArea.querySelector(
+         ".contact-role, [data-contact-role]"
+       );
+   
+     if (role) {
+       role.textContent = contact.role || "";
+     }
+   
+   
+     /* PHONE */
+   
+     const phone =
+       String(contact.phone || "").trim();
+   
+     const phoneDigits =
+       phone.replace(/\D/g, "");
+   
+   
+     /* WHATSAPP */
+   
+     const whatsappLink =
+       contactArea.querySelector(
+         '[data-contact-whatsapp], a[href*="wa.me"], a[href*="whatsapp"]'
+       );
+   
+     if (whatsappLink && phoneDigits) {
+       whatsappLink.href =
+         `https://wa.me/${phoneDigits}`;
+   
+       whatsappLink.target = "_blank";
+       whatsappLink.rel = "noopener";
+     }
+   
+   
+     /* CALL */
+   
+     const callLink =
+       contactArea.querySelector(
+         '[data-contact-call], a[href^="tel:"]'
+       );
+   
+     if (callLink && phone) {
+       callLink.href =
+         `tel:${phone}`;
+     }
+   }
 }
 
   /* =========================================
