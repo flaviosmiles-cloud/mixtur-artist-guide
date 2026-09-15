@@ -1461,30 +1461,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
       artistData.hotel = {
 
-        name:
-          getFieldByLabel(
-            hotelSection,
-            "Hotel name"
-          )?.value.trim() || "",
+  name:
+    getFieldByLabel(
+      hotelSection,
+      "Hotel name"
+    )?.value.trim() || "",
 
-        address:
-          getFieldByLabel(
-            hotelSection,
-            "Address"
-          )?.value.trim() || "",
+  address:
+    getFieldByLabel(
+      hotelSection,
+      "Address"
+    )?.value.trim() || "",
 
-        checkIn:
-          getFieldByLabel(
-            hotelSection,
-            "Check-in"
-          )?.value || "",
+  checkInDate:
+    getFieldByLabel(
+      hotelSection,
+      "Check-in date"
+    )?.value || "",
 
-        checkOut:
-          getFieldByLabel(
-            hotelSection,
-            "Check-out"
-          )?.value || ""
-      };
+  checkInTime:
+    getFieldByLabel(
+      hotelSection,
+      "Check-in time"
+    )?.value || "",
+
+  checkOutDate:
+    getFieldByLabel(
+      hotelSection,
+      "Check-out date"
+    )?.value || "",
+
+  checkOutTime:
+    getFieldByLabel(
+      hotelSection,
+      "Check-out time"
+    )?.value || ""
+};
     }
 
 
