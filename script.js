@@ -3187,154 +3187,251 @@ function renderVenueDataInPlaces() {
 
 
   function renderInfoArtistData() {
-    if (!artistData) {
-      return;
+  if (!artistData) {
+    return;
+  }
+
+  const stay = artistData.stay || {};
+  const hotel = artistData.hotel || null;
+  const contact = artistData.mainContact || {};
+
+  /* =========================================
+     HELPERS
+     ========================================= */
+
+  function formatInfoDate(dateString) {
+    if (!dateString) {
+      return "";
     }
 
+    const date = parseLocalDate(dateString);
 
-    const stay =
-      artistData.stay || {};
+    if (!date) {
+      return "";
+    }
 
-    const hotel =
-      artistData.hotel || {};
+    return new Intl.DateTimeFormat("en-GB", {
+      day: "numeric",
+      month: "short"
+    })
+      .format(date)
+      .toUpperCase();
+  }
 
-    const contact =
-      artistData.mainContact ||
-      {};
+  function setInfoText(selector, value) {
+    const element = document.querySelector(selector);
 
-
-    setTextIfFound(
-      [
-        "[data-arrival-date]"
-      ],
-      stay.arrivalDate
-        ? formatDateLong(
-            stay.arrivalDate
-          )
-        : ""
-    );
-
-
-    setTextIfFound(
-      [
-        "[data-arrival-time]"
-      ],
-      stay.arrivalTime
-    );
-
-
-    setTextIfFound(
-      [
-        "[data-arrival-place]"
-      ],
-      stay.arrivalPlace
-    );
-
-
-    setTextIfFound(
-      [
-        "[data-departure-date]"
-      ],
-      stay.departureDate
-        ? formatDateLong(
-            stay.departureDate
-          )
-        : ""
-    );
-
-
-    setTextIfFound(
-      [
-        "[data-departure-time]"
-      ],
-      stay.departureTime
-    );
-
-
-    setTextIfFound(
-      [
-        "[data-departure-place]"
-      ],
-      stay.departurePlace
-    );
-
-
-    setTextIfFound(
-      [
-        "[data-hotel-name]"
-      ],
-      hotel.name
-    );
-
-
-    setTextIfFound(
-      [
-        "[data-hotel-address]"
-      ],
-      hotel.address
-    );
-
-
-    setTextIfFound(
-      [
-        "[data-check-in]"
-      ],
-      hotel.checkIn
-    );
-
-
-    setTextIfFound(
-      [
-        "[data-check-out]"
-      ],
-      hotel.checkOut
-    );
-
-
-    const contactArea =
-      document.querySelector(
-        "#my-contact"
-      ) ||
-      document.querySelector(
-        ".main-contact-card"
-      ) ||
-      document.querySelector(
-        ".info-contact-card"
-      );
-
-
-    if (
-      contactArea &&
-      contact.name
-    ) {
-      const name =
-        contactArea.querySelector(
-          "h2, h3, .contact-name, [data-contact-name]"
-        );
-
-
-      const role =
-        contactArea.querySelector(
-          ".contact-role, p, [data-contact-role]"
-        );
-
-
-      if (name) {
-        name.textContent =
-          contact.name;
-      }
-
-
-      if (
-        role &&
-        contact.role
-      ) {
-        role.textContent =
-          contact.role;
-      }
+    if (element && value) {
+      element.textContent = value;
     }
   }
 
+  /* =========================================
+     ARRIVAL
+     ========================================= */
+
+  const arrivalCard =
+    document.querySelector("[data-stay-arrival]");
+
+  const hasArrival =
+    stay.arrivalDate ||
+    stay.arrivalTime ||
+    stay.arrivalPlace;
+
+  if (arrivalCard) {
+    if (!hasArrival) {
+      arrivalCard.style.display = "none";
+    } else {
+      arrivalCard.style.display = "";
+
+      setInfoText(
+        "[data-arrival-date]",
+        formatInfoDate(stay.arrivalDate)
+      );
+
+      setInfoText(
+        "[data-arrival-time]",
+        stay.arrivalTime
+      );
+
+      setInfoText(
+        "[data-arrival-place]",
+        stay.arrivalPlace
+      );
+    }
+  }
+
+  /* =========================================
+     ACCOMMODATION
+     ========================================= */
+
+  const hotelCard =
+    document.querySelector("[data-stay-hotel]");
+
+  if (hotelCard) {
+    if (!hotel) {
+      hotelCard.style.display = "none";
+    } else {
+      hotelCard.style.display = "";
+
+      setInfoText(
+        "[data-hotel-name]",
+        hotel.name
+      );
+
+      const hotelSummaryParts = [];
+
+      if (hotel.checkInDate) {
+        hotelSummaryParts.push(
+          `Check-in · ${formatInfoDate(hotel.checkInDate)}`
+        );
+      }
+
+      if (hotel.checkInTime) {
+        hotelSummaryParts.push(
+          hotel.checkInTime
+        );
+      }
+
+      if (
+        !hotel.checkInDate &&
+        !hotel.checkInTime &&
+        hotel.address
+      ) {
+        hotelSummaryParts.push(
+          hotel.address
+        );
+      }
+
+      setInfoText(
+        "[data-hotel-summary]",
+        hotelSummaryParts.join(" · ")
+      );
+    }
+  }
+
+  /* =========================================
+     DEPARTURE
+     ========================================= */
+
+  const departureCard =
+    document.querySelector("[data-stay-departure]");
+
+  const hasDeparture =
+    stay.departureDate ||
+    stay.departureTime ||
+    stay.departurePlace;
+
+  if (departureCard) {
+    if (!hasDeparture) {
+      departureCard.style.display = "none";
+    } else {
+      departureCard.style.display = "";
+
+      setInfoText(
+        "[data-departure-date]",
+        formatInfoDate(stay.departureDate)
+      );
+
+      setInfoText(
+        "[data-departure-time]",
+        stay.departureTime
+      );
+
+      setInfoText(
+        "[data-departure-place]",
+        stay.departurePlace
+      );
+    }
+  }
+
+  /* =========================================
+     MAIN CONTACT
+     ========================================= */
+
+  const contactArea =
+    document.querySelector("#my-contact");
+
+  if (contactArea) {
+    if (!contact.name) {
+      contactArea.style.display = "none";
+    } else {
+      contactArea.style.display = "";
+
+      const contactName =
+        contactArea.querySelector("[data-contact-name]");
+
+      const contactRole =
+        contactArea.querySelector("[data-contact-role]");
+
+      const contactAvatar =
+        contactArea.querySelector("[data-contact-avatar]");
+
+      const whatsappLink =
+        contactArea.querySelector(
+          "[data-contact-whatsapp]"
+        );
+
+      const callLink =
+        contactArea.querySelector(
+          "[data-contact-call]"
+        );
+
+      if (contactName) {
+        contactName.textContent = contact.name;
+      }
+
+      if (contactRole) {
+        contactRole.textContent =
+          contact.role || "";
+      }
+
+      if (contactAvatar) {
+        const initials = contact.name
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean)
+          .slice(0, 2)
+          .map(part => part.charAt(0))
+          .join("")
+          .toUpperCase();
+
+        contactAvatar.textContent =
+          initials || "M";
+      }
+
+      const phone =
+        String(contact.phone || "").trim();
+
+      const phoneDigits =
+        phone.replace(/\D/g, "");
+
+      if (whatsappLink) {
+        if (phoneDigits) {
+          whatsappLink.href =
+            `https://wa.me/${phoneDigits}`;
+
+          whatsappLink.target = "_blank";
+          whatsappLink.rel = "noopener";
+          whatsappLink.style.display = "";
+        } else {
+          whatsappLink.style.display = "none";
+        }
+      }
+
+      if (callLink) {
+        if (phone) {
+          callLink.href =
+            `tel:${phone}`;
+
+          callLink.style.display = "";
+        } else {
+          callLink.style.display = "none";
+        }
+      }
+    }
+  }
+}
 
   /* =========================================
      INFO · SUB PANELS
