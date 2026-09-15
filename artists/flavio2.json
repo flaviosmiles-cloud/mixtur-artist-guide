@@ -1,0 +1,43 @@
+{
+  "id": "flavio2",
+  "artist": {
+    "name": "Flavio2",
+    "category": "Coms",
+    "email": "padre-cantora.4b@icloud.com"
+  },
+  "stay": {
+    "arrivalDate": "2026-09-16",
+    "arrivalTime": "00:54",
+    "arrivalPlace": "BCN AirPort",
+    "departureDate": "2026-09-30",
+    "departureTime": "00:54",
+    "departurePlace": "BCN AirPort"
+  },
+  "mainContact": {
+    "name": "Susana Bautista",
+    "role": "Production Manager",
+    "email": "susana.bautista@mixturbcn.com",
+    "phone": "+34654752209"
+  },
+  "schedule": [
+    {
+      "date": "2026-09-17",
+      "time": "00:54",
+      "type": "Rehearsal",
+      "title": "With composer",
+      "notes": "Yes",
+      "venue": "Fabra i Coats",
+      "room": "Aula 2",
+      "callTime": "00:55"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "00:12",
+      "type": "Performance",
+      "title": "Show",
+      "venue": "ESMUC",
+      "room": "Aula 2",
+      "callTime": "00:55"
+    }
+  ]
+}
