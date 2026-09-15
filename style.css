@@ -3992,21 +3992,19 @@ span:nth-child(even) {
 }
 
 /* =========================================
-   VENUE PHOTOS · FIT COMPLETE IMAGE
+   VENUE PHOTOS · FULL WIDTH
    ========================================= */
 
 .featured-place-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  height: auto;
   overflow: hidden;
   background: #181818;
 }
 
 .featured-place-image img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
+  height: auto;
+  display: block;
   filter: grayscale(100%);
 }
