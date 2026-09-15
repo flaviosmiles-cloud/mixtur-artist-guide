@@ -1,36 +1,124 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  /* =========================================
+     CONTACTS
+     ========================================= */
+
+  const MIXTUR_CONTACTS = {
+    "Susana Bautista": {
+      name: "Susana Bautista",
+      role: "Production Manager",
+      email: "susana.bautista@mixturbcn.com",
+      phone: "+34654752209"
+    },
+
+    "Ánxe Faraldo": {
+      name: "Ánxe Faraldo",
+      role: "Technical Manager",
+      email: "anxefaraldo@gmail.com",
+      phone: "+34617456373"
+    },
+
+    "Jaume Cortacans": {
+      name: "Jaume Cortacans",
+      role: "Production Coordinator",
+      email: "produccio@mixturbcn.com",
+      phone: "+34600608016"
+    },
+
+    "Catalina Riutort": {
+      name: "Catalina Riutort",
+      role: "Production Assistant",
+      email: "produccio@mixturbcn.com",
+      phone: "+34680266911"
+    },
+
+    "Flavio de Sa": {
+      name: "Flavio de Sa",
+      role: "Production Assistant",
+      email: "produccio@mixturbcn.com",
+      phone: "+34689211975"
+    }
+  };
+
+
+  /* =========================================
+     DOM
+     ========================================= */
+
   const addButton =
     document.querySelector(".admin-add-button");
 
   const scheduleSection =
+    document.querySelector(
+      '[data-admin-section="schedule"]'
+    ) ||
     addButton?.closest(".admin-section");
 
   const firstActivity =
-    scheduleSection?.querySelector(".admin-activity");
+    scheduleSection?.querySelector(
+      ".admin-activity"
+    );
 
   const generateButton =
-    document.querySelector(".admin-generate-button");
+    document.querySelector(
+      ".admin-generate-button"
+    );
 
   const previewSection =
-    document.getElementById("artist-preview");
+    document.getElementById(
+      "artist-preview"
+    );
 
   const previewArtistName =
-    document.getElementById("preview-artist-name");
+    document.getElementById(
+      "preview-artist-name"
+    );
 
   const previewArtistSlug =
-    document.getElementById("preview-artist-slug");
+    document.getElementById(
+      "preview-artist-slug"
+    );
 
   const previewJSON =
-    document.getElementById("preview-json");
+    document.getElementById(
+      "preview-json"
+    );
 
   const downloadArtistButton =
-    document.getElementById("download-artist-file");
+    document.getElementById(
+      "download-artist-file"
+    );
 
   const artistLinkInput =
-    document.getElementById("artist-link");
+    document.getElementById(
+      "artist-link"
+    );
 
   const copyArtistLinkButton =
-    document.getElementById("copy-artist-link");
+    document.getElementById(
+      "copy-artist-link"
+    );
+
+  const hotelStatus =
+    document.getElementById(
+      "admin-hotel-status"
+    );
+
+  const hotelFields =
+    document.getElementById(
+      "admin-hotel-fields"
+    );
+
+  const contactPreview =
+    document.getElementById(
+      "admin-contact-preview"
+    );
+
+  const validationMessage =
+    document.getElementById(
+      "admin-validation-message"
+    );
 
 
   let currentArtistData = null;
@@ -44,6 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+
+  /* =========================================
+     VENUES
+     ========================================= */
 
   const venueOptions = `
     <option>Fabra i Coats</option>
@@ -86,13 +178,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fields =
       Array.from(
-        section.querySelectorAll(".admin-field")
+        section.querySelectorAll(
+          ".admin-field"
+        )
       );
 
     const field =
       fields.find((item) => {
         const label =
-          item.querySelector(":scope > span");
+          item.querySelector(
+            ":scope > span"
+          );
 
         return (
           label &&
@@ -116,31 +212,37 @@ document.addEventListener("DOMContentLoaded", () => {
   function getSectionByTitle(title) {
     const sections =
       Array.from(
-        document.querySelectorAll(".admin-section")
+        document.querySelectorAll(
+          ".admin-section"
+        )
       );
 
-    return sections.find((section) => {
-      const heading =
-        section.querySelector(
-          ".admin-section-heading h2"
+    return sections.find(
+      (section) => {
+        const heading =
+          section.querySelector(
+            ".admin-section-heading h2"
+          );
+
+        return (
+          heading &&
+          heading.textContent
+            .trim()
+            .toLowerCase() ===
+            title.toLowerCase()
         );
-
-      return (
-        heading &&
-        heading.textContent
-          .trim()
-          .toLowerCase() ===
-          title.toLowerCase()
-      );
-    });
+      }
+    );
   }
 
 
   function removeEmptyValues(value) {
+
     if (Array.isArray(value)) {
       return value
         .map(removeEmptyValues)
         .filter((item) => {
+
           if (
             item === null ||
             item === undefined ||
@@ -170,6 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       Object.entries(value).forEach(
         ([key, item]) => {
+
           const cleanedValue =
             removeEmptyValues(item);
 
@@ -202,16 +305,160 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   function sortActivities(activities) {
-    return activities.sort((a, b) => {
-      const dateA =
-        `${a.date || "9999-12-31"}T${a.time || "23:59"}`;
+    return [...activities].sort(
+      (a, b) => {
 
-      const dateB =
-        `${b.date || "9999-12-31"}T${b.time || "23:59"}`;
+        const dateA =
+          `${a.date || "9999-12-31"}T${a.time || "23:59"}`;
 
-      return dateA.localeCompare(dateB);
-    });
+        const dateB =
+          `${b.date || "9999-12-31"}T${b.time || "23:59"}`;
+
+        return dateA.localeCompare(
+          dateB
+        );
+      }
+    );
   }
+
+
+  function formatPhone(phone) {
+    if (!phone) {
+      return "";
+    }
+
+    const digits =
+      phone.replace(/\D/g, "");
+
+    const national =
+      digits.startsWith("34")
+        ? digits.slice(2)
+        : digits;
+
+    if (national.length !== 9) {
+      return phone;
+    }
+
+    return `+34 ${national.slice(
+      0,
+      3
+    )} ${national.slice(
+      3,
+      6
+    )} ${national.slice(6)}`;
+  }
+
+
+  /* =========================================
+     ACCOMMODATION
+     ========================================= */
+
+  function updateHotelVisibility() {
+    if (
+      !hotelStatus ||
+      !hotelFields
+    ) {
+      return;
+    }
+
+    const hasHotel =
+      hotelStatus.value === "yes";
+
+    hotelFields.hidden =
+      !hasHotel;
+  }
+
+
+  hotelStatus?.addEventListener(
+    "change",
+    updateHotelVisibility
+  );
+
+
+  updateHotelVisibility();
+
+
+  /* =========================================
+     MAIN CONTACT
+     ========================================= */
+
+  function getSelectedContact() {
+    const contactSection =
+      document.querySelector(
+        '[data-admin-section="contact"]'
+      ) ||
+      getSectionByTitle(
+        "Main contact"
+      );
+
+    const select =
+      getFieldByLabel(
+        contactSection,
+        "Assigned contact"
+      );
+
+    if (!select) {
+      return null;
+    }
+
+    return (
+      MIXTUR_CONTACTS[
+        select.value
+      ] || null
+    );
+  }
+
+
+  function renderContactPreview() {
+    if (!contactPreview) {
+      return;
+    }
+
+    const contact =
+      getSelectedContact();
+
+    if (!contact) {
+      contactPreview.innerHTML = "";
+      return;
+    }
+
+    contactPreview.innerHTML = `
+      <div class="admin-eyebrow">
+        Assigned contact details
+      </div>
+
+      <p>
+        <strong>${contact.name}</strong><br>
+        ${contact.role}<br>
+        ${formatPhone(contact.phone)}<br>
+        ${contact.email}
+      </p>
+    `;
+  }
+
+
+  const contactSection =
+    document.querySelector(
+      '[data-admin-section="contact"]'
+    ) ||
+    getSectionByTitle(
+      "Main contact"
+    );
+
+  const contactSelect =
+    getFieldByLabel(
+      contactSection,
+      "Assigned contact"
+    );
+
+
+  contactSelect?.addEventListener(
+    "change",
+    renderContactPreview
+  );
+
+
+  renderContactPreview();
 
 
   /* =========================================
@@ -225,11 +472,15 @@ document.addEventListener("DOMContentLoaded", () => {
         "Type"
       );
 
-    return typeField?.value || "Rehearsal";
+    return (
+      typeField?.value ||
+      "Rehearsal"
+    );
   }
 
 
   function buildExtraFields(type) {
+
     if (
       type === "Rehearsal" ||
       type === "Performance" ||
@@ -237,26 +488,63 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       return `
         <label class="admin-field">
-          <span>Venue</span>
+
+          <span>
+            Venue
+          </span>
 
           <select>
             ${venueOptions}
           </select>
+
         </label>
 
+
+        <div
+          class="admin-other-venue"
+          hidden
+        >
+
+          <label class="admin-field">
+
+            <span>
+              Other venue
+            </span>
+
+            <input
+              type="text"
+              placeholder="Venue name"
+              autocomplete="off"
+            >
+
+          </label>
+
+        </div>
+
+
         <label class="admin-field">
-          <span>Room / Space</span>
+
+          <span>
+            Room / Space
+          </span>
 
           <input
             type="text"
             placeholder="Sala / room"
+            autocomplete="off"
           >
+
         </label>
 
+
         <label class="admin-field">
-          <span>Call time</span>
+
+          <span>
+            Call time
+          </span>
 
           <input type="time">
+
         </label>
       `;
     }
@@ -265,12 +553,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (type === "Hotel") {
       return `
         <label class="admin-field">
-          <span>Hotel</span>
+
+          <span>
+            Hotel
+          </span>
 
           <input
             type="text"
             placeholder="Hotel name"
+            autocomplete="off"
           >
+
         </label>
       `;
     }
@@ -279,12 +572,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (type === "Meal") {
       return `
         <label class="admin-field">
-          <span>Place / Restaurant</span>
+
+          <span>
+            Place / Restaurant
+          </span>
 
           <input
             type="text"
             placeholder="Restaurant or meeting point"
+            autocomplete="off"
           >
+
         </label>
       `;
     }
@@ -293,30 +591,47 @@ document.addEventListener("DOMContentLoaded", () => {
     if (type === "Travel") {
       return `
         <label class="admin-field">
-          <span>From</span>
+
+          <span>
+            From
+          </span>
 
           <input
             type="text"
             placeholder="Barcelona Airport"
+            autocomplete="off"
           >
+
         </label>
 
+
         <label class="admin-field">
-          <span>To</span>
+
+          <span>
+            To
+          </span>
 
           <input
             type="text"
-            placeholder="Hotel"
+            placeholder="Hotel, venue..."
+            autocomplete="off"
           >
+
         </label>
 
+
         <label class="admin-field">
-          <span>Transport</span>
+
+          <span>
+            Transport
+          </span>
 
           <input
             type="text"
             placeholder="Taxi, transfer, train..."
+            autocomplete="off"
           >
+
         </label>
       `;
     }
@@ -324,18 +639,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return `
       <label class="admin-field">
-        <span>Place</span>
+
+        <span>
+          Place
+        </span>
 
         <input
           type="text"
           placeholder="Venue, meeting point or location"
+          autocomplete="off"
         >
+
       </label>
     `;
   }
 
 
-  function updateActivityFields(activity) {
+  function updateOtherVenueVisibility(
+    activity
+  ) {
+    const venueField =
+      getFieldByLabel(
+        activity,
+        "Venue"
+      );
+
+    const otherContainer =
+      activity.querySelector(
+        ".admin-other-venue"
+      );
+
+    if (
+      !venueField ||
+      !otherContainer
+    ) {
+      return;
+    }
+
+    otherContainer.hidden =
+      venueField.value !== "Other";
+  }
+
+
+  function updateActivityFields(
+    activity
+  ) {
     const type =
       getActivityType(activity);
 
@@ -359,6 +707,11 @@ document.addEventListener("DOMContentLoaded", () => {
       dynamicFields.innerHTML =
         buildExtraFields(type);
     }
+
+
+    updateOtherVenueVisibility(
+      activity
+    );
   }
 
 
@@ -385,7 +738,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!removeButton) {
       removeButton =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
       removeButton.type =
         "button";
@@ -410,6 +765,7 @@ document.addEventListener("DOMContentLoaded", () => {
     removeButton.addEventListener(
       "click",
       () => {
+
         const activities =
           scheduleSection.querySelectorAll(
             ".admin-activity"
@@ -424,6 +780,7 @@ document.addEventListener("DOMContentLoaded", () => {
         activity.remove();
 
         updateActivityNumbers();
+        clearValidation();
       }
     );
   }
@@ -437,6 +794,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     activities.forEach(
       (activity, index) => {
+
         const numberLabel =
           activity.querySelector(
             ".admin-activity-top span:first-child"
@@ -469,6 +827,7 @@ document.addEventListener("DOMContentLoaded", () => {
      ========================================= */
 
   function prepareActivity(activity) {
+
     let dynamicFields =
       activity.querySelector(
         ".admin-dynamic-fields"
@@ -477,7 +836,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!dynamicFields) {
       dynamicFields =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       dynamicFields.className =
         "admin-fields admin-dynamic-fields";
@@ -529,10 +890,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       if (notesField) {
-        notesField.parentElement.insertBefore(
-          dynamicFields,
-          notesField
-        );
+        notesField.parentElement
+          .insertBefore(
+            dynamicFields,
+            notesField
+          );
       } else {
         activity.appendChild(
           dynamicFields
@@ -551,7 +913,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function resetActivityFields(activity) {
+  function resetActivityFields(
+    activity
+  ) {
     const fields =
       activity.querySelectorAll(
         "input, textarea, select"
@@ -559,6 +923,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     fields.forEach((field) => {
+
       if (
         field.tagName === "SELECT"
       ) {
@@ -577,11 +942,13 @@ document.addEventListener("DOMContentLoaded", () => {
      ========================================= */
 
   function getActivityData(activity) {
+
     const type =
       getActivityType(activity);
 
 
     const data = {
+
       date:
         getFieldByLabel(
           activity,
@@ -615,17 +982,34 @@ document.addEventListener("DOMContentLoaded", () => {
       type === "Performance" ||
       type === "Reading Session"
     ) {
-      data.venue =
+
+      const selectedVenue =
         getFieldByLabel(
           activity,
           "Venue"
         )?.value || "";
+
+
+      if (
+        selectedVenue === "Other"
+      ) {
+        data.venue =
+          getFieldByLabel(
+            activity,
+            "Other venue"
+          )?.value.trim() || "";
+      } else {
+        data.venue =
+          selectedVenue;
+      }
+
 
       data.room =
         getFieldByLabel(
           activity,
           "Room / Space"
         )?.value.trim() || "";
+
 
       data.callTime =
         getFieldByLabel(
@@ -654,6 +1038,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (type === "Travel") {
+
       data.from =
         getFieldByLabel(
           activity,
@@ -683,7 +1068,238 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    return data;
+    return removeEmptyValues(
+      data
+    );
+  }
+
+
+  /* =========================================
+     VALIDATION
+     ========================================= */
+
+  function clearValidation() {
+
+    if (validationMessage) {
+      validationMessage.hidden =
+        true;
+
+      validationMessage.innerHTML =
+        "";
+    }
+
+
+    document
+      .querySelectorAll(
+        ".admin-field-error"
+      )
+      .forEach((field) => {
+        field.classList.remove(
+          "admin-field-error"
+        );
+      });
+  }
+
+
+  function markFieldError(field) {
+    const container =
+      field?.closest(
+        ".admin-field"
+      );
+
+    container?.classList.add(
+      "admin-field-error"
+    );
+  }
+
+
+  function showValidation(errors) {
+
+    if (!validationMessage) {
+      return;
+    }
+
+
+    validationMessage.innerHTML = `
+      <strong>
+        Please review the following:
+      </strong>
+
+      <ul>
+        ${errors
+          .map(
+            (error) =>
+              `<li>${error}</li>`
+          )
+          .join("")}
+      </ul>
+    `;
+
+    validationMessage.hidden =
+      false;
+
+
+    validationMessage.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+
+
+  function validateForm() {
+
+    clearValidation();
+
+    const errors = [];
+
+
+    const artistSection =
+      document.querySelector(
+        '[data-admin-section="artist"]'
+      ) ||
+      getSectionByTitle(
+        "Artist"
+      );
+
+
+    const artistNameField =
+      getFieldByLabel(
+        artistSection,
+        "Artist name"
+      );
+
+
+    if (
+      !artistNameField?.value.trim()
+    ) {
+      errors.push(
+        "Artist name is required."
+      );
+
+      markFieldError(
+        artistNameField
+      );
+    }
+
+
+    const activities =
+      Array.from(
+        scheduleSection.querySelectorAll(
+          ".admin-activity"
+        )
+      );
+
+
+    activities.forEach(
+      (activity, index) => {
+
+        const number =
+          String(
+            index + 1
+          ).padStart(2, "0");
+
+
+        const dateField =
+          getFieldByLabel(
+            activity,
+            "Date"
+          );
+
+        const timeField =
+          getFieldByLabel(
+            activity,
+            "Time"
+          );
+
+        const typeField =
+          getFieldByLabel(
+            activity,
+            "Type"
+          );
+
+
+        if (!dateField?.value) {
+          errors.push(
+            `Activity ${number} needs a date.`
+          );
+
+          markFieldError(
+            dateField
+          );
+        }
+
+
+        if (!timeField?.value) {
+          errors.push(
+            `Activity ${number} needs a time.`
+          );
+
+          markFieldError(
+            timeField
+          );
+        }
+
+
+        if (!typeField?.value) {
+          errors.push(
+            `Activity ${number} needs a type.`
+          );
+
+          markFieldError(
+            typeField
+          );
+        }
+
+
+        if (
+          (
+            typeField?.value ===
+              "Rehearsal" ||
+            typeField?.value ===
+              "Performance" ||
+            typeField?.value ===
+              "Reading Session"
+          ) &&
+          getFieldByLabel(
+            activity,
+            "Venue"
+          )?.value === "Other"
+        ) {
+
+          const otherVenueField =
+            getFieldByLabel(
+              activity,
+              "Other venue"
+            );
+
+
+          if (
+            !otherVenueField
+              ?.value.trim()
+          ) {
+            errors.push(
+              `Activity ${number}: write the venue name or select another venue.`
+            );
+
+            markFieldError(
+              otherVenueField
+            );
+          }
+        }
+      }
+    );
+
+
+    if (errors.length) {
+      showValidation(
+        errors
+      );
+
+      return false;
+    }
+
+
+    return true;
   }
 
 
@@ -692,17 +1308,32 @@ document.addEventListener("DOMContentLoaded", () => {
      ========================================= */
 
   function generateArtistData() {
+
     const artistSection =
-      getSectionByTitle("Artist");
+      document.querySelector(
+        '[data-admin-section="artist"]'
+      ) ||
+      getSectionByTitle(
+        "Artist"
+      );
+
 
     const staySection =
-      getSectionByTitle("Stay");
+      document.querySelector(
+        '[data-admin-section="stay"]'
+      ) ||
+      getSectionByTitle(
+        "Stay"
+      );
+
 
     const hotelSection =
-      getSectionByTitle("Hotel");
-
-    const contactSection =
-      getSectionByTitle("Main contact");
+      document.querySelector(
+        '[data-admin-section="hotel"]'
+      ) ||
+      getSectionByTitle(
+        "Accommodation"
+      );
 
 
     const artistName =
@@ -714,7 +1345,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const slug =
       slugify(
-        artistName || "artist"
+        artistName
       );
 
 
@@ -724,14 +1355,23 @@ document.addEventListener("DOMContentLoaded", () => {
           scheduleSection.querySelectorAll(
             ".admin-activity"
           )
-        ).map(getActivityData)
+        ).map(
+          getActivityData
+        )
       );
 
 
+    const selectedContact =
+      getSelectedContact();
+
+
     const artistData = {
-      id: slug,
+
+      id:
+        slug,
 
       artist: {
+
         name:
           artistName,
 
@@ -748,7 +1388,9 @@ document.addEventListener("DOMContentLoaded", () => {
           )?.value.trim() || ""
       },
 
+
       stay: {
+
         arrivalDate:
           getFieldByLabel(
             staySection,
@@ -766,6 +1408,7 @@ document.addEventListener("DOMContentLoaded", () => {
             staySection,
             "Arrival place"
           )?.value.trim() || "",
+
 
         departureDate:
           getFieldByLabel(
@@ -786,7 +1429,38 @@ document.addEventListener("DOMContentLoaded", () => {
           )?.value.trim() || ""
       },
 
-      hotel: {
+
+      mainContact:
+        selectedContact
+          ? {
+              name:
+                selectedContact.name,
+
+              role:
+                selectedContact.role,
+
+              email:
+                selectedContact.email,
+
+              phone:
+                selectedContact.phone
+            }
+          : {},
+
+
+      schedule:
+        activities
+    };
+
+
+    /* HOTEL ONLY WHEN ENABLED */
+
+    if (
+      hotelStatus?.value === "yes"
+    ) {
+
+      artistData.hotel = {
+
         name:
           getFieldByLabel(
             hotelSection,
@@ -810,25 +1484,8 @@ document.addEventListener("DOMContentLoaded", () => {
             hotelSection,
             "Check-out"
           )?.value || ""
-      },
-
-      mainContact: {
-        name:
-          getFieldByLabel(
-            contactSection,
-            "Assigned contact"
-          )?.value || "",
-
-        role:
-          getFieldByLabel(
-            contactSection,
-            "Role"
-          )?.value.trim() || ""
-      },
-
-      schedule:
-        activities
-    };
+      };
+    }
 
 
     return removeEmptyValues(
@@ -838,7 +1495,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     START
+     INITIAL ACTIVITY
      ========================================= */
 
   prepareActivity(
@@ -855,8 +1512,11 @@ document.addEventListener("DOMContentLoaded", () => {
   addButton.addEventListener(
     "click",
     () => {
+
       const newActivity =
-        firstActivity.cloneNode(true);
+        firstActivity.cloneNode(
+          true
+        );
 
 
       resetActivityFields(
@@ -867,6 +1527,13 @@ document.addEventListener("DOMContentLoaded", () => {
       newActivity
         .querySelector(
           ".admin-remove-activity"
+        )
+        ?.remove();
+
+
+      newActivity
+        .querySelector(
+          ".admin-dynamic-fields"
         )
         ?.remove();
 
@@ -883,6 +1550,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       updateActivityNumbers();
+      clearValidation();
 
 
       newActivity.scrollIntoView({
@@ -894,12 +1562,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     CHANGE TYPE
+     ACTIVITY CHANGES
      ========================================= */
 
   scheduleSection.addEventListener(
     "change",
     (event) => {
+
       const activity =
         event.target.closest(
           ".admin-activity"
@@ -918,11 +1587,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       if (
-        event.target === typeField
+        event.target ===
+        typeField
       ) {
         updateActivityFields(
           activity
         );
+
+        clearValidation();
+
+        return;
+      }
+
+
+      const venueField =
+        getFieldByLabel(
+          activity,
+          "Venue"
+        );
+
+
+      if (
+        event.target ===
+        venueField
+      ) {
+        updateOtherVenueVisibility(
+          activity
+        );
+
+        clearValidation();
       }
     }
   );
@@ -935,6 +1628,12 @@ document.addEventListener("DOMContentLoaded", () => {
   generateButton?.addEventListener(
     "click",
     () => {
+
+      if (!validateForm()) {
+        return;
+      }
+
+
       const artistData =
         generateArtistData();
 
@@ -967,11 +1666,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       if (artistLinkInput) {
+
         const guidePath =
           window.location.pathname.replace(
             /admin\.html$/,
             ""
           );
+
 
         artistLinkInput.value =
           `${window.location.origin}${guidePath}?artist=${encodeURIComponent(
@@ -981,8 +1682,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       if (previewSection) {
+
         previewSection.hidden =
           false;
+
 
         previewSection.scrollIntoView({
           behavior: "smooth",
@@ -1000,6 +1703,7 @@ document.addEventListener("DOMContentLoaded", () => {
   downloadArtistButton?.addEventListener(
     "click",
     () => {
+
       if (!currentArtistData) {
         return;
       }
@@ -1023,11 +1727,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       const url =
-        URL.createObjectURL(blob);
+        URL.createObjectURL(
+          blob
+        );
 
 
       const link =
-        document.createElement("a");
+        document.createElement(
+          "a"
+        );
 
 
       link.href =
@@ -1041,8 +1749,8 @@ document.addEventListener("DOMContentLoaded", () => {
         link
       );
 
-      link.click();
 
+      link.click();
       link.remove();
 
 
@@ -1060,6 +1768,7 @@ document.addEventListener("DOMContentLoaded", () => {
   copyArtistLinkButton?.addEventListener(
     "click",
     async () => {
+
       if (
         !artistLinkInput?.value
       ) {
@@ -1068,10 +1777,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       try {
-        await navigator.clipboard.writeText(
-          artistLinkInput.value
-        );
+
+        await navigator.clipboard
+          .writeText(
+            artistLinkInput.value
+          );
+
       } catch {
+
         artistLinkInput.select();
 
         document.execCommand(
@@ -1093,4 +1806,5 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
   );
+
 });
