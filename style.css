@@ -377,7 +377,10 @@ a {
 
   grid-template-columns:
     72px
-    minmax(0, 1fr);
+    minmax(0, 1fr)
+    28px;
+
+  align-items: center;
 
   gap: 12px;
 
@@ -430,14 +433,16 @@ a {
 .today-item.highlight + .today-item {
   border-top-color: transparent;
 }
-
 .today-arrow {
   display: flex;
 
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+
+  align-self: center;
 
   font-size: 1rem;
+  line-height: 1;
 }
 
 
