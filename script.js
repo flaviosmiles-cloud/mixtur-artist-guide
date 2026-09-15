@@ -2242,7 +2242,6 @@ function formatTodayHeading(
          `tel:${phone}`;
      }
    }
-}
 
   /* =========================================
      SCHEDULE · DYNAMIC
