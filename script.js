@@ -1886,13 +1886,15 @@ function renderTodayNextUp(activity) {
 
 
   nextCard.onclick = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    openActivityDetail(
-      activity
-    );
-  };
+     event.preventDefault();
+     event.stopPropagation();
+   
+     alert("NEXT UP CLICK WORKS");
+   
+     openActivityDetail(
+       activity
+     );
+   };
 
 
   nextCard.onkeydown = (event) => {
