@@ -1333,89 +1333,33 @@ if (
 
 
   function initDynamicActivityDelegation() {
+    function activate(trigger) {
+      if (!trigger || !Array.isArray(artistData?.schedule)) return;
 
-    document.addEventListener(
-      "click",
-      (event) => {
+      const index = Number(trigger.dataset.activityIndex);
 
-        const trigger =
-          event.target.closest(
-            "[data-activity-index]"
-          );
+      if (!Number.isInteger(index) || !artistData.schedule[index]) return;
 
+      openActivityDetail(artistData.schedule[index]);
+    }
 
-        if (
-          !trigger ||
-          !artistData?.schedule
-        ) {
-          return;
-        }
+    document.addEventListener("click", (event) => {
+      const trigger = event.target.closest("[data-activity-index]");
+      if (!trigger) return;
 
+      event.preventDefault();
+      activate(trigger);
+    });
 
-        const index =
-          Number(
-            trigger.dataset
-              .activityIndex
-          );
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
 
+      const trigger = event.target.closest("[data-activity-index]");
+      if (!trigger) return;
 
-        const activity =
-          artistData.schedule[
-            index
-          ];
-
-
-        openActivityDetail(
-          activity
-        );
-      }
-    );
-
-
-    document.addEventListener(
-      "keydown",
-      (event) => {
-
-        if (
-          event.key !==
-            "Enter" &&
-          event.key !== " "
-        ) {
-          return;
-        }
-
-
-        const trigger =
-          event.target.closest(
-            "[data-activity-index]"
-          );
-
-
-        if (
-          !trigger ||
-          !artistData?.schedule
-        ) {
-          return;
-        }
-
-
-        event.preventDefault();
-
-
-        const index =
-          Number(
-            trigger.dataset
-              .activityIndex
-          );
-
-
-        openActivityDetail(
-          artistData.schedule[
-            index
-          ]
-        );
-      }
-    );
+      event.preventDefault();
+      activate(trigger);
+    });
   }
 
 
@@ -1423,57 +1367,33 @@ if (
      TODAY · ARTIST DATA
      ========================================= */
 
-  function chooseTodayDate(
-    schedule = []
-  ) {
-    if (!schedule.length) {
-      return "";
-    }
-
-
-    const now =
-      new Date();
-
-
-    const today =
-      [
-        now.getFullYear(),
-
-        String(
-          now.getMonth() + 1
-        ).padStart(
-          2,
-          "0"
-        ),
-
-        String(
-          now.getDate()
-        ).padStart(
-          2,
-          "0"
-        )
-      ].join("-");
-
-
-    if (
-      schedule.some(
-        (item) =>
-          item.date ===
-          today
-      )
-    ) {
-      return today;
-    }
-
-
-    return (
-      schedule.find(
-        (item) =>
-          item.date
-      )?.date ||
-      ""
-    );
+  function activityDateTime(activity = {}) {
+    if (!activity.date) return null;
+    const date = new Date(`${activity.date}T${activity.time || "00:00"}:00`);
+    return Number.isNaN(date.getTime()) ? null : date;
   }
+
+  function chooseTodayDate(schedule = []) {
+    const dated = schedule
+      .filter((activity) => activity.date)
+      .slice()
+      .sort((a, b) => String(a.date).localeCompare(String(b.date)));
+
+    if (!dated.length) return "";
+
+    const now = new Date();
+    const today = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0")
+    ].join("-");
+
+    if (dated.some((activity) => activity.date === today)) return today;
+
+    const nextDay = dated.find((activity) => activity.date > today);
+    return nextDay ? nextDay.date : dated[dated.length - 1].date;
+  }
+
 
      /* =========================================
    TODAY · DYNAMIC ARTIST VIEW
@@ -1595,8 +1515,7 @@ function renderTodayPage() {
 
   const nextActivity =
     chooseNextActivity(
-      schedule,
-      selectedDate
+      schedule
     );
 
 
@@ -1734,52 +1653,15 @@ function formatArtistScheduleRange(
    NEXT ACTIVITY
    ========================================= */
 
-function chooseNextActivity(
-  schedule,
-  selectedDate
-) {
-  if (
-    !Array.isArray(schedule) ||
-    !schedule.length
-  ) {
-    return null;
-  }
+function chooseNextActivity(schedule) {
+  if (!Array.isArray(schedule) || !schedule.length) return null;
 
+  const now = new Date();
 
-  const now =
-    new Date();
-
-
-  const futureActivities =
-    schedule.filter(
-      (activity) => {
-        if (
-          !activity.date ||
-          !activity.time
-        ) {
-          return false;
-        }
-
-
-        const activityDate =
-          new Date(
-            `${activity.date}T${activity.time}:00`
-          );
-
-
-        return (
-          activityDate >= now
-        );
-      }
-    );
-
-
-  if (futureActivities.length) {
-    return futureActivities[0];
-  }
-
-
-   return null;
+  return schedule.find((activity) => {
+    const date = activityDateTime(activity);
+    return date && date >= now;
+  }) || null;
 }
 
 
@@ -1884,119 +1766,48 @@ function formatTimeUntilActivity(
    NEXT UP CARD
    ========================================= */
 
-function renderTodayNextUp(
-  activity
-) {
-  const nextCard =
-    document.querySelector(
-      ".next-card"
-    );
+function renderTodayNextUp(activity) {
+  const nextCard = document.querySelector(".next-card");
+  const nextSection = document.querySelector(".next-section");
+  const countdown = nextSection?.querySelector(".section-label span:last-child");
 
-   const nextSection =
-  document.querySelector(
-    ".next-section"
-  );
+  if (!nextCard) return;
 
+  const arrowButton = nextCard.querySelector(".arrow-button");
+  if (arrowButton) {
+    arrowButton.type = "button";
+    arrowButton.tabIndex = -1;
+    arrowButton.setAttribute("aria-hidden", "true");
+  }
 
-const countdown =
-  nextSection?.querySelector(
-    ".section-label span:last-child"
-  );
+  if (!activity) {
+    nextCard.hidden = true;
+    nextCard.removeAttribute("data-activity-index");
+    nextCard.removeAttribute("data-dynamic-activity");
 
-  if (!nextCard) {
-  return;
-}
+    if (countdown) countdown.textContent = "Schedule complete";
+    return;
+  }
 
-
-if (!activity) {
-  nextCard.hidden =
-    true;
+  nextCard.hidden = false;
 
   if (countdown) {
-    countdown.textContent =
-      "Schedule complete";
+    countdown.textContent = formatTimeUntilActivity(activity);
   }
 
-  return;
+  nextCard.setAttribute("role", "button");
+  nextCard.setAttribute("tabindex", "0");
+  nextCard.dataset.activityIndex = String(activity.__index);
+  nextCard.dataset.dynamicActivity = "true";
+
+  const time = nextCard.querySelector(".next-time");
+  const title = nextCard.querySelector(".next-title");
+  const place = nextCard.querySelector(".next-place");
+
+  if (time) time.textContent = activity.time || "";
+  if (title) title.textContent = activity.type || "Activity";
+  if (place) place.textContent = activityLocation(activity);
 }
-
-
-nextCard.hidden =
-  false;
-
-
-if (countdown) {
-  countdown.textContent =
-    formatTimeUntilActivity(
-      activity
-    );
-}
-
-
-  nextCard.setAttribute(
-    "role",
-    "button"
-  );
-
-  nextCard.setAttribute(
-    "tabindex",
-    "0"
-  );
-
-  nextCard.dataset.activityIndex =
-    String(
-      activity.__index
-    );
-
-  nextCard.dataset.dynamicActivity =
-    "true";
-
-
-  const time =
-    nextCard.querySelector(
-      ".next-time"
-    );
-
-
-  const title =
-    nextCard.querySelector(
-      ".next-title"
-    );
-
-
-  const place =
-    nextCard.querySelector(
-      ".next-place"
-    );
-
-
-  if (time) {
-    time.textContent =
-      activity.time || "";
-  }
-
-
-  /*
-     IMPORTANT:
-     The large title is the ACTIVITY TYPE,
-     not the specific activity title.
-  */
-
-  if (title) {
-    title.textContent =
-      activity.type ||
-      "Activity";
-  }
-
-
-  if (place) {
-    place.textContent =
-      activityLocation(
-        activity
-      );
-  }
-}
-
 
 
 /* =========================================
