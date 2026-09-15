@@ -1892,9 +1892,7 @@ function renderTodayNextUp(activity) {
   }
 
 
-  /* -----------------------------------------
-     REMOVE INTERACTION
-     ----------------------------------------- */
+  /* NEXT UP IS INFORMATION ONLY */
 
   nextCard.removeAttribute(
     "data-activity-index"
@@ -1926,9 +1924,7 @@ function renderTodayNextUp(activity) {
   }
 
 
-  /* -----------------------------------------
-     NO MORE ACTIVITIES
-     ----------------------------------------- */
+  /* SCHEDULE COMPLETE */
 
   if (!activity) {
     nextCard.hidden = true;
@@ -1942,9 +1938,7 @@ function renderTodayNextUp(activity) {
   }
 
 
-  /* -----------------------------------------
-     CONTENT
-     ----------------------------------------- */
+  /* NEXT ACTIVITY */
 
   nextCard.hidden = false;
 
@@ -1977,13 +1971,11 @@ function renderTodayNextUp(activity) {
       activity.time || "";
   }
 
-
   if (title) {
     title.textContent =
       activity.type ||
       "Activity";
   }
-
 
   if (place) {
     place.textContent =
@@ -2093,17 +2085,11 @@ function renderTodaySchedule(
               </div>
 
 
-              ${
-                isNext
-                  ? `
-                    <div
-                      class="today-arrow"
-                    >
-                      →
-                    </div>
-                  `
-                  : ""
-              }
+              <div
+                class="today-arrow"
+              >
+                →
+              </div>
 
             </article>
           `;
