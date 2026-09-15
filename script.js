@@ -2404,6 +2404,211 @@ if (
     );
   }
 
+   /* =========================================
+   PLACES · VENUE DATA
+   ========================================= */
+
+function renderVenueDataInPlaces() {
+  const cards =
+    document.querySelectorAll(
+      ".featured-place[data-category='venues']"
+    );
+
+
+  cards.forEach((card) => {
+    const title =
+      card.querySelector("h2");
+
+
+    if (!title) {
+      return;
+    }
+
+
+    const venueName =
+      title.textContent.trim();
+
+
+    const venue =
+      venueData[venueName];
+
+
+    if (!venue) {
+      return;
+    }
+
+
+    /* PHOTO */
+
+    const imageContainer =
+      card.querySelector(
+        ".featured-place-image"
+      );
+
+
+    if (
+      imageContainer &&
+      venue.image
+    ) {
+      imageContainer.classList.remove(
+        "placeholder-image"
+      );
+
+
+      imageContainer.innerHTML = `
+        <img
+          src="${escapeHTML(
+            venue.image
+          )}"
+          alt="${escapeHTML(
+            venue.name
+          )}"
+          loading="lazy"
+        >
+      `;
+    }
+
+
+    /* DESCRIPTION */
+
+    const description =
+      card.querySelector(
+        ".place-description"
+      );
+
+
+    if (
+      description &&
+      (
+        venue.description ||
+        venue.fullName
+      )
+    ) {
+      description.textContent =
+        venue.description ||
+        venue.fullName;
+    }
+
+
+    /* ADDRESS */
+
+    const address =
+      card.querySelector(
+        ".place-address"
+      );
+
+
+    if (
+      address &&
+      venue.address
+    ) {
+      address.textContent =
+        venue.address;
+    }
+
+
+    /* MAPS */
+
+    const mapsLink =
+      card.querySelector(
+        ".maps-link"
+      );
+
+
+    if (
+      mapsLink &&
+      venue.maps
+    ) {
+      mapsLink.href =
+        venue.maps;
+
+      mapsLink.target =
+        "_blank";
+
+      mapsLink.rel =
+        "noopener noreferrer";
+    }
+
+
+    /* NEARBY FOOD */
+
+    const foodTrigger =
+      card.querySelector(
+        "[data-panel*='food']"
+      );
+
+
+    if (foodTrigger) {
+      const hasFood =
+        Array.isArray(
+          venue.nearbyFood
+        ) &&
+        venue.nearbyFood.length > 0;
+
+
+      foodTrigger.hidden =
+        !hasFood;
+
+
+      if (hasFood) {
+        foodTrigger.removeAttribute(
+          "data-panel"
+        );
+
+
+        foodTrigger.onclick =
+          (event) => {
+            event.preventDefault();
+
+            openVenueNearby(
+              venue,
+              "food"
+            );
+          };
+      }
+    }
+
+
+    /* ESSENTIALS */
+
+    const essentialsTrigger =
+      card.querySelector(
+        "[data-panel*='essentials']"
+      );
+
+
+    if (essentialsTrigger) {
+      const hasEssentials =
+        Array.isArray(
+          venue.essentials
+        ) &&
+        venue.essentials.length > 0;
+
+
+      essentialsTrigger.hidden =
+        !hasEssentials;
+
+
+      if (hasEssentials) {
+        essentialsTrigger.removeAttribute(
+          "data-panel"
+        );
+
+
+        essentialsTrigger.onclick =
+          (event) => {
+            event.preventDefault();
+
+            openVenueNearby(
+              venue,
+              "essentials"
+            );
+          };
+      }
+    }
+
+  });
+}
 
   function renderArtistHotelInPlaces() {
     const hotel =
@@ -3956,15 +4161,17 @@ if (
 
 
   if (
-    currentPage ===
-    "places.html"
-  ) {
-    renderArtistHotelInPlaces();
+  currentPage ===
+  "places.html"
+) {
+  renderArtistHotelInPlaces();
 
-    initPlacesFilters();
+  renderVenueDataInPlaces();
 
-    repairPlacesMapLinks();
-  }
+  initPlacesFilters();
+
+  repairPlacesMapLinks();
+}
 
 
   if (
