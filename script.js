@@ -3,7 +3,6 @@
    ========================================= */
 
 document.addEventListener("DOMContentLoaded", async () => {
-   alert("SCRIPT V20 LOADED");
   const params = new URLSearchParams(window.location.search);
   const artistId = params.get("artist");
 
