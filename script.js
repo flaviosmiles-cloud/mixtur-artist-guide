@@ -1873,10 +1873,14 @@ function formatTimeUntilActivity(
 
 function renderTodayNextUp(activity) {
   const nextCard =
-    document.querySelector(".next-card");
+    document.querySelector(
+      ".next-card"
+    );
 
   const nextSection =
-    document.querySelector(".next-section");
+    document.querySelector(
+      ".next-section"
+    );
 
   const countdown =
     nextSection?.querySelector(
@@ -1889,30 +1893,45 @@ function renderTodayNextUp(activity) {
 
 
   /* -----------------------------------------
+     REMOVE INTERACTION
+     ----------------------------------------- */
+
+  nextCard.removeAttribute(
+    "data-activity-index"
+  );
+
+  nextCard.removeAttribute(
+    "data-dynamic-activity"
+  );
+
+  nextCard.removeAttribute(
+    "role"
+  );
+
+  nextCard.removeAttribute(
+    "tabindex"
+  );
+
+  nextCard.onclick = null;
+  nextCard.onkeydown = null;
+
+
+  const arrow =
+    nextCard.querySelector(
+      ".arrow-button"
+    );
+
+  if (arrow) {
+    arrow.remove();
+  }
+
+
+  /* -----------------------------------------
      NO MORE ACTIVITIES
      ----------------------------------------- */
 
   if (!activity) {
     nextCard.hidden = true;
-
-    nextCard.removeAttribute(
-      "data-activity-index"
-    );
-
-    nextCard.removeAttribute(
-      "data-dynamic-activity"
-    );
-
-    nextCard.removeAttribute(
-      "role"
-    );
-
-    nextCard.removeAttribute(
-      "tabindex"
-    );
-
-    nextCard.onclick = null;
-    nextCard.onkeydown = null;
 
     if (countdown) {
       countdown.textContent =
@@ -1958,39 +1977,22 @@ function renderTodayNextUp(activity) {
       activity.time || "";
   }
 
+
   if (title) {
     title.textContent =
-      activity.type || "Activity";
+      activity.type ||
+      "Activity";
   }
+
 
   if (place) {
     place.textContent =
-      activityLocation(activity);
+      activityLocation(
+        activity
+      );
   }
-
-
-  /* -----------------------------------------
-     INTERACTION
-     ----------------------------------------- */
-
-  nextCard.setAttribute(
-    "role",
-    "button"
-  );
-
-  nextCard.setAttribute(
-    "tabindex",
-    "0"
-  );
-
-  nextCard.dataset.activityIndex =
-    String(activity.__index);
-
-  nextCard.dataset.dynamicActivity =
-    "true";
-
 }
-
+   
 /* =========================================
    TODAY SCHEDULE
    ========================================= */
