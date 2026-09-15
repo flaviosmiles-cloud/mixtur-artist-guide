@@ -4011,3 +4011,20 @@ span:nth-child(even) {
   object-position: center 50%;
   filter: grayscale(100%);
 }
+
+/* NEXT UP · ARROW FIX */
+
+.arrow-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  line-height: 1;
+  text-align: center;
+}
+
+.arrow-button::before,
+.arrow-button::after {
+  display: none !important;
+}
