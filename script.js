@@ -1779,21 +1779,104 @@ function chooseNextActivity(
   }
 
 
-  const selectedActivities =
-    schedule.filter(
-      (activity) =>
-        activity.date ===
-        selectedDate
+  return null;
+
+/* =========================================
+   NEXT UP · TIME REMAINING
+   ========================================= */
+
+function formatTimeUntilActivity(
+  activity
+) {
+  if (
+    !activity?.date ||
+    !activity?.time
+  ) {
+    return "";
+  }
+
+
+  const now =
+    new Date();
+
+
+  const activityDate =
+    new Date(
+      `${activity.date}T${activity.time}:00`
     );
 
 
+  const difference =
+    activityDate.getTime() -
+    now.getTime();
+
+
+  if (difference <= 0) {
+    return "Now";
+  }
+
+
+  const totalMinutes =
+    Math.ceil(
+      difference / 60000
+    );
+
+
+  if (totalMinutes < 60) {
+    return `in ${totalMinutes} min`;
+  }
+
+
+  const hours =
+    Math.floor(
+      totalMinutes / 60
+    );
+
+
+  const minutes =
+    totalMinutes % 60;
+
+
+  if (hours < 24) {
+    if (!minutes) {
+      return `in ${hours} h`;
+    }
+
+    return (
+      `in ${hours} h ${minutes} min`
+    );
+  }
+
+
+  const days =
+    Math.floor(
+      hours / 24
+    );
+
+
+  const remainingHours =
+    hours % 24;
+
+
+  if (!remainingHours) {
+    return (
+      `in ${days} ${
+        days === 1
+          ? "day"
+          : "days"
+      }`
+    );
+  }
+
+
   return (
-    selectedActivities[0] ||
-    null
+    `in ${days} ${
+      days === 1
+        ? "day"
+        : "days"
+    } ${remainingHours} h`
   );
 }
-
-
 
 /* =========================================
    NEXT UP CARD
@@ -1807,13 +1890,45 @@ function renderTodayNextUp(
       ".next-card"
     );
 
+   const nextSection =
+  document.querySelector(
+    ".next-section"
+  );
 
-  if (
-    !nextCard ||
-    !activity
-  ) {
-    return;
+
+const countdown =
+  nextSection?.querySelector(
+    ".section-label span:last-child"
+  );
+
+  if (!nextCard) {
+  return;
+}
+
+
+if (!activity) {
+  nextCard.hidden =
+    true;
+
+  if (countdown) {
+    countdown.textContent =
+      "Schedule complete";
   }
+
+  return;
+}
+
+
+nextCard.hidden =
+  false;
+
+
+if (countdown) {
+  countdown.textContent =
+    formatTimeUntilActivity(
+      activity
+    );
+}
 
 
   nextCard.setAttribute(
