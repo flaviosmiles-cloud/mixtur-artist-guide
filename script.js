@@ -1342,14 +1342,23 @@ if (
 
       openActivityDetail(artistData.schedule[index]);
     }
-
-    document.addEventListener("click", (event) => {
-      const trigger = event.target.closest("[data-activity-index]");
-      if (!trigger) return;
-
-      event.preventDefault();
-      activate(trigger);
-    });
+           
+      document.addEventListener("click", (event) => {
+        const trigger = event.target.closest("[data-activity-index]");
+      
+        if (!trigger) {
+          alert("NO TRIGGER");
+          return;
+        }
+      
+        alert(
+          "TRIGGER FOUND · INDEX: " +
+          trigger.dataset.activityIndex
+        );
+      
+        event.preventDefault();
+        activate(trigger);
+      });
 
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Enter" && event.key !== " ") return;
