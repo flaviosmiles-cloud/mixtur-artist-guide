@@ -4481,15 +4481,28 @@ function renderVenueDataInPlaces() {
      ========================================= */
 
   console.log(
-    "Mixtur Artist Guide ready.",
-    {
-      page:
-        currentPage,
-      artist:
-        artistId ||
-        null
-    }
-  );
+  "Mixtur Artist Guide ready.",
+  {
+    page:
+      currentPage,
+    artist:
+      artistId ||
+      null
+  }
+);
+
+
+document.addEventListener(
+  "click",
+  (event) => {
+    alert(
+      "CLICK: " +
+      event.target.className
+    );
+  },
+  true
+);
+
 
 });
 
