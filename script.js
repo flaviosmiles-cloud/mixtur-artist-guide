@@ -4492,18 +4492,6 @@ function renderVenueDataInPlaces() {
 );
 
 
-document.addEventListener(
-  "click",
-  (event) => {
-    alert(
-      "CLICK: " +
-      event.target.className
-    );
-  },
-  true
-);
-
-
 });
 
                           
