@@ -1779,7 +1779,9 @@ function chooseNextActivity(
   }
 
 
-  return null;
+   return null;
+}
+
 
 /* =========================================
    NEXT UP · TIME REMAINING
