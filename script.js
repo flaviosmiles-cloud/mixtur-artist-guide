@@ -2166,53 +2166,82 @@ function formatTodayHeading(
 
 
   function renderTodayContact() {
-    const contact =
-      artistData?.mainContact;
-
-    if (
-      !contact?.name
-    ) {
-      return;
-    }
-
-
-    const contactCards =
-      document.querySelectorAll(
-        ".contact-card, .today-contact-card, [data-main-contact]"
-      );
-
-
-    contactCards.forEach(
-      (card) => {
-        const name =
-          card.querySelector(
-            ".contact-name, h2, h3, [data-contact-name]"
-          );
-
-
-        const role =
-          card.querySelector(
-            ".contact-role, p, [data-contact-role]"
-          );
-
-
-        if (name) {
-          name.textContent =
-            contact.name;
-        }
-
-
-        if (
-          role &&
-          contact.role
-        ) {
-          role.textContent =
-            contact.role;
-        }
-      }
-    );
+  if (!artistData?.mainContact) {
+    return;
   }
 
+  const contact = artistData.mainContact;
+
+  const contactArea =
+    document.querySelector(".today-contact-card") ||
+    document.querySelector(".contact-card") ||
+    document.querySelector("#my-contact");
+
+  if (!contactArea) {
+    return;
+  }
+
+  const name =
+    contactArea.querySelector(
+      ".contact-name, [data-contact-name], h3"
+    );
+
+  if (name && contact.name) {
+    name.textContent = contact.name;
+  }
+
+  const role =
+    contactArea.querySelector(
+      ".contact-role, [data-contact-role]"
+    );
+
+  if (role) {
+    if (contact.role) {
+      role.textContent = contact.role;
+      role.hidden = false;
+    } else {
+      role.hidden = true;
+    }
+  }
+
+  const phone =
+    String(contact.phone || "").trim();
+
+  const phoneDigits =
+    phone.replace(/\D/g, "");
+
+  const whatsappLink =
+    contactArea.querySelector(
+      '[data-contact-whatsapp], a[href*="wa.me"], a[href*="whatsapp"]'
+    );
+
+  if (whatsappLink) {
+    if (phoneDigits) {
+      whatsappLink.href =
+        `https://wa.me/${phoneDigits}`;
+
+      whatsappLink.hidden = false;
+    } else {
+      whatsappLink.hidden = true;
+    }
+  }
+
+  const callLink =
+    contactArea.querySelector(
+      '[data-contact-call], a[href^="tel:"]'
+    );
+
+  if (callLink) {
+    if (phone) {
+      callLink.href =
+        `tel:${phone}`;
+
+      callLink.hidden = false;
+    } else {
+      callLink.hidden = true;
+    }
+  }
+}
 
   /* =========================================
      SCHEDULE · DYNAMIC
