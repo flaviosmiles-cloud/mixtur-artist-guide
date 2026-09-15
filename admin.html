@@ -29,7 +29,10 @@
 
   <main class="admin-app">
 
-    <!-- HEADER -->
+
+    <!-- ======================================
+         HEADER
+         ====================================== -->
 
     <header class="admin-header">
 
@@ -60,42 +63,66 @@
     </header>
 
 
-    <!-- 01 ARTIST -->
 
-    <section class="admin-section">
+    <!-- ======================================
+         01 ARTIST
+         ====================================== -->
+
+    <section
+      class="admin-section"
+      data-admin-section="artist"
+    >
 
       <div class="admin-section-heading">
         <span>01</span>
         <h2>Artist</h2>
       </div>
 
+
       <div class="admin-fields">
 
         <label class="admin-field">
-          <span>Artist name</span>
+
+          <span>
+            Artist name
+          </span>
 
           <input
             type="text"
             placeholder="Alex Smith"
+            autocomplete="off"
           >
+
         </label>
 
+
         <label class="admin-field">
-          <span>Artist / Ensemble</span>
+
+          <span>
+            Artist / Ensemble
+          </span>
 
           <input
             type="text"
-            placeholder="Composer"
+            placeholder="Composer, performer, ensemble..."
+            autocomplete="off"
           >
+
         </label>
 
+
         <label class="admin-field">
-          <span>Email</span>
+
+          <span>
+            Email
+          </span>
 
           <input
             type="email"
             placeholder="artist@example.com"
+            autocomplete="off"
           >
+
         </label>
 
       </div>
@@ -103,57 +130,118 @@
     </section>
 
 
-    <!-- 02 STAY -->
 
-    <section class="admin-section">
+    <!-- ======================================
+         02 TRAVEL / STAY
+         ====================================== -->
+
+    <section
+      class="admin-section"
+      data-admin-section="stay"
+    >
 
       <div class="admin-section-heading">
         <span>02</span>
         <h2>Stay</h2>
       </div>
 
+
+      <div class="admin-eyebrow">
+        Arrival · Optional
+      </div>
+
+
       <div class="admin-fields admin-grid-two">
 
         <label class="admin-field">
-          <span>Arrival date</span>
+
+          <span>
+            Arrival date
+          </span>
+
           <input type="date">
+
         </label>
 
+
         <label class="admin-field">
-          <span>Arrival time</span>
+
+          <span>
+            Arrival time
+          </span>
+
           <input type="time">
-        </label>
 
-        <label class="admin-field">
-          <span>Departure date</span>
-          <input type="date">
-        </label>
-
-        <label class="admin-field">
-          <span>Departure time</span>
-          <input type="time">
         </label>
 
       </div>
 
+
       <div class="admin-fields">
 
         <label class="admin-field">
-          <span>Arrival place</span>
+
+          <span>
+            Arrival place
+          </span>
 
           <input
             type="text"
-            placeholder="Barcelona Airport"
+            placeholder="Barcelona Airport, Sants Station..."
+            autocomplete="off"
           >
+
         </label>
 
+      </div>
+
+
+
+      <div class="admin-eyebrow">
+        Departure · Optional
+      </div>
+
+
+      <div class="admin-fields admin-grid-two">
+
         <label class="admin-field">
-          <span>Departure place</span>
+
+          <span>
+            Departure date
+          </span>
+
+          <input type="date">
+
+        </label>
+
+
+        <label class="admin-field">
+
+          <span>
+            Departure time
+          </span>
+
+          <input type="time">
+
+        </label>
+
+      </div>
+
+
+      <div class="admin-fields">
+
+        <label class="admin-field">
+
+          <span>
+            Departure place
+          </span>
 
           <input
             type="text"
-            placeholder="Barcelona Airport"
+            placeholder="Barcelona Airport, Sants Station..."
+            autocomplete="off"
           >
+
         </label>
 
       </div>
@@ -161,62 +249,125 @@
     </section>
 
 
-    <!-- 03 HOTEL -->
 
-    <section class="admin-section">
+    <!-- ======================================
+         03 ACCOMMODATION
+         ====================================== -->
+
+    <section
+      class="admin-section"
+      data-admin-section="hotel"
+    >
 
       <div class="admin-section-heading">
         <span>03</span>
-        <h2>Hotel</h2>
+        <h2>Accommodation</h2>
       </div>
 
-      <div class="admin-fields">
 
-        <label class="admin-field">
-          <span>Hotel name</span>
+      <label class="admin-field">
 
-          <input
-            type="text"
-            placeholder="Hotel name"
-          >
-        </label>
+        <span>
+          Accommodation
+        </span>
 
-        <label class="admin-field">
-          <span>Address</span>
+        <select id="admin-hotel-status">
+          <option value="no">
+            No accommodation information
+          </option>
 
-          <input
-            type="text"
-            placeholder="Street, number, Barcelona"
-          >
-        </label>
+          <option value="yes">
+            Add accommodation
+          </option>
+        </select>
 
-      </div>
+      </label>
 
-      <div class="admin-fields admin-grid-two">
 
-        <label class="admin-field">
-          <span>Check-in</span>
-          <input type="time">
-        </label>
+      <div
+        id="admin-hotel-fields"
+        hidden
+      >
 
-        <label class="admin-field">
-          <span>Check-out</span>
-          <input type="time">
-        </label>
+        <div class="admin-fields">
+
+          <label class="admin-field">
+
+            <span>
+              Hotel name
+            </span>
+
+            <input
+              type="text"
+              placeholder="Hotel name"
+              autocomplete="off"
+            >
+
+          </label>
+
+
+          <label class="admin-field">
+
+            <span>
+              Address
+            </span>
+
+            <input
+              type="text"
+              placeholder="Street, number, Barcelona"
+              autocomplete="off"
+            >
+
+          </label>
+
+        </div>
+
+
+        <div class="admin-fields admin-grid-two">
+
+          <label class="admin-field">
+
+            <span>
+              Check-in
+            </span>
+
+            <input type="time">
+
+          </label>
+
+
+          <label class="admin-field">
+
+            <span>
+              Check-out
+            </span>
+
+            <input type="time">
+
+          </label>
+
+        </div>
 
       </div>
 
     </section>
 
 
-    <!-- 04 MAIN CONTACT -->
 
-    <section class="admin-section">
+    <!-- ======================================
+         04 MAIN CONTACT
+         ====================================== -->
+
+    <section
+      class="admin-section"
+      data-admin-section="contact"
+    >
 
       <div class="admin-section-heading">
         <span>04</span>
         <h2>Main contact</h2>
       </div>
+
 
       <div class="admin-fields">
 
@@ -227,38 +378,62 @@
           </span>
 
           <select>
-            <option>Flavio De Sá</option>
-            <option>Catalina Riutort</option>
+
+            <option value="Susana Bautista">
+              Susana Bautista
+            </option>
+
+            <option value="Ánxe Faraldo">
+              Ánxe Faraldo
+            </option>
+
+            <option value="Jaume Cortacans">
+              Jaume Cortacans
+            </option>
+
+            <option value="Catalina Riutort">
+              Catalina Riutort
+            </option>
+
+            <option value="Flavio de Sa">
+              Flavio de Sa
+            </option>
+
           </select>
-
-        </label>
-
-        <label class="admin-field">
-
-          <span>
-            Role
-          </span>
-
-          <input
-            type="text"
-            value="Production Assistant"
-          >
 
         </label>
 
       </div>
 
+
+      <div
+        class="admin-contact-preview"
+        id="admin-contact-preview"
+      ></div>
+
     </section>
 
 
-    <!-- 05 SCHEDULE -->
 
-    <section class="admin-section">
+    <!-- ======================================
+         05 SCHEDULE
+         ====================================== -->
+
+    <section
+      class="admin-section"
+      data-admin-section="schedule"
+    >
 
       <div class="admin-section-heading">
         <span>05</span>
         <h2>Schedule</h2>
       </div>
+
+
+      <p class="admin-section-note">
+        Date, time and type are required for each activity.
+        All other information is optional.
+      </p>
 
 
       <article class="admin-activity">
@@ -279,13 +454,24 @@
         <div class="admin-fields admin-grid-two">
 
           <label class="admin-field">
-            <span>Date</span>
+
+            <span>
+              Date
+            </span>
+
             <input type="date">
+
           </label>
 
+
           <label class="admin-field">
-            <span>Time</span>
+
+            <span>
+              Time
+            </span>
+
             <input type="time">
+
           </label>
 
         </div>
@@ -300,13 +486,35 @@
             </span>
 
             <select>
-              <option>Rehearsal</option>
-              <option>Performance</option>
-              <option>Reading Session</option>
-              <option>Hotel</option>
-              <option>Meal</option>
-              <option>Travel</option>
-              <option>Other</option>
+
+              <option>
+                Rehearsal
+              </option>
+
+              <option>
+                Performance
+              </option>
+
+              <option>
+                Reading Session
+              </option>
+
+              <option>
+                Hotel
+              </option>
+
+              <option>
+                Meal
+              </option>
+
+              <option>
+                Travel
+              </option>
+
+              <option>
+                Other
+              </option>
+
             </select>
 
           </label>
@@ -320,11 +528,17 @@
 
             <input
               type="text"
-              placeholder="Stage rehearsal"
+              placeholder="Stage rehearsal, Check-in, Airport transfer..."
+              autocomplete="off"
             >
 
           </label>
 
+
+          <!--
+            These three fields are transformed
+            by admin.js into dynamic fields.
+          -->
 
           <label class="admin-field">
 
@@ -333,6 +547,7 @@
             </span>
 
             <select>
+
               <option>Fabra i Coats</option>
               <option>ESMUC</option>
               <option>PHONOS</option>
@@ -344,6 +559,7 @@
               <option>Espai Bota</option>
               <option>ALMO2BAR</option>
               <option>Other</option>
+
             </select>
 
           </label>
@@ -352,12 +568,13 @@
           <label class="admin-field">
 
             <span>
-              Room
+              Room / Space
             </span>
 
             <input
               type="text"
-              placeholder="Sala 2"
+              placeholder="Sala / room"
+              autocomplete="off"
             >
 
           </label>
@@ -392,6 +609,7 @@
       </article>
 
 
+
       <button
         type="button"
         class="admin-add-button"
@@ -402,7 +620,10 @@
     </section>
 
 
-    <!-- GENERATE -->
+
+    <!-- ======================================
+         GENERATE
+         ====================================== -->
 
     <section class="admin-generate">
 
@@ -423,6 +644,14 @@
 
       </div>
 
+
+      <div
+        id="admin-validation-message"
+        class="admin-validation-message"
+        hidden
+      ></div>
+
+
       <button
         type="button"
         class="admin-generate-button"
@@ -433,7 +662,10 @@
     </section>
 
 
-    <!-- RESULT -->
+
+    <!-- ======================================
+         RESULT
+         ====================================== -->
 
     <section
       class="admin-preview"
@@ -507,6 +739,7 @@
             Artist link
           </span>
 
+
           <div class="admin-link-row">
 
             <input
@@ -514,6 +747,7 @@
               id="artist-link"
               readonly
             >
+
 
             <button
               type="button"
@@ -530,10 +764,11 @@
 
     </section>
 
+
   </main>
 
 
-  <script src="admin.js?v=8"></script>
+  <script src="admin.js?v=9"></script>
 
 </body>
 
