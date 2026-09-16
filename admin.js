@@ -142,12 +142,13 @@ document.addEventListener("DOMContentLoaded", () => {
     <option>ESMUC</option>
     <option>PHONOS</option>
     <option>Museu de la Música</option>
-    <option>TDM</option>
+    <option>Taller de Músics</option>
     <option>CMMB</option>
     <option>Santa Mònica</option>
     <option>L'Auditori</option>
     <option>Espai Bota</option>
     <option>ALMO2BAR</option>
+    <option>Sala Taro</option>
     <option>Other</option>
   `;
 
