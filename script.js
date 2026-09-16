@@ -2979,102 +2979,143 @@ function renderVenueDataInPlaces() {
 }
 
   function renderArtistHotelInPlaces() {
-    const hotel =
-      artistData?.hotel;
+  const hotel =
+    artistData?.hotel || null;
 
 
-    if (
-      !hotel?.name
-    ) {
-      return;
-    }
+  /* =========================================
+     FIND HOTEL CARD
+     ========================================= */
 
-
-    const hotelCard =
-      document.querySelector(
-        "#my-hotel, [data-artist-hotel]"
-      ) ||
-      Array.from(
-        document.querySelectorAll(
-          ".featured-place, .place-card"
+  const hotelCard =
+    document.querySelector(
+      "#my-hotel, [data-artist-hotel]"
+    ) ||
+    Array.from(
+      document.querySelectorAll(
+        ".featured-place, .place-card"
+      )
+    ).find(
+      (card) =>
+        normalizeText(
+          card.dataset.category || ""
+        ) === "other" &&
+        normalizeText(
+          card.textContent || ""
+        ).includes(
+          "hotel"
         )
-      ).find(
-        (card) =>
-          normalizeText(
-            card.dataset.category
-          ) ===
-            "other" &&
-          normalizeText(
-            card.textContent
-          ).includes(
-            "hotel"
-          )
-      );
+    );
 
 
-    if (!hotelCard) {
-      return;
+  /* =========================================
+     NO ACCOMMODATION
+     ========================================= */
+
+  if (!hotel?.name) {
+    if (hotelCard) {
+      hotelCard.remove();
     }
 
 
-    const title =
-      hotelCard.querySelector(
-        "h2, h3, .place-title"
-      );
+    document
+      .getElementById(
+        "hotel-food-panel"
+      )
+      ?.remove();
 
 
-    if (title) {
-      title.textContent =
-        hotel.name;
-    }
+    document
+      .getElementById(
+        "hotel-essentials-panel"
+      )
+      ?.remove();
 
 
-    const address =
-      hotelCard.querySelector(
-        ".place-address, [data-place-address]"
-      );
-
-
-    if (
-      address &&
-      hotel.address
-    ) {
-      address.textContent =
-        hotel.address;
-    }
-
-
-    const mapURL =
-      "https://www.google.com/maps/search/?api=1&query=" +
-      encodeURIComponent(
-        hotel.address ||
-        hotel.name
-      );
-
-
-    hotelCard
-      .querySelectorAll("a")
-      .forEach(
-        (link) => {
-          if (
-            normalizeText(
-              link.textContent
-            ).includes(
-              "maps"
-            )
-          ) {
-            link.href =
-              mapURL;
-
-            link.target =
-              "_blank";
-
-            link.rel =
-              "noopener noreferrer";
-          }
-        }
-      );
+    return;
   }
+
+
+  /* =========================================
+     ACCOMMODATION EXISTS
+     ========================================= */
+
+  if (!hotelCard) {
+    return;
+  }
+
+
+  hotelCard.id =
+    "my-hotel";
+
+  hotelCard.setAttribute(
+    "data-artist-hotel",
+    "true"
+  );
+
+
+  /* HOTEL NAME */
+
+  const title =
+    hotelCard.querySelector(
+      "h2, h3, .place-title"
+    );
+
+
+  if (title) {
+    title.textContent =
+      hotel.name;
+  }
+
+
+  /* ADDRESS */
+
+  const address =
+    hotelCard.querySelector(
+      ".place-address, [data-place-address]"
+    );
+
+
+  if (address) {
+    address.textContent =
+      hotel.address || "Barcelona";
+  }
+
+
+  /* MAP */
+
+  const mapURL =
+    "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent(
+      hotel.address ||
+      hotel.name
+    );
+
+
+  hotelCard
+    .querySelectorAll("a")
+    .forEach(
+      (link) => {
+
+        if (
+          normalizeText(
+            link.textContent
+          ).includes(
+            "maps"
+          )
+        ) {
+          link.href =
+            mapURL;
+
+          link.target =
+            "_blank";
+
+          link.rel =
+            "noopener noreferrer";
+        }
+      }
+    );
+}
 
 
   /* =========================================
