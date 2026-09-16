@@ -3387,91 +3387,144 @@ function renderVenueDataInPlaces() {
   }
 
   /* =========================================
-     MAIN CONTACT
-     ========================================= */
+   MAIN CONTACT
+   ========================================= */
 
-  const contactArea =
-    document.querySelector("#my-contact");
+const contactArea =
+  document.querySelector("#my-contact");
 
-  if (contactArea) {
-    if (!contact.name) {
-      contactArea.style.display = "none";
-    } else {
-      contactArea.style.display = "";
+if (contactArea) {
+  if (!contact.name) {
+    contactArea.style.display = "none";
+  } else {
+    contactArea.style.display = "";
 
-      const contactName =
-        contactArea.querySelector("[data-contact-name]");
+    const contactName =
+      contactArea.querySelector("[data-contact-name]");
 
-      const contactRole =
-        contactArea.querySelector("[data-contact-role]");
+    const contactRole =
+      contactArea.querySelector("[data-contact-role]");
 
-      const contactAvatar =
-        contactArea.querySelector("[data-contact-avatar]");
+    const contactAvatar =
+      contactArea.querySelector("[data-contact-avatar]");
 
-      const whatsappLink =
-        contactArea.querySelector(
-          "[data-contact-whatsapp]"
-        );
+    const whatsappLink =
+      contactArea.querySelector(
+        "[data-contact-whatsapp]"
+      );
 
-      const callLink =
-        contactArea.querySelector(
-          "[data-contact-call]"
-        );
+    const callLink =
+      contactArea.querySelector(
+        "[data-contact-call]"
+      );
 
-      if (contactName) {
-        contactName.textContent = contact.name;
-      }
+    const emailLink =
+      contactArea.querySelector(
+        "[data-contact-email]"
+      );
 
-      if (contactRole) {
-        contactRole.textContent =
-          contact.role || "";
-      }
 
-      if (contactAvatar) {
-        const initials = contact.name
+    if (contactName) {
+      contactName.textContent =
+        contact.name;
+    }
+
+
+    if (contactRole) {
+      contactRole.textContent =
+        contact.role || "";
+    }
+
+
+    if (contactAvatar) {
+      const initials =
+        contact.name
           .trim()
           .split(/\s+/)
           .filter(Boolean)
           .slice(0, 2)
-          .map(part => part.charAt(0))
+          .map(
+            (part) =>
+              part.charAt(0)
+          )
           .join("")
           .toUpperCase();
 
-        contactAvatar.textContent =
-          initials || "M";
+      contactAvatar.textContent =
+        initials || "M";
+    }
+
+
+    /* PHONE */
+
+    const phone =
+      String(
+        contact.phone || ""
+      ).trim();
+
+    const phoneDigits =
+      phone.replace(/\D/g, "");
+
+
+    /* WHATSAPP */
+
+    if (whatsappLink) {
+      if (phoneDigits) {
+        whatsappLink.href =
+          `https://wa.me/${phoneDigits}`;
+
+        whatsappLink.target =
+          "_blank";
+
+        whatsappLink.rel =
+          "noopener";
+
+        whatsappLink.style.display =
+          "";
+      } else {
+        whatsappLink.style.display =
+          "none";
       }
+    }
 
-      const phone =
-        String(contact.phone || "").trim();
 
-      const phoneDigits =
-        phone.replace(/\D/g, "");
+    /* CALL */
 
-      if (whatsappLink) {
-        if (phoneDigits) {
-          whatsappLink.href =
-            `https://wa.me/${phoneDigits}`;
+    if (callLink) {
+      if (phone) {
+        callLink.href =
+          `tel:${phone}`;
 
-          whatsappLink.target = "_blank";
-          whatsappLink.rel = "noopener";
-          whatsappLink.style.display = "";
-        } else {
-          whatsappLink.style.display = "none";
-        }
+        callLink.style.display =
+          "";
+      } else {
+        callLink.style.display =
+          "none";
       }
+    }
 
-      if (callLink) {
-        if (phone) {
-          callLink.href =
-            `tel:${phone}`;
 
-          callLink.style.display = "";
-        } else {
-          callLink.style.display = "none";
-        }
+    /* EMAIL */
+
+    const email =
+      String(
+        contact.email || ""
+      ).trim();
+
+    if (emailLink) {
+      if (email) {
+        emailLink.href =
+          `mailto:${email}`;
+
+        emailLink.style.display =
+          "";
+      } else {
+        emailLink.style.display =
+          "none";
       }
     }
   }
+}
 }
 
   /* =========================================
