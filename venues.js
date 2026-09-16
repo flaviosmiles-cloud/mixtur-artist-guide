@@ -203,7 +203,7 @@ window.MIXTUR_VENUES = {
     category: "Venue",
     description: "Music museum",
     address: "Carrer de Lepant, 150, 08013 Barcelona",
-    image: "images/venues/museu-de-la-musica.jpg",
+    image: "images/venues/museu-de-la-musica.png",
     maps: "https://www.google.com/maps/search/?api=1&query=Museu+de+la+Musica+Barcelona",
 
     nearbyFood: [
