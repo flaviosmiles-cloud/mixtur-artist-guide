@@ -3677,15 +3677,21 @@ function renderVenueDataInPlaces() {
             </div>
 
 
-            <a
-              class="main-menu-small-link"
-              href="${internalHref(
-                "places.html",
-                "#my-hotel"
-              )}"
-            >
-              My Hotel →
-            </a>
+            ${
+  artistData?.hotel?.name
+    ? `
+      <a
+        class="main-menu-small-link"
+        href="${internalHref(
+          "places.html",
+          "#my-hotel"
+        )}"
+      >
+        My Hotel →
+      </a>
+    `
+    : ""
+}
 
 
             <a
