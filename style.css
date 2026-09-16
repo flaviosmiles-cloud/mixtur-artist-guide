@@ -4030,19 +4030,27 @@ span:nth-child(even) {
    PLACES · BARCELONA COVER
    ========================================= */
 
+/* =========================================
+   PLACES · BARCELONA COVER
+   ========================================= */
+
 .places-cover {
   position: relative;
+  width: 100%;
+  height: 220px;
   padding: 0;
+  overflow: hidden;
   display: block;
   background: #181818;
 }
 
 .places-cover img {
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
+  filter: grayscale(100%);
 }
 
 .places-cover span {
