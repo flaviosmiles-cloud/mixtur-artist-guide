@@ -659,17 +659,18 @@ a {
 }
 
 .day-header {
-  display: grid;
+  display: flex;
 
-  grid-template-columns:
-    auto
-    1fr;
+  align-items: baseline;
+  justify-content: space-between;
 
-  align-items: end;
-
-  gap: 14px;
+  gap: 20px;
 
   padding-bottom: 14px;
+
+  border-bottom:
+    1px solid
+    var(--line);
 
   color: var(--white);
 
@@ -678,12 +679,16 @@ a {
 
 .day-header span:first-child {
   font-size: 1.15rem;
+
+  font-weight: 400;
+
   line-height: 1;
+
   letter-spacing: 0.08em;
 }
 
 .day-header span:last-child {
-  justify-self: end;
+  flex: 0 0 auto;
 
   color: var(--text-secondary);
 
@@ -692,10 +697,8 @@ a {
   line-height: 1.2;
 
   letter-spacing: 0.13em;
-}
 
-.today-day .day-header {
-  color: var(--white);
+  text-align: right;
 }
 
 .today-day .day-header span:first-child {
