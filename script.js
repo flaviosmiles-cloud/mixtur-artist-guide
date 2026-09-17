@@ -3023,7 +3023,11 @@ function renderVenueDataInPlaces() {
           return `
             <article
               class="featured-place"
-              data-category="venues"
+              data-category="${
+                venueName === "Sala Taro"
+                  ? "other"
+                  : "venues"
+              }"
               data-food="${
                 hasFood
                   ? "true"
