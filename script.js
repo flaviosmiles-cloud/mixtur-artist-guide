@@ -2624,7 +2624,6 @@ function formatTodayHeading(
       .join("");
 }
 
-
   function makeExistingScheduleRowsClickable() {
     const rows =
       document.querySelectorAll(
