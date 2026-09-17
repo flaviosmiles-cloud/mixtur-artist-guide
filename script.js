@@ -2938,210 +2938,356 @@ function formatTodayHeading(
     );
   }
 
-   /* =========================================
-   PLACES · VENUE DATA
+/* =========================================
+   PLACES · ARTIST VENUES
    ========================================= */
 
 function renderVenueDataInPlaces() {
-  const cards =
-    document.querySelectorAll(
-      ".featured-place[data-category='venues']"
+  const container =
+    document.querySelector(
+      "[data-places-list]"
     );
 
 
-  cards.forEach((card) => {
-    const title =
-      card.querySelector("h2");
+  if (
+    !container ||
+    !Array.isArray(
+      artistData?.schedule
+    )
+  ) {
+    return;
+  }
 
 
-    if (!title) {
-      return;
-    }
+  /* -----------------------------------------
+     UNIQUE VENUES FROM ARTIST SCHEDULE
+     ----------------------------------------- */
+
+  const venueNames = [];
 
 
-    const venueName =
-      title.textContent.trim();
+  artistData.schedule.forEach(
+    (activity) => {
+
+      const venueName =
+        activity.venue;
 
 
-    const venue =
-      venueData[venueName];
+      if (
+        !venueName ||
+        !venueData[venueName] ||
+        venueNames.includes(
+          venueName
+        )
+      ) {
+        return;
+      }
 
 
-    if (!venue) {
-      return;
-    }
-
-
-    /* PHOTO */
-
-    const imageContainer =
-      card.querySelector(
-        ".featured-place-image"
+      venueNames.push(
+        venueName
       );
-
-
-    if (
-      imageContainer &&
-      venue.image
-    ) {
-      imageContainer.classList.remove(
-        "placeholder-image"
-      );
-
-
-      imageContainer.innerHTML = `
-        <img
-          src="${escapeHTML(
-            venue.image
-          )}"
-          alt="${escapeHTML(
-            venue.name
-          )}"
-          loading="lazy"
-        >
-      `;
     }
+  );
 
 
-    /* DESCRIPTION */
+  /* -----------------------------------------
+     BUILD VENUE CARDS
+     ----------------------------------------- */
 
-    const description =
-      card.querySelector(
-        ".place-description"
-      );
+  const venueCards =
+    venueNames
+      .map(
+        (venueName) => {
+
+          const venue =
+            venueData[
+              venueName
+            ];
 
 
-    if (
-      description &&
-      (
-        venue.description ||
-        venue.fullName
+          const hasFood =
+            Array.isArray(
+              venue.nearbyFood
+            ) &&
+            venue.nearbyFood.length > 0;
+
+
+          const hasEssentials =
+            Array.isArray(
+              venue.essentials
+            ) &&
+            venue.essentials.length > 0;
+
+
+          return `
+            <article
+              class="featured-place"
+              data-category="venues"
+              data-food="${
+                hasFood
+                  ? "true"
+                  : "false"
+              }"
+            >
+
+              <div
+                class="featured-place-image${
+                  venue.image
+                    ? ""
+                    : " placeholder-image"
+                }"
+              >
+
+                ${
+                  venue.image
+                    ? `
+                      <img
+                        src="${escapeHTML(
+                          venue.image
+                        )}"
+                        alt="${escapeHTML(
+                          venue.name
+                        )}"
+                        loading="lazy"
+                      >
+                    `
+                    : `
+                      <span>
+                        Venue
+                      </span>
+                    `
+                }
+
+              </div>
+
+
+              <div
+                class="featured-place-content"
+              >
+
+                <div
+                  class="place-category"
+                >
+                  Venue
+                </div>
+
+
+                <div
+                  class="place-title-row"
+                >
+
+                  <div>
+
+                    <h2>
+                      ${escapeHTML(
+                        venue.name
+                      )}
+                    </h2>
+
+
+                    ${
+                      venue.description ||
+                      venue.fullName
+                        ? `
+                          <p
+                            class="place-description"
+                          >
+                            ${escapeHTML(
+                              venue.description ||
+                              venue.fullName
+                            )}
+                          </p>
+                        `
+                        : ""
+                    }
+
+                  </div>
+
+
+                  <span
+                    class="place-arrow"
+                  >
+                    →
+                  </span>
+
+                </div>
+
+
+                ${
+                  venue.address
+                    ? `
+                      <address
+                        class="place-address"
+                      >
+                        ${escapeHTML(
+                          venue.address
+                        )}
+                      </address>
+                    `
+                    : ""
+                }
+
+
+                ${
+                  venue.maps
+                    ? `
+                      <a
+                        class="maps-link"
+                        href="${escapeHTML(
+                          venue.maps
+                        )}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+
+                        <span
+                          class="maps-symbol"
+                        >
+                          ⌖
+                        </span>
+
+                        <span>
+                          Open in Maps
+                        </span>
+
+                        <span
+                          class="maps-arrow"
+                        >
+                          →
+                        </span>
+
+                      </a>
+                    `
+                    : ""
+                }
+
+
+                ${
+                  hasFood ||
+                  hasEssentials
+                    ? `
+                      <div
+                        class="place-nearby"
+                      >
+
+                        ${
+                          hasFood
+                            ? `
+                              <a
+                                href="#"
+                                data-venue-food="${escapeHTML(
+                                  venueName
+                                )}"
+                              >
+                                Nearby food
+                                <span>→</span>
+                              </a>
+                            `
+                            : ""
+                        }
+
+
+                        ${
+                          hasEssentials
+                            ? `
+                              <a
+                                href="#"
+                                data-venue-essentials="${escapeHTML(
+                                  venueName
+                                )}"
+                              >
+                                Essentials
+                                <span>→</span>
+                              </a>
+                            `
+                            : ""
+                        }
+
+                      </div>
+                    `
+                    : ""
+                }
+
+              </div>
+
+            </article>
+          `;
+        }
       )
-    ) {
-      description.textContent =
-        venue.description ||
-        venue.fullName;
-    }
+      .join("");
 
 
-    /* ADDRESS */
-
-    const address =
-      card.querySelector(
-        ".place-address"
-      );
+  container.innerHTML =
+    venueCards;
 
 
-    if (
-      address &&
-      venue.address
-    ) {
-      address.textContent =
-        venue.address;
-    }
+  /* -----------------------------------------
+     NEARBY FOOD
+     ----------------------------------------- */
 
+  container
+    .querySelectorAll(
+      "[data-venue-food]"
+    )
+    .forEach(
+      (trigger) => {
 
-    /* MAPS */
-
-    const mapsLink =
-      card.querySelector(
-        ".maps-link"
-      );
-
-
-    if (
-      mapsLink &&
-      venue.maps
-    ) {
-      mapsLink.href =
-        venue.maps;
-
-      mapsLink.target =
-        "_blank";
-
-      mapsLink.rel =
-        "noopener noreferrer";
-    }
-
-
-    /* NEARBY FOOD */
-
-    const foodTrigger =
-      card.querySelector(
-        "[data-panel*='food']"
-      );
-
-
-    if (foodTrigger) {
-      const hasFood =
-        Array.isArray(
-          venue.nearbyFood
-        ) &&
-        venue.nearbyFood.length > 0;
-
-
-      foodTrigger.hidden =
-        !hasFood;
-
-
-      if (hasFood) {
-        foodTrigger.removeAttribute(
-          "data-panel"
-        );
-
-
-        foodTrigger.onclick =
+        trigger.addEventListener(
+          "click",
           (event) => {
             event.preventDefault();
+
+
+            const venue =
+              venueData[
+                trigger.dataset
+                  .venueFood
+              ];
+
 
             openVenueNearby(
               venue,
               "food"
             );
-          };
-      }
-    }
-
-
-    /* ESSENTIALS */
-
-    const essentialsTrigger =
-      card.querySelector(
-        "[data-panel*='essentials']"
-      );
-
-
-    if (essentialsTrigger) {
-      const hasEssentials =
-        Array.isArray(
-          venue.essentials
-        ) &&
-        venue.essentials.length > 0;
-
-
-      essentialsTrigger.hidden =
-        !hasEssentials;
-
-
-      if (hasEssentials) {
-        essentialsTrigger.removeAttribute(
-          "data-panel"
+          }
         );
+      }
+    );
 
 
-        essentialsTrigger.onclick =
+  /* -----------------------------------------
+     ESSENTIALS
+     ----------------------------------------- */
+
+  container
+    .querySelectorAll(
+      "[data-venue-essentials]"
+    )
+    .forEach(
+      (trigger) => {
+
+        trigger.addEventListener(
+          "click",
           (event) => {
             event.preventDefault();
+
+
+            const venue =
+              venueData[
+                trigger.dataset
+                  .venueEssentials
+              ];
+
 
             openVenueNearby(
               venue,
               "essentials"
             );
-          };
+          }
+        );
       }
-    }
-
-  });
+    );
 }
 
   function renderArtistHotelInPlaces() {
