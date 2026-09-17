@@ -4895,15 +4895,15 @@ if (contactArea) {
   currentPage ===
   "places.html"
 ) {
-  renderArtistHotelInPlaces();
-
   renderVenueDataInPlaces();
+
+  renderArtistHotelInPlaces();
 
   initPlacesFilters();
 
   repairPlacesMapLinks();
 }
-
+   
 
   if (
     currentPage ===
