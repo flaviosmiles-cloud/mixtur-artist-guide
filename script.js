@@ -1759,14 +1759,90 @@ function formatArtistScheduleRange(
    ========================================= */
 
 function chooseNextActivity(schedule) {
-  if (!Array.isArray(schedule) || !schedule.length) return null;
+  if (
+    !Array.isArray(schedule) ||
+    !schedule.length
+  ) {
+    return null;
+  }
 
-  const now = new Date();
 
-  return schedule.find((activity) => {
-    const date = activityDateTime(activity);
-    return date && date >= now;
-  }) || null;
+  const now =
+    new Date();
+
+
+  const validSchedule =
+    schedule.filter(
+      (activity) =>
+        activityDateTime(activity)
+    );
+
+
+  if (!validSchedule.length) {
+    return null;
+  }
+
+
+  /* -----------------------------------------
+     1. FUTURE ACTIVITY
+     ----------------------------------------- */
+
+  const futureActivity =
+    validSchedule.find(
+      (activity) => {
+        const date =
+          activityDateTime(activity);
+
+        return (
+          date &&
+          date.getTime() >=
+            now.getTime()
+        );
+      }
+    );
+
+
+  if (futureActivity) {
+    return futureActivity;
+  }
+
+
+  /* -----------------------------------------
+     2. NO FUTURE ACTIVITIES
+     KEEP TODAY'S LAST ACTIVITY AS CURRENT
+     ----------------------------------------- */
+
+  const today =
+    [
+      now.getFullYear(),
+      String(
+        now.getMonth() + 1
+      ).padStart(2, "0"),
+      String(
+        now.getDate()
+      ).padStart(2, "0")
+    ].join("-");
+
+
+  const todayActivities =
+    validSchedule.filter(
+      (activity) =>
+        activity.date === today
+    );
+
+
+  if (todayActivities.length) {
+    return todayActivities[
+      todayActivities.length - 1
+    ];
+  }
+
+
+  /* -----------------------------------------
+     3. SCHEDULE COMPLETE
+     ----------------------------------------- */
+
+  return null;
 }
 
 
@@ -1800,7 +1876,35 @@ function formatTimeUntilActivity(
     now.getTime();
 
 
-  if (difference <= 0) {
+  /* ACTIVITY HAS ALREADY STARTED TODAY */
+
+  if (difference < 0) {
+    const today =
+      [
+        now.getFullYear(),
+        String(
+          now.getMonth() + 1
+        ).padStart(2, "0"),
+        String(
+          now.getDate()
+        ).padStart(2, "0")
+      ].join("-");
+
+
+    if (
+      activity.date === today
+    ) {
+      return "Current";
+    }
+
+
+    return "";
+  }
+
+
+  /* STARTING NOW */
+
+  if (difference === 0) {
     return "Now";
   }
 
