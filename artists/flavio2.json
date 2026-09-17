@@ -1,17 +1,25 @@
 {
   "id": "flavio2",
   "artist": {
-    "name": "Continuum XX",
-    "category": "Coms",
+    "name": "Ulysses Ensemble",
+    "category": "Ensemble",
     "email": "padre-cantora.4b@icloud.com"
   },
   "stay": {
-    "arrivalDate": "2026-09-16",
-    "arrivalTime": "00:54",
-    "arrivalPlace": "BCN AirPort",
-    "departureDate": "2026-09-30",
-    "departureTime": "00:54",
-    "departurePlace": "BCN AirPort"
+    "arrivalDate": "2026-09-17",
+    "arrivalTime": "10:00",
+    "arrivalPlace": "Barcelona Airport",
+    "departureDate": "2026-09-23",
+    "departureTime": "18:00",
+    "departurePlace": "Barcelona Airport"
+  },
+  "hotel": {
+    "name": "Test Hotel",
+    "address": "Carrer Test 10, Barcelona",
+    "checkInDate": "2026-09-17",
+    "checkInTime": "15:00",
+    "checkOutDate": "2026-09-23",
+    "checkOutTime": "11:00"
   },
   "mainContact": {
     "name": "Susana Bautista",
@@ -21,22 +29,97 @@
   },
   "schedule": [
     {
-      "date": "2026-09-17",
-      "time": "20:30",
+      "date": "2026-09-18",
+      "time": "10:00",
       "type": "Rehearsal",
-      "title": "Past activity",
+      "title": "Opening rehearsal",
       "venue": "Fabra i Coats",
+      "room": "Sala 1",
+      "callTime": "09:30"
+    },
+    {
+      "date": "2026-09-18",
+      "time": "13:00",
+      "type": "Workshop",
+      "title": "Ensemble session",
+      "venue": "Taller de Músics",
+      "room": "Aula 3",
+      "callTime": "12:45"
+    },
+    {
+      "date": "2026-09-18",
+      "time": "18:00",
+      "type": "Performance",
+      "title": "Evening concert",
+      "venue": "Espai Bota",
+      "callTime": "17:15"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "10:30",
+      "type": "Rehearsal",
+      "title": "Morning rehearsal",
+      "venue": "ESMUC",
       "room": "Aula 2",
+      "callTime": "10:00"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "14:00",
+      "type": "Meeting",
+      "title": "Artist meeting",
+      "venue": "Museu de la Música",
+      "callTime": "13:45"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "20:00",
+      "type": "Performance",
+      "title": "Main concert",
+      "venue": "L'Auditori",
+      "room": "Sala 2",
+      "callTime": "19:00"
+    },
+    {
+      "date": "2026-09-20",
+      "time": "11:00",
+      "type": "Workshop",
+      "title": "Sound workshop",
+      "venue": "PHONOS",
+      "callTime": "10:30"
+    },
+    {
+      "date": "2026-09-20",
+      "time": "16:00",
+      "type": "Rehearsal",
+      "title": "Afternoon session",
+      "venue": "CMMB",
+      "room": "Sala d'Orquestra",
+      "callTime": "15:30"
+    },
+    {
+      "date": "2026-09-21",
+      "time": "12:00",
+      "type": "Performance",
+      "title": "New creation",
+      "venue": "Santa Mònica",
+      "callTime": "11:15"
+    },
+    {
+      "date": "2026-09-21",
+      "time": "21:00",
+      "type": "Performance",
+      "title": "Late night concert",
+      "venue": "ALMO2BAR",
       "callTime": "20:15"
     },
     {
-      "date": "2026-09-17",
-      "time": "23:00",
-      "type": "Performance",
-      "title": "Future activity",
-      "venue": "ESMUC",
-      "room": "Aula 2",
-      "callTime": "22:30"
+      "date": "2026-09-22",
+      "time": "22:00",
+      "type": "Final Party",
+      "title": "Mixtur Final Party",
+      "venue": "Sala Taro",
+      "callTime": "21:30"
     }
   ]
 }
