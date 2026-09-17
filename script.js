@@ -2433,77 +2433,109 @@ function formatTodayHeading(
 
 
   function renderSchedulePage() {
-    if (
-      !artistData ||
-      !Array.isArray(
-        artistData.schedule
-      )
-    ) {
-      return;
-    }
+  if (
+    !artistData ||
+    !Array.isArray(
+      artistData.schedule
+    )
+  ) {
+    return;
+  }
 
 
-    const container =
-      findScheduleContainer();
+  const container =
+    findScheduleContainer();
 
 
-    if (!container) {
-      makeExistingScheduleRowsClickable();
+  if (!container) {
+    makeExistingScheduleRowsClickable();
 
-      return;
-    }
-
-
-    const groups =
-      groupScheduleByDate(
-        artistData.schedule
-      );
+    return;
+  }
 
 
-    const dates =
-      Object.keys(groups)
-        .sort();
+  const groups =
+    groupScheduleByDate(
+      artistData.schedule
+    );
 
 
-    if (!dates.length) {
-      return;
-    }
+  const dates =
+    Object.keys(groups)
+      .sort();
 
 
-    container.innerHTML =
-      dates
-        .map(
-          (date) => `
+  if (!dates.length) {
+    return;
+  }
+
+
+  /* TODAY */
+
+  const now =
+    new Date();
+
+  const today =
+    [
+      now.getFullYear(),
+      String(
+        now.getMonth() + 1
+      ).padStart(2, "0"),
+      String(
+        now.getDate()
+      ).padStart(2, "0")
+    ].join("-");
+
+
+  container.innerHTML =
+    dates
+      .map(
+        (date) => {
+
+          const isToday =
+            date === today;
+
+
+          return `
             <section
-              class="schedule-day"
+              class="schedule-day${
+                isToday
+                  ? " today-day"
+                  : ""
+              }"
             >
+
               <div
-                class="schedule-day-heading"
+                class="day-header"
               >
-                <div
-                  class="schedule-day-name"
-                >
+
+                <span>
                   ${escapeHTML(
                     formatWeekday(
                       date
                     )
                   )}
-                </div>
+                </span>
 
-                <div
-                  class="schedule-day-date"
-                >
+                <span>
                   ${escapeHTML(
                     formatDayNumberMonth(
                       date
                     )
-                  )}
-                </div>
+                  )}${
+                    isToday
+                      ? " · TODAY"
+                      : ""
+                  }
+                </span>
+
               </div>
+
 
               <div
                 class="schedule-day-events"
               >
+
                 ${groups[date]
                   .map(
                     (
@@ -2582,12 +2614,15 @@ function formatTodayHeading(
                     `
                   )
                   .join("")}
+
               </div>
+
             </section>
-          `
-        )
-        .join("");
-  }
+          `;
+        }
+      )
+      .join("");
+}
 
 
   function makeExistingScheduleRowsClickable() {
