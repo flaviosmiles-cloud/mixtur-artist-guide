@@ -1524,12 +1524,40 @@ function renderTodayPage() {
     welcomeTitle &&
     artistData.artist?.name
   ) {
-    welcomeTitle.innerHTML =
-      `WELCOME,<br>${escapeHTML(
-        artistData.artist.name
-      ).toUpperCase()}`;
-  }
+    const artistName =
+      artistData.artist.name
+        .trim()
+        .toUpperCase();
 
+
+    /* Reset adaptive classes */
+
+    welcomeTitle.classList.remove(
+      "welcome-medium",
+      "welcome-long"
+    );
+
+
+    /* Adapt typography to longer artist names */
+
+    if (artistName.length >= 16) {
+      welcomeTitle.classList.add(
+        "welcome-long"
+      );
+    } else if (
+      artistName.length >= 11
+    ) {
+      welcomeTitle.classList.add(
+        "welcome-medium"
+      );
+    }
+
+
+    welcomeTitle.innerHTML =
+      `WELCOME,<br><span class="welcome-artist-name">${escapeHTML(
+        artistName
+      )}</span>`;
+  }
 
   /* -----------------------------------------
      PERSONAL SCHEDULE DATE RANGE
