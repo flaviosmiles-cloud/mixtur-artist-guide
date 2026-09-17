@@ -3290,9 +3290,145 @@ function renderVenueDataInPlaces() {
     );
 }
 
-  function renderArtistHotelInPlaces() {
+function renderArtistHotelInPlaces() {
+  const container =
+    document.querySelector(
+      "[data-places-list]"
+    );
+
+
   const hotel =
-    artistData?.hotel || null;
+    artistData?.hotel;
+
+
+  if (
+    !container ||
+    !hotel?.name
+  ) {
+    return;
+  }
+
+
+  const mapURL =
+    "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent(
+      hotel.address ||
+      hotel.name
+    );
+
+
+  const hotelCard = `
+    <article
+      class="featured-place"
+      id="my-hotel"
+      data-artist-hotel="true"
+      data-category="other"
+      data-food="false"
+    >
+
+      <div
+        class="featured-place-image placeholder-image"
+      >
+        <span>
+          Hotel
+        </span>
+      </div>
+
+
+      <div
+        class="featured-place-content"
+      >
+
+        <div
+          class="place-category"
+        >
+          Hotel
+        </div>
+
+
+        <div
+          class="place-title-row"
+        >
+
+          <div>
+
+            <h2>
+              ${escapeHTML(
+                hotel.name
+              )}
+            </h2>
+
+            <p
+              class="place-description"
+            >
+              Artist accommodation
+            </p>
+
+          </div>
+
+
+          <span
+            class="place-arrow"
+          >
+            →
+          </span>
+
+        </div>
+
+
+        ${
+          hotel.address
+            ? `
+              <address
+                class="place-address"
+              >
+                ${escapeHTML(
+                  hotel.address
+                )}
+              </address>
+            `
+            : ""
+        }
+
+
+        <a
+          class="maps-link"
+          href="${escapeHTML(
+            mapURL
+          )}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <span
+            class="maps-symbol"
+          >
+            ⌖
+          </span>
+
+          <span>
+            Open in Maps
+          </span>
+
+          <span
+            class="maps-arrow"
+          >
+            →
+          </span>
+
+        </a>
+
+      </div>
+
+    </article>
+  `;
+
+
+  container.insertAdjacentHTML(
+    "beforeend",
+    hotelCard
+  );
+}
 
 
   /* =========================================
