@@ -22,22 +22,13 @@
   "schedule": [
     {
       "date": "2026-09-17",
-      "time": "00:54",
+      "time": "20:30",
       "type": "Rehearsal",
-      "title": "With composer",
-      "notes": "Yes",
+      "title": "Current test",
+      "notes": "Testing Current status",
       "venue": "Fabra i Coats",
       "room": "Aula 2",
-      "callTime": "00:55"
-    },
-    {
-      "date": "2026-09-19",
-      "time": "00:12",
-      "type": "Performance",
-      "title": "Show",
-      "venue": "ESMUC",
-      "room": "Aula 2",
-      "callTime": "00:55"
+      "callTime": "20:15"
     }
   ]
 }
