@@ -24,11 +24,19 @@
       "date": "2026-09-17",
       "time": "20:30",
       "type": "Rehearsal",
-      "title": "Current test",
-      "notes": "Testing Current status",
+      "title": "Past activity",
       "venue": "Fabra i Coats",
       "room": "Aula 2",
       "callTime": "20:15"
+    },
+    {
+      "date": "2026-09-17",
+      "time": "23:00",
+      "type": "Performance",
+      "title": "Future activity",
+      "venue": "ESMUC",
+      "room": "Aula 2",
+      "callTime": "22:30"
     }
   ]
 }
