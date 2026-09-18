@@ -4077,7 +4077,6 @@ span:nth-child(even) {
   display: none;
 }
 
-
 /* =========================================
    WELCOME · ADAPTIVE ARTIST NAME
    ========================================= */
@@ -4086,7 +4085,7 @@ span:nth-child(even) {
   overflow: visible;
 }
 
-/* Default · short artist names */
+/* Base · short artist names */
 .welcome-artist-name {
   display: inline-block;
   max-width: 100%;
@@ -4096,7 +4095,8 @@ span:nth-child(even) {
 
 /* Medium artist names */
 .welcome.welcome-medium {
-  font-size: 1em;
+  font-size: 1.12em;
+  line-height: 0.94;
 }
 
 .welcome.welcome-medium .welcome-artist-name {
@@ -4107,14 +4107,14 @@ span:nth-child(even) {
 
 /* Long artist names */
 .welcome.welcome-long {
-  font-size: 1.35em;
-  line-height: 0.92;
+  font-size: 1.55em;
+  line-height: 0.9;
 }
 
 .welcome.welcome-long .welcome-artist-name {
   display: block;
-  width: 58%;
-  max-width: 58%;
+  width: 68%;
+  max-width: 68%;
   white-space: normal;
   overflow-wrap: normal;
   word-break: normal;
